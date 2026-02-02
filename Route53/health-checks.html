@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Health Checks - Route 53</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f0f0f0;
+            width: 100vw;
+            overflow-x: hidden;
+        }
+        .slide-container {
+            width: 100vw;
+            min-height: 100vh;
+            background-color: #232F3E;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            color: #ffffff;
+        }
+        .aws-orange { color: #FF9900; }
+        .bg-aws-orange { background-color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+        
+        .grid-pattern {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            z-index: 0;
+        }
+
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            z-index: 10;
+            min-height: 100vh;
+        }
+        @media (min-width: 640px) {
+            .content-wrapper {
+                padding: 2rem;
+            }
+        }
+        @media (min-width: 1024px) {
+            .content-wrapper {
+                padding: 3rem;
+            }
+        }
+
+        .content-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #FF9900;
+            min-height: fit-content;
+        }
+        @media (min-width: 640px) {
+            .content-card {
+                padding: 1.5rem;
+                margin-bottom: 2rem;
+            }
+        }
+
+        .header-stripe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background-color: #FF9900;
+            z-index: 20;
+        }
+
+        .feature-list li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 8px;
+            font-size: 0.8rem;
+            color: #e5e7eb;
+        }
+        @media (min-width: 640px) {
+            .feature-list li {
+                font-size: 0.9rem;
+            }
+        }
+        .feature-list li::before {
+            content: "▹";
+            color: #FF9900;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .exam-tip {
+            background-color: #2D3748;
+            border: 2px solid #FF9900;
+            border-radius: 8px;
+            padding: 1rem;
+            display: flex;
+            align-items: flex-start;
+            margin-top: auto;
+        }
+        @media (min-width: 640px) {
+            .exam-tip {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="grid-pattern"></div>
+        <div class="header-stripe"></div>
+        
+        <div class="content-wrapper">
+            <!-- Navigation -->
+            <div class="mb-3 sm:mb-4">
+                <a href="index.html" class="inline-flex items-center text-aws-orange hover:text-white transition-colors text-sm sm:text-base">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to Route 53 Topics
+                </a>
+            </div>
+
+            <!-- Header -->
+            <div class="flex flex-col sm:flex-row items-start sm:items-center mb-4 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4">
+                <div class="bg-aws-orange p-2 rounded mr-0 sm:mr-4 mb-3 sm:mb-0">
+                    <i class="fas fa-heartbeat text-white text-lg sm:text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-montserrat font-bold text-white">Health Checks</h2>
+                    <p class="text-gray-400 font-montserrat text-sm sm:text-base lg:text-lg">Monitoring & Failover Mechanisms</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 flex-1">
+                <!-- Left Column -->
+                <div class="flex flex-col">
+                    <div class="content-card">
+                        <h3 class="text-lg sm:text-xl font-bold font-montserrat mb-2 sm:mb-3 flex items-center">
+                            <i class="fas fa-info-circle aws-orange mr-2 sm:mr-3"></i> Health Check Overview
+                        </h3>
+                        <p class="text-gray-300 text-sm mb-3">Route 53 health checks monitor the health and performance of your resources and enable automatic failover.</p>
+                        <ul class="feature-list">
+                            <li>Automatic failover to healthy resources</li>
+                            <li>Global health checking from multiple locations</li>
+                            <li>Integration with CloudWatch alarms</li>
+                            <li>SNS notifications for health status changes</li>
+                        </ul>
+                    </div>
+
+                    <div class="content-card">
+                        <h3 class="text-lg sm:text-xl font-bold font-montserrat mb-3 sm:mb-4 flex items-center">
+                            <i class="fas fa-list aws-orange mr-2 sm:mr-3"></i> Health Check Types
+                        </h3>
+                        <div class="space-y-2">
+                            <div class="bg-gray-800 rounded p-2">
+                                <h4 class="text-white font-bold text-xs mb-1"><i class="fas fa-server text-blue-400 mr-1"></i>Endpoint Health Checks</h4>
+                                <p class="text-xs text-gray-300">Monitor specific endpoints (HTTP, HTTPS, TCP)</p>
+                            </div>
+                            <div class="bg-gray-800 rounded p-2">
+                                <h4 class="text-white font-bold text-xs mb-1"><i class="fas fa-calculator text-green-400 mr-1"></i>Calculated Health Checks</h4>
+                                <p class="text-xs text-gray-300">Combine results using AND, OR, NOT operations</p>
+                            </div>
+                            <div class="bg-gray-800 rounded p-2">
+                                <h4 class="text-white font-bold text-xs mb-1"><i class="fas fa-chart-line text-purple-400 mr-1"></i>CloudWatch Alarm</h4>
+                                <p class="text-xs text-gray-300">Monitor CloudWatch alarms for health status</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="flex flex-col">
+                    <div class="content-card">
+                        <h3 class="text-lg sm:text-xl font-bold font-montserrat mb-3 sm:mb-4 flex items-center">
+                            <i class="fas fa-cog aws-orange mr-2 sm:mr-3"></i> Configuration
+                        </h3>
+                        <div class="space-y-2">
+                            <div class="bg-gray-800 rounded p-2">
+                                <h4 class="text-white font-bold text-xs mb-1">Basic Settings</h4>
+                                <ul class="feature-list text-xs">
+                                    <li>Protocol: HTTP, HTTPS, TCP</li>
+                                    <li>IP/Domain: Target endpoint</li>
+                                    <li>Port: Target port number</li>
+                                    <li>Path: Resource path</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-800 rounded p-2">
+                                <h4 class="text-white font-bold text-xs mb-1">Advanced Settings</h4>
+                                <ul class="feature-list text-xs">
+                                    <li>Interval: 30s (standard) or 10s (fast)</li>
+                                    <li>Failure Threshold: 1-10 consecutive failures</li>
+                                    <li>String Matching: Response body validation</li>
+                                    <li>Latency Graphs: Performance monitoring</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-card flex-1">
+                        <h3 class="text-lg sm:text-xl font-bold font-montserrat mb-3 sm:mb-4 flex items-center">
+                            <i class="fas fa-globe aws-orange mr-2 sm:mr-3"></i> Global Locations
+                        </h3>
+                        <p class="text-gray-300 text-sm mb-3">Route 53 performs health checks from multiple global locations to ensure accurate monitoring.</p>
+                        <ul class="feature-list">
+                            <li>15+ health checking locations</li>
+                            <li>Distributed across continents</li>
+                            <li>Majority of locations must pass</li>
+                            <li>Default: 18% of checkers must pass</li>
+                            <li>Customizable threshold</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exam Tip Footer -->
+            <div class="exam-tip">
+                <i class="fas fa-lightbulb text-yellow-400 text-xl sm:text-2xl mr-3 sm:mr-4 mt-1"></i>
+                <div>
+                    <h4 class="font-bold text-yellow-400 uppercase text-xs sm:text-sm mb-1">Exam Strategy Tip</h4>
+                    <p class="text-xs sm:text-sm text-gray-200">
+                        Remember: Health checks are <strong>required for failover routing</strong>. Use <strong>CloudWatch alarms</strong> for private resources. <strong>Calculated health checks</strong> combine multiple checks. Health checks are performed from <strong>multiple global locations</strong>.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Page Number -->
+            <div class="text-right mt-4 text-gray-500 text-xs">
+                Page 4
+            </div>
+            
+            <!-- Navigation -->
+            <div class="flex justify-between mt-8 pt-6 border-t border-gray-700">
+                <a href="routing-policies.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                    <i class="fas fa-arrow-left mr-2"></i> Previous: Routing Policies
+                </a>
+                <a href="domain-registration.html" class="inline-flex items-center bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                    Next: Domain Registration <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+            
+            <!-- Back to Topics -->
+            <div class="text-center mt-6">
+                <a href="index.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors mr-4">
+                    <i class="fas fa-list mr-2"></i> Back to Topics
+                </a>
+                <a href="../index.html" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                    <i class="fas fa-home mr-2"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

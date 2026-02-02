@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSM Fundamentals - AWS Systems Manager</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body { font-family: 'Open Sans', sans-serif; background: linear-gradient(135deg, #232F3E 0%, #1a252f 100%); min-height: 100vh; }
+        .content-card { background: linear-gradient(135deg, rgba(31, 41, 55, 0.9) 0%, rgba(17, 24, 39, 0.8) 100%); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); border-left: 4px solid #FF9900; }
+    </style>
+</head>
+<body class="text-white">
+    <div class="min-h-screen p-6 lg:p-8">
+        <div class="max-w-4xl mx-auto">
+            <nav class="mb-8"><a href="index.html" class="text-orange-400 hover:text-white">← Back to Systems Manager</a></nav>
+            <div class="text-center mb-12">
+                <div class="bg-green-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6"><i class="fas fa-cogs text-white text-2xl"></i></div>
+                <h1 class="text-4xl font-bold mb-4">SSM Fundamentals</h1>
+                <p class="text-xl text-gray-300">Core concepts and capabilities</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="content-card rounded-xl p-8">
+                    <h2 class="text-2xl font-bold mb-6 text-orange-400">What is Systems Manager?</h2>
+                    <div class="space-y-4 text-gray-300">
+                        <p>AWS Systems Manager is a comprehensive management service that provides a unified user interface to view operational data from multiple AWS services and automate operational tasks across your AWS resources.</p>
+                        <h3 class="text-lg font-bold text-white mt-6 mb-3">Core Capabilities:</h3>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li><strong>Operations Management:</strong> Centralized dashboard for resource health</li>
+                            <li><strong>Application Management:</strong> Parameter Store, AppConfig</li>
+                            <li><strong>Change Management:</strong> Automation, Change Calendar</li>
+                            <li><strong>Node Management:</strong> Session Manager, Run Command, Patch Manager</li>
+                        </ul>
+                        <h3 class="text-lg font-bold text-white mt-6 mb-3">Key Benefits:</h3>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li>Reduce operational overhead</li>
+                            <li>Improve security and compliance</li>
+                            <li>Centralize operational data</li>
+                            <li>Automate common tasks</li>
+                            <li>No additional charges for most features</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="content-card rounded-xl p-8">
+                    <h2 class="text-2xl font-bold mb-6 text-orange-400">SSM Agent Deep Dive</h2>
+                    <div class="space-y-4 text-gray-300">
+                        <p>The SSM Agent is Amazon software that runs on EC2 instances and on-premises servers to enable Systems Manager capabilities.</p>
+                        <h3 class="text-lg font-bold text-white mt-6 mb-3">Installation & Availability:</h3>
+                        <ul class="list-disc list-inside space-y-2 mb-4">
+                            <li><strong>Pre-installed:</strong> Amazon Linux 2, Ubuntu Server 16.04/18.04/20.04</li>
+                            <li><strong>Windows:</strong> Available on Windows Server 2008-2022</li>
+                            <li><strong>Manual Install:</strong> RHEL, CentOS, SUSE, Debian</li>
+                            <li><strong>Hybrid:</strong> On-premises servers and VMs</li>
+                        </ul>
+                        <h3 class="text-lg font-bold text-white mt-6 mb-3">Communication:</h3>
+                        <ul class="list-disc list-inside space-y-2 mb-4">
+                            <li>HTTPS outbound on port 443</li>
+                            <li>No inbound ports required</li>
+                            <li>Uses AWS APIs for communication</li>
+                            <li>Supports VPC endpoints</li>
+                        </ul>
+                        <h3 class="text-lg font-bold text-white mt-6 mb-3">IAM Requirements:</h3>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li>AmazonSSMManagedInstanceCore policy</li>
+                            <li>Instance profile or IAM role</li>
+                            <li>Additional policies for specific features</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="content-card rounded-xl p-8 lg:col-span-2">
+                    <h2 class="text-2xl font-bold mb-6 text-orange-400">Systems Manager Service Categories</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="bg-blue-600 p-4 rounded-lg">
+                            <h3 class="font-bold mb-3">Operations Management</h3>
+                            <ul class="text-sm space-y-1">
+                                <li>• Explorer</li>
+                                <li>• OpsCenter</li>
+                                <li>• CloudWatch Dashboard</li>
+                                <li>• Personal Health Dashboard</li>
+                                <li>• Trusted Advisor</li>
+                            </ul>
+                        </div>
+                        <div class="bg-green-600 p-4 rounded-lg">
+                            <h3 class="font-bold mb-3">Application Management</h3>
+                            <ul class="text-sm space-y-1">
+                                <li>• Resource Groups</li>
+                                <li>• AppConfig</li>
+                                <li>• Parameter Store</li>
+                            </ul>
+                        </div>
+                        <div class="bg-yellow-600 p-4 rounded-lg">
+                            <h3 class="font-bold mb-3">Change Management</h3>
+                            <ul class="text-sm space-y-1">
+                                <li>• Change Calendar</li>
+                                <li>• Automation</li>
+                                <li>• Change Requests</li>
+                            </ul>
+                        </div>
+                        <div class="bg-purple-600 p-4 rounded-lg">
+                            <h3 class="font-bold mb-3">Node Management</h3>
+                            <ul class="text-sm space-y-1">
+                                <li>• Fleet Manager</li>
+                                <li>• Compliance</li>
+                                <li>• Inventory</li>
+                                <li>• Hybrid Activations</li>
+                                <li>• Session Manager</li>
+                                <li>• Run Command</li>
+                                <li>• State Manager</li>
+                                <li>• Patch Manager</li>
+                                <li>• Distributor</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-between mt-12 pt-8 border-t border-gray-700">
+                <div></div>
+                <a href="parameter-store.html" class="bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-medium transition-colors inline-flex items-center">
+                    Next: Parameter Store <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+            
+            <!-- Back to Topics -->
+            <div class="text-center mt-8">
+                <a href="index.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors mr-4">
+                    <i class="fas fa-list mr-2"></i> Back to Topics
+                </a>
+                <a href="../index.html" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                    <i class="fas fa-home mr-2"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

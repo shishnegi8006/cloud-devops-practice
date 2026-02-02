@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S3 Performance and Tiers</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Open Sans', sans-serif; background: linear-gradient(135deg, #232F3E 0%, #1a252f 50%, #0f1419 100%); min-height: 100vh; color: white; }
+        .feature-card { background: rgba(55, 65, 81, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.3s ease; backdrop-filter: blur(10px); }
+        .feature-card:hover { background: rgba(75, 85, 99, 0.8); border-color: rgba(245, 158, 11, 0.3); transform: translateY(-2px); }
+        .aws-orange { color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-8">
+        <div class="mb-8">
+            <a href="index.html" class="inline-flex items-center text-yellow-400 hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Back to S3 Topics
+            </a>
+        </div>
+        <div class="text-center mb-12">
+            <div class="bg-gradient-to-r from-yellow-600 to-yellow-800 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-tachometer-alt text-white text-3xl"></i>
+            </div>
+            <h1 class="text-5xl font-montserrat font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">S3 Performance & Tiers</h1>
+            <p class="text-xl text-gray-300">Storage classes, lifecycle management, and performance optimization</p>
+        </div>
+
+        <!-- Storage Classes Overview -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">S3 Storage Classes</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-green-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-bolt text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">S3 Standard</h3>
+                    <p class="text-gray-300 text-sm mb-4">General-purpose storage for frequently accessed data.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Characteristics:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• 99.99% availability SLA</li>
+                            <li>• 99.999999999% durability</li>
+                            <li>• Low latency, high throughput</li>
+                            <li>• No retrieval fees</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-green-300">
+                        <strong>Best For:</strong> Frequently accessed data, cloud applications
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-blue-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-brain text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">S3 Intelligent-Tiering</h3>
+                    <p class="text-gray-300 text-sm mb-4">Automatically moves data between access tiers based on usage patterns.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Tiers:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Frequent Access (default)</li>
+                            <li>• Infrequent Access (30 days)</li>
+                            <li>• Archive Instant Access (90 days)</li>
+                            <li>• Archive Access (90-270 days)</li>
+                            <li>• Deep Archive Access (180-730 days)</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-blue-300">
+                        <strong>Best For:</strong> Unknown or changing access patterns
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-orange-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-clock text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">S3 Standard-IA</h3>
+                    <p class="text-gray-300 text-sm mb-4">For infrequently accessed data that requires rapid access when needed.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Characteristics:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• 99.9% availability SLA</li>
+                            <li>• Lower storage cost than Standard</li>
+                            <li>• Retrieval fees apply</li>
+                            <li>• 30-day minimum storage duration</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-orange-300">
+                        <strong>Best For:</strong> Backups, disaster recovery, long-term storage
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-purple-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-map-marker-alt text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">S3 One Zone-IA</h3>
+                    <p class="text-gray-300 text-sm mb-4">Lower-cost option for infrequently accessed data that doesn't require multiple AZ resilience.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Characteristics:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• 99.5% availability SLA</li>
+                            <li>• Single AZ storage</li>
+                            <li>• 20% less cost than Standard-IA</li>
+                            <li>• 30-day minimum storage duration</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-purple-300">
+                        <strong>Best For:</strong> Secondary backup copies, recreatable data
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-cyan-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-snowflake text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">S3 Glacier Instant Retrieval</h3>
+                    <p class="text-gray-300 text-sm mb-4">Archive storage with millisecond retrieval for rarely accessed data.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Characteristics:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Millisecond retrieval</li>
+                            <li>• 99.9% availability SLA</li>
+                            <li>• 90-day minimum storage duration</li>
+                            <li>• 68% lower cost than Standard-IA</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-cyan-300">
+                        <strong>Best For:</strong> Archive data needing immediate access
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-indigo-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-archive text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">S3 Glacier Flexible Retrieval</h3>
+                    <p class="text-gray-300 text-sm mb-4">Low-cost archive storage for data accessed 1-2 times per year.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Retrieval Options:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Expedited: 1-5 minutes</li>
+                            <li>• Standard: 3-5 hours</li>
+                            <li>• Bulk: 5-12 hours</li>
+                            <li>• 90-day minimum storage duration</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-indigo-300">
+                        <strong>Best For:</strong> Backup, archive, disaster recovery
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-gray-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-warehouse text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">S3 Glacier Deep Archive</h3>
+                    <p class="text-gray-300 text-sm mb-4">Lowest-cost storage class for long-term retention and digital preservation.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Characteristics:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Standard: 12 hours retrieval</li>
+                            <li>• Bulk: 48 hours retrieval</li>
+                            <li>• 180-day minimum storage duration</li>
+                            <li>• Lowest cost storage class</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-gray-300">
+                        <strong>Best For:</strong> Compliance archives, digital preservation
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-red-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-hdd text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">S3 Outposts</h3>
+                    <p class="text-gray-300 text-sm mb-4">Object storage on-premises for local data residency requirements.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Features:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• On-premises S3 storage</li>
+                            <li>• Local data processing</li>
+                            <li>• S3 APIs and features</li>
+                            <li>• Data residency compliance</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-red-300">
+                        <strong>Best For:</strong> Local data residency, low latency access
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-pink-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-rocket text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">S3 Express One Zone</h3>
+                    <p class="text-gray-300 text-sm mb-4">High-performance storage for latency-sensitive applications.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Performance:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Single-digit millisecond latency</li>
+                            <li>• Up to 10x faster performance</li>
+                            <li>• Single AZ deployment</li>
+                            <li>• Request cost optimization</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-pink-300">
+                        <strong>Best For:</strong> High-performance computing, analytics
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Storage Class Comparison -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Storage Class Comparison</h2>
+            <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600 overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-gray-600">
+                            <th class="text-left py-3 px-4 text-aws-orange">Storage Class</th>
+                            <th class="text-left py-3 px-4 text-aws-orange">Availability SLA</th>
+                            <th class="text-left py-3 px-4 text-aws-orange">Min Storage Duration</th>
+                            <th class="text-left py-3 px-4 text-aws-orange">Retrieval Time</th>
+                            <th class="text-left py-3 px-4 text-aws-orange">Use Case</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-b border-gray-700">
+                            <td class="py-3 px-4 font-semibold">Standard</td>
+                            <td class="py-3 px-4">99.99%</td>
+                            <td class="py-3 px-4">None</td>
+                            <td class="py-3 px-4">Milliseconds</td>
+                            <td class="py-3 px-4">Frequently accessed</td>
+                        </tr>
+                        <tr class="border-b border-gray-700">
+                            <td class="py-3 px-4 font-semibold">Intelligent-Tiering</td>
+                            <td class="py-3 px-4">99.9%</td>
+                            <td class="py-3 px-4">None</td>
+                            <td class="py-3 px-4">Milliseconds</td>
+                            <td class="py-3 px-4">Unknown patterns</td>
+                        </tr>
+                        <tr class="border-b border-gray-700">
+                            <td class="py-3 px-4 font-semibold">Standard-IA</td>
+                            <td class="py-3 px-4">99.9%</td>
+                            <td class="py-3 px-4">30 days</td>
+                            <td class="py-3 px-4">Milliseconds</td>
+                            <td class="py-3 px-4">Infrequent access</td>
+                        </tr>
+                        <tr class="border-b border-gray-700">
+                            <td class="py-3 px-4 font-semibold">Glacier Instant</td>
+                            <td class="py-3 px-4">99.9%</td>
+                            <td class="py-3 px-4">90 days</td>
+                            <td class="py-3 px-4">Milliseconds</td>
+                            <td class="py-3 px-4">Archive with instant access</td>
+                        </tr>
+                        <tr class="border-b border-gray-700">
+                            <td class="py-3 px-4 font-semibold">Glacier Flexible</td>
+                            <td class="py-3 px-4">99.99%</td>
+                            <td class="py-3 px-4">90 days</td>
+                            <td class="py-3 px-4">1 min - 12 hours</td>
+                            <td class="py-3 px-4">Long-term archive</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 font-semibold">Glacier Deep Archive</td>
+                            <td class="py-3 px-4">99.99%</td>
+                            <td class="py-3 px-4">180 days</td>
+                            <td class="py-3 px-4">12-48 hours</td>
+                            <td class="py-3 px-4">Compliance, digital preservation</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Lifecycle Management -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Lifecycle Management</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-green-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-recycle text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Transition Rules</h3>
+                    <p class="text-gray-300 text-sm mb-4">Automatically move objects between storage classes based on age.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Common Transitions:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Standard → Standard-IA (30 days)</li>
+                            <li>• Standard-IA → Glacier (90 days)</li>
+                            <li>• Glacier → Deep Archive (180 days)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-green-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-trash text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Expiration Rules</h3>
+                    <p class="text-gray-300 text-sm mb-4">Automatically delete objects after specified time periods.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Options:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Delete current versions</li>
+                            <li>• Delete previous versions</li>
+                            <li>• Delete incomplete multipart uploads</li>
+                            <li>• Delete expired delete markers</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-green-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-filter text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Rule Filters</h3>
+                    <p class="text-gray-300 text-sm mb-4">Apply lifecycle rules to specific objects using filters.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Filter Types:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Prefix filters (folder paths)</li>
+                            <li>• Object tags</li>
+                            <li>• Object size</li>
+                            <li>• Combination filters</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Optimization -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Performance Optimization</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-purple-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-upload text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Multipart Upload</h3>
+                    <p class="text-gray-300 text-sm mb-4">Upload large objects in parts for improved performance and reliability.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Benefits:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Parallel uploads</li>
+                            <li>• Resume failed uploads</li>
+                            <li>• Upload while creating object</li>
+                            <li>• Required for objects >5GB</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-purple-300">
+                        <strong>Recommended:</strong> Use for objects >100MB
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-purple-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-globe text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Transfer Acceleration</h3>
+                    <p class="text-gray-300 text-sm mb-4">Use CloudFront edge locations to accelerate uploads to S3.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>How it works:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Upload to nearest edge location</li>
+                            <li>• Transfer over AWS backbone</li>
+                            <li>• Up to 50-500% faster</li>
+                            <li>• Additional cost per GB</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-purple-300">
+                        <strong>Best For:</strong> Global users, large file uploads
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-purple-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-search text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">S3 Select</h3>
+                    <p class="text-gray-300 text-sm mb-4">Retrieve only a subset of data from objects using SQL expressions.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Supported Formats:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• CSV, JSON, Parquet</li>
+                            <li>• GZIP, BZIP2 compression</li>
+                            <li>• Server-side filtering</li>
+                            <li>• Up to 400% faster</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-purple-300">
+                        <strong>Benefit:</strong> Reduce data transfer and costs
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-cyan-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-download text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Byte-Range Fetches</h3>
+                    <p class="text-gray-300 text-sm mb-4">Download specific byte ranges of objects for parallel processing.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Benefits:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Parallel downloads</li>
+                            <li>• Resume failed downloads</li>
+                            <li>• Partial file retrieval</li>
+                            <li>• Improved resilience</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-cyan-300">
+                        <strong>Use Case:</strong> Large file downloads, media streaming
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-cyan-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-key text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Request Patterns</h3>
+                    <p class="text-gray-300 text-sm mb-4">Optimize object key naming for better performance.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Best Practices:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Avoid sequential patterns</li>
+                            <li>• Use random prefixes</li>
+                            <li>• Distribute request load</li>
+                            <li>• Consider hexadecimal prefixes</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-cyan-300">
+                        <strong>Goal:</strong> Achieve 3,500 PUT/COPY/POST/DELETE and 5,500 GET/HEAD per prefix per second
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-cyan-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-network-wired text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">CloudFront Integration</h3>
+                    <p class="text-gray-300 text-sm mb-4">Use CloudFront CDN for improved global access performance.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Benefits:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Global edge locations</li>
+                            <li>• Caching at edge</li>
+                            <li>• Reduced latency</li>
+                            <li>• Lower S3 request costs</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-cyan-300">
+                        <strong>Best For:</strong> Static websites, content distribution
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="flex justify-between mt-8 pt-6 border-t border-gray-600">
+            <a href="S3-Core-Concepts.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Previous: Core Concepts
+            </a>
+            <a href="S3-Service-Guide.html" class="inline-flex items-center bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                Next: Service Guide <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+        
+        <!-- Back to Topics -->
+        <div class="text-center mt-6">
+            <a href="index.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors mr-4">
+                <i class="fas fa-list mr-2"></i> Back to Topics
+            </a>
+            <a href="../index.html" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <i class="fas fa-home mr-2"></i> Back to Home
+            </a>
+        </div>
+
+    </div>
+</body>
+</html>

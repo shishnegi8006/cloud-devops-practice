@@ -1,0 +1,141 @@
+/* AWS Study Guide - Shared Stylesheet */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    background: linear-gradient(135deg, #232F3E 0%, #1a252f 50%, #0f1419 100%);
+    min-height: 100vh;
+    color: white;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 80%, rgba(255, 153, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Typography */
+.font-montserrat { font-family: 'Montserrat', sans-serif; }
+.aws-orange { color: #FF9900; }
+.bg-aws-orange { background-color: #FF9900; }
+
+/* Cards */
+.card-hover {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(31, 41, 55, 0.9) 0%, rgba(17, 24, 39, 0.8) 50%, rgba(15, 20, 25, 0.9) 100%);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    position: relative;
+}
+
+.card-hover::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 153, 0, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 25px 50px rgba(255, 153, 0, 0.3), 0 0 0 1px rgba(255, 153, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 153, 0, 0.3);
+    background: linear-gradient(135deg, rgba(31, 41, 55, 0.95) 0%, rgba(17, 24, 39, 0.9) 50%, rgba(15, 20, 25, 0.95) 100%);
+}
+
+.card-hover:hover::before {
+    opacity: 1;
+}
+
+.card-fixed-height {
+    height: 160px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+@media (min-width: 640px) {
+    .card-fixed-height { height: 170px; }
+}
+
+@media (min-width: 1024px) {
+    .card-fixed-height { height: 180px; }
+}
+
+.service-card h3 {
+    font-size: 0.75rem;
+    line-height: 1.2;
+}
+
+.service-card p {
+    font-size: 0.7rem;
+    line-height: 1.3;
+}
+
+.service-card .flex-1 p {
+    font-size: 0.7rem;
+    margin-bottom: 0.25rem;
+}
+
+.service-card .text-aws-orange {
+    font-size: 0.7rem;
+}
+
+/* Hero */
+.hero-icon {
+    background: linear-gradient(135deg, #FF9900 0%, #FFB84D 100%);
+    box-shadow: 0 10px 30px rgba(255, 153, 0, 0.4);
+    animation: pulse-glow 3s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 10px 30px rgba(255, 153, 0, 0.4); }
+    50% { box-shadow: 0 15px 40px rgba(255, 153, 0, 0.6); }
+}
+
+/* Sections */
+.section-divider {
+    background: linear-gradient(90deg, transparent 0%, #FF9900 50%, transparent 100%);
+    height: 2px;
+    margin: 2rem 0;
+    opacity: 0.6;
+}
+
+.service-icon {
+    background: linear-gradient(135deg, var(--icon-color) 0%, var(--icon-color-light) 100%);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.overview-card {
+    background: linear-gradient(135deg, rgba(31, 41, 55, 0.8) 0%, rgba(17, 24, 39, 0.8) 100%);
+}
+
+.service-card {
+    background: linear-gradient(135deg, rgba(31, 41, 55, 0.7) 0%, rgba(17, 24, 39, 0.7) 100%);
+}
+
+/* Footer */
+.footer {
+    margin-top: 4rem;
+    padding: 2rem 0;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}

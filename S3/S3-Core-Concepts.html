@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S3 Core Concepts</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Open Sans', sans-serif; background: linear-gradient(135deg, #232F3E 0%, #1a252f 50%, #0f1419 100%); min-height: 100vh; color: white; }
+        .feature-card { background: rgba(55, 65, 81, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.3s ease; backdrop-filter: blur(10px); }
+        .feature-card:hover { background: rgba(75, 85, 99, 0.8); border-color: rgba(234, 88, 12, 0.3); transform: translateY(-2px); }
+        .aws-orange { color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-8">
+        <div class="mb-8">
+            <a href="index.html" class="inline-flex items-center text-orange-400 hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Back to S3 Topics
+            </a>
+        </div>
+        <div class="text-center mb-12">
+            <div class="bg-gradient-to-r from-orange-600 to-orange-800 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-cubes text-white text-3xl"></i>
+            </div>
+            <h1 class="text-5xl font-montserrat font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">S3 Core Concepts</h1>
+            <p class="text-xl text-gray-300">Fundamental concepts of Amazon Simple Storage Service</p>
+        </div>
+
+        <!-- S3 Overview -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">S3 Overview</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">What is Amazon S3?</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-cloud text-orange-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Object Storage:</strong> Store and retrieve any amount of data from anywhere</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-infinity text-orange-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Scalability:</strong> Virtually unlimited storage capacity</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-shield-alt text-orange-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Durability:</strong> 99.999999999% (11 9's) durability</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">Key Characteristics</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-globe text-orange-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Global Service:</strong> Buckets are region-specific but namespace is global</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-link text-orange-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Web Interface:</strong> RESTful API and web-based management</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-dollar-sign text-orange-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Pay-as-you-go:</strong> Only pay for storage and requests used</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <!-- Buckets and Objects -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Buckets and Objects</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-orange-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-bucket text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">S3 Buckets</h3>
+                    <p class="text-gray-300 text-sm mb-4">Containers for objects with globally unique names.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Naming Rules:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• 3-63 characters long</li>
+                            <li>• Lowercase letters, numbers, hyphens</li>
+                            <li>• No uppercase or underscores</li>
+                            <li>• Must start/end with letter or number</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-orange-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-file text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">S3 Objects</h3>
+                    <p class="text-gray-300 text-sm mb-4">Files stored in S3 buckets with metadata and unique keys.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Components:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Key (object name/path)</li>
+                            <li>• Value (object data)</li>
+                            <li>• Version ID (if versioning enabled)</li>
+                            <li>• Metadata (key-value pairs)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-orange-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-key text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Object Keys</h3>
+                    <p class="text-gray-300 text-sm mb-4">Unique identifiers for objects within a bucket.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Examples:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• my-file.jpg</li>
+                            <li>• folder/subfolder/file.txt</li>
+                            <li>• logs/2023/12/app.log</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Versioning -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">S3 Versioning</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-blue-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-code-branch text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Version Control</h3>
+                    <p class="text-gray-300 text-sm mb-4">Keep multiple versions of objects in the same bucket.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>States:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Unversioned (default)</li>
+                            <li>• Versioning-enabled</li>
+                            <li>• Versioning-suspended</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-blue-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-shield-alt text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Protection Benefits</h3>
+                    <p class="text-gray-300 text-sm mb-4">Protects against accidental deletion and modification.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Protection:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Accidental overwrites</li>
+                            <li>• Accidental deletions</li>
+                            <li>• Application errors</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-blue-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-trash-restore text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Delete Behavior</h3>
+                    <p class="text-gray-300 text-sm mb-4">Special handling of delete operations with versioning.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Delete Types:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Simple delete: adds delete marker</li>
+                            <li>• Permanent delete: specify version ID</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="flex justify-between mt-8 pt-6 border-t border-gray-600">
+            <div></div>
+            <a href="S3-Performance-and-Tiers.html" class="inline-flex items-center bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                Next: Performance & Tiers <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+        
+        <!-- Back to Topics -->
+        <div class="text-center mt-6">
+            <a href="index.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors mr-4">
+                <i class="fas fa-list mr-2"></i> Back to Topics
+            </a>
+            <a href="../index.html" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <i class="fas fa-home mr-2"></i> Back to Home
+            </a>
+        </div>
+
+    </div>
+</body>
+</html>

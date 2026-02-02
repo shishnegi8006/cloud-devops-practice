@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S3 Architecture Diagram</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, #232F3E 0%, #1a252f 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .aws-orange { color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+        .diagram-box {
+            background: rgba(55, 65, 81, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        .arrow {
+            border-left: 2px solid #FF9900;
+            border-bottom: 2px solid #FF9900;
+            transform: rotate(-45deg);
+            width: 20px;
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-8">
+        <!-- Navigation -->
+        <div class="mb-8">
+            <a href="index.html" class="inline-flex items-center text-orange-400 hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Back to S3 Topics
+            </a>
+        </div>
+
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <div class="bg-blue-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-sitemap text-white text-3xl"></i>
+            </div>
+            <h1 class="text-5xl font-montserrat font-bold mb-4">S3 Architecture Diagram</h1>
+            <p class="text-xl text-gray-300">Visual guide to S3 integration patterns and best practices</p>
+        </div>
+
+        <!-- Web Application Architecture -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center aws-orange">Web Application with S3 Storage</h2>
+            <div class="bg-gray-800 bg-opacity-50 rounded-xl p-8 border border-gray-600">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+                    
+                    <!-- Users -->
+                    <div class="text-center">
+                        <div class="diagram-box rounded-lg p-6 mb-4">
+                            <i class="fas fa-users text-4xl text-blue-400 mb-3"></i>
+                            <h3 class="text-lg font-semibold">Users</h3>
+                            <p class="text-sm text-gray-300">Web & Mobile</p>
+                        </div>
+                        <div class="flex justify-center mb-4">
+                            <div class="arrow"></div>
+                        </div>
+                    </div>
+
+                    <!-- CloudFront + ALB + EC2 -->
+                    <div class="text-center">
+                        <div class="diagram-box rounded-lg p-6 mb-4">
+                            <i class="fas fa-globe text-4xl text-green-400 mb-3"></i>
+                            <h3 class="text-lg font-semibold">CloudFront CDN</h3>
+                            <p class="text-sm text-gray-300">Global Distribution</p>
+                        </div>
+                        <div class="diagram-box rounded-lg p-6 mb-4">
+                            <i class="fas fa-balance-scale text-4xl text-purple-400 mb-3"></i>
+                            <h3 class="text-lg font-semibold">Application Load Balancer</h3>
+                            <p class="text-sm text-gray-300">Traffic Distribution</p>
+                        </div>
+                        <div class="diagram-box rounded-lg p-6 mb-4">
+                            <i class="fas fa-server text-4xl text-indigo-400 mb-3"></i>
+                            <h3 class="text-lg font-semibold">EC2 Instances</h3>
+                            <p class="text-sm text-gray-300">Application Servers</p>
+                        </div>
+                        <div class="flex justify-center mb-4">
+                            <div class="arrow"></div>
+                        </div>
+                    </div>
+
+                    <!-- S3 Storage -->
+                    <div class="text-center">
+                        <div class="diagram-box rounded-lg p-6 mb-4">
+                            <i class="fas fa-database text-4xl text-orange-400 mb-3"></i>
+                            <h3 class="text-lg font-semibold">S3 Buckets</h3>
+                            <p class="text-sm text-gray-300">Object Storage</p>
+                        </div>
+                        <div class="grid grid-cols-1 gap-2 text-xs">
+                            <div class="bg-orange-900 text-orange-200 px-2 py-1 rounded">Static Assets</div>
+                            <div class="bg-orange-900 text-orange-200 px-2 py-1 rounded">User Uploads</div>
+                            <div class="bg-orange-900 text-orange-200 px-2 py-1 rounded">Backups</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Lake Architecture -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center aws-orange">S3 Data Lake Architecture</h2>
+            <div class="bg-gray-800 bg-opacity-50 rounded-xl p-8 border border-gray-600">
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 items-center">
+                    
+                    <!-- Data Sources -->
+                    <div class="text-center">
+                        <h3 class="text-lg font-semibold mb-4 text-blue-400">Data Sources</h3>
+                        <div class="space-y-3">
+                            <div class="diagram-box rounded-lg p-3">
+                                <i class="fas fa-database text-2xl text-blue-400 mb-2"></i>
+                                <p class="text-sm">Databases</p>
+                            </div>
+                            <div class="diagram-box rounded-lg p-3">
+                                <i class="fas fa-file-csv text-2xl text-green-400 mb-2"></i>
+                                <p class="text-sm">Log Files</p>
+                            </div>
+                            <div class="diagram-box rounded-lg p-3">
+                                <i class="fas fa-mobile-alt text-2xl text-purple-400 mb-2"></i>
+                                <p class="text-sm">IoT Devices</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- S3 Storage Tiers -->
+                    <div class="text-center">
+                        <h3 class="text-lg font-semibold mb-4 text-orange-400">S3 Storage Tiers</h3>
+                        <div class="space-y-3">
+                            <div class="diagram-box rounded-lg p-3">
+                                <p class="text-sm font-semibold">S3 Standard</p>
+                                <p class="text-xs text-gray-300">Hot Data</p>
+                            </div>
+                            <div class="diagram-box rounded-lg p-3">
+                                <p class="text-sm font-semibold">S3 IA</p>
+                                <p class="text-xs text-gray-300">Warm Data</p>
+                            </div>
+                            <div class="diagram-box rounded-lg p-3">
+                                <p class="text-sm font-semibold">S3 Glacier</p>
+                                <p class="text-xs text-gray-300">Cold Data</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Processing -->
+                    <div class="text-center">
+                        <h3 class="text-lg font-semibold mb-4 text-yellow-400">Processing</h3>
+                        <div class="space-y-3">
+                            <div class="diagram-box rounded-lg p-3">
+                                <i class="fas fa-cogs text-2xl text-yellow-400 mb-2"></i>
+                                <p class="text-sm">AWS Glue</p>
+                            </div>
+                            <div class="diagram-box rounded-lg p-3">
+                                <i class="fas fa-search text-2xl text-blue-400 mb-2"></i>
+                                <p class="text-sm">Athena</p>
+                            </div>
+                            <div class="diagram-box rounded-lg p-3">
+                                <i class="fas fa-chart-bar text-2xl text-red-400 mb-2"></i>
+                                <p class="text-sm">EMR</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Analytics -->
+                    <div class="text-center">
+                        <h3 class="text-lg font-semibold mb-4 text-green-400">Analytics</h3>
+                        <div class="space-y-3">
+                            <div class="diagram-box rounded-lg p-3">
+                                <i class="fas fa-chart-line text-2xl text-green-400 mb-2"></i>
+                                <p class="text-sm">QuickSight</p>
+                            </div>
+                            <div class="diagram-box rounded-lg p-3">
+                                <i class="fas fa-brain text-2xl text-purple-400 mb-2"></i>
+                                <p class="text-sm">SageMaker</p>
+                            </div>
+                            <div class="diagram-box rounded-lg p-3">
+                                <i class="fas fa-warehouse text-2xl text-blue-400 mb-2"></i>
+                                <p class="text-sm">Redshift</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- S3 Security Architecture -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center aws-orange">S3 Security Architecture</h2>
+            <div class="bg-gray-800 bg-opacity-50 rounded-xl p-8 border border-gray-600">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    
+                    <div class="diagram-box rounded-lg p-6 text-center">
+                        <i class="fas fa-shield-alt text-4xl text-red-400 mb-4"></i>
+                        <h3 class="text-lg font-semibold mb-3">Access Control</h3>
+                        <ul class="text-sm text-gray-300 space-y-1">
+                            <li>• IAM Policies</li>
+                            <li>• Bucket Policies</li>
+                            <li>• ACLs</li>
+                            <li>• Pre-signed URLs</li>
+                        </ul>
+                    </div>
+
+                    <div class="diagram-box rounded-lg p-6 text-center">
+                        <i class="fas fa-lock text-4xl text-yellow-400 mb-4"></i>
+                        <h3 class="text-lg font-semibold mb-3">Encryption</h3>
+                        <ul class="text-sm text-gray-300 space-y-1">
+                            <li>• SSE-S3</li>
+                            <li>• SSE-KMS</li>
+                            <li>• SSE-C</li>
+                            <li>• Client-side</li>
+                        </ul>
+                    </div>
+
+                    <div class="diagram-box rounded-lg p-6 text-center">
+                        <i class="fas fa-eye text-4xl text-blue-400 mb-4"></i>
+                        <h3 class="text-lg font-semibold mb-3">Monitoring</h3>
+                        <ul class="text-sm text-gray-300 space-y-1">
+                            <li>• CloudTrail</li>
+                            <li>• Access Logging</li>
+                            <li>• CloudWatch</li>
+                            <li>• Config Rules</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Best Practices -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center aws-orange">S3 Architecture Best Practices</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 text-green-400">Performance Optimization</h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-3"></i>Use CloudFront for global distribution</li>
+                        <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-3"></i>Enable Transfer Acceleration</li>
+                        <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-3"></i>Use multipart upload for large files</li>
+                        <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-3"></i>Optimize request patterns</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 text-blue-400">Cost Optimization</h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li class="flex items-start"><i class="fas fa-check text-blue-400 mt-1 mr-3"></i>Use appropriate storage classes</li>
+                        <li class="flex items-start"><i class="fas fa-check text-blue-400 mt-1 mr-3"></i>Implement lifecycle policies</li>
+                        <li class="flex items-start"><i class="fas fa-check text-blue-400 mt-1 mr-3"></i>Enable Intelligent Tiering</li>
+                        <li class="flex items-start"><i class="fas fa-check text-blue-400 mt-1 mr-3"></i>Monitor and analyze usage</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

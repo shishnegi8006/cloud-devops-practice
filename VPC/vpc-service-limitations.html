@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VPC Service Limitations - Virtual Private Cloud</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, #232F3E 0%, #1a252f 100%);
+            min-height: 100vh;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(6, 182, 212, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        .slide-container {
+            background: rgba(17, 24, 39, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            min-height: calc(100vh - 2rem);
+        }
+        .content-card {
+            background: rgba(31, 41, 55, 0.6);
+            border-left: 4px solid #FF9900;
+            backdrop-filter: blur(5px);
+        }
+        .feature-list li {
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        .feature-list li::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            color: #06B6D4;
+            font-size: 0.8rem;
+        }
+        .exam-tip {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, rgba(6, 182, 212, 0.05) 100%);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+        .aws-orange { color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+    </style>
+</head>
+<body class="text-white">
+    <div class="slide-container rounded-lg mx-4 my-4 p-6 sm:p-8 lg:p-12">
+        <!-- Navigation -->
+        <div class="mb-6">
+            <a href="index.html" class="inline-flex items-center text-aws-orange hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Back to VPC Topics
+            </a>
+        </div>
+
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div class="bg-red-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-exclamation-triangle text-white text-2xl"></i>
+            </div>
+            <h1 class="text-3xl sm:text-4xl font-montserrat font-bold mb-2">VPC Service Limitations</h1>
+            <p class="text-gray-400">Understanding VPC Quotas and Constraints</p>
+            <div class="w-24 h-1 bg-aws-orange mx-auto mt-4"></div>
+        </div>
+
+        <!-- Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+            
+            <!-- VPC Limits -->
+            <div class="content-card rounded-lg p-6">
+                <h2 class="text-2xl font-montserrat font-bold mb-4 text-cyan-400">
+                    <i class="fas fa-cloud mr-2"></i>VPC Limits
+                </h2>
+                <ul class="feature-list space-y-3 text-gray-300">
+                    <li><strong>VPCs per Region:</strong> 5 (default), up to 100 (soft limit)</li>
+                    <li><strong>Subnets per VPC:</strong> 200 (default)</li>
+                    <li><strong>IPv4 CIDR blocks per VPC:</strong> 5 (default)</li>
+                    <li><strong>IPv6 CIDR blocks per VPC:</strong> 1</li>
+                    <li><strong>Route tables per VPC:</strong> 200 (default)</li>
+                    <li><strong>Routes per route table:</strong> 50 (default), up to 1,000</li>
+                    <li><strong>Elastic IPs per Region:</strong> 5 (default)</li>
+                    <li><strong>Customer gateways per Region:</strong> 50</li>
+                </ul>
+            </div>
+
+            <!-- Security Limits -->
+            <div class="content-card rounded-lg p-6">
+                <h2 class="text-2xl font-montserrat font-bold mb-4 text-red-400">
+                    <i class="fas fa-shield-alt mr-2"></i>Security Limits
+                </h2>
+                <ul class="feature-list space-y-3 text-gray-300">
+                    <li><strong>Security groups per VPC:</strong> 2,500 (default)</li>
+                    <li><strong>Rules per security group:</strong> 60 (default)</li>
+                    <li><strong>Security groups per network interface:</strong> 5</li>
+                    <li><strong>Network ACLs per VPC:</strong> 200 (default)</li>
+                    <li><strong>Rules per network ACL:</strong> 20 (default)</li>
+                    <li><strong>Network interfaces per instance:</strong> Varies by instance type</li>
+                    <li><strong>Private IP addresses per network interface:</strong> Varies by instance type</li>
+                </ul>
+            </div>
+
+            <!-- Gateway Limits -->
+            <div class="content-card rounded-lg p-6">
+                <h2 class="text-2xl font-montserrat font-bold mb-4 text-green-400">
+                    <i class="fas fa-door-open mr-2"></i>Gateway Limits
+                </h2>
+                <ul class="feature-list space-y-3 text-gray-300">
+                    <li><strong>Internet gateways per Region:</strong> 5 (default)</li>
+                    <li><strong>NAT gateways per Availability Zone:</strong> 5 (default)</li>
+                    <li><strong>VPN connections per Region:</strong> 50</li>
+                    <li><strong>VPN connections per VPC:</strong> 10</li>
+                    <li><strong>Virtual private gateways per Region:</strong> 5</li>
+                    <li><strong>Customer gateways per Region:</strong> 50</li>
+                    <li><strong>Transit gateways per account per Region:</strong> 5</li>
+                    <li><strong>Transit gateway attachments per transit gateway:</strong> 5,000</li>
+                </ul>
+            </div>
+
+            <!-- Connectivity Limits -->
+            <div class="content-card rounded-lg p-6">
+                <h2 class="text-2xl font-montserrat font-bold mb-4 text-purple-400">
+                    <i class="fas fa-link mr-2"></i>Connectivity Limits
+                </h2>
+                <ul class="feature-list space-y-3 text-gray-300">
+                    <li><strong>VPC peering connections per VPC:</strong> 50 (default), up to 125</li>
+                    <li><strong>Outstanding VPC peering connection requests:</strong> 25</li>
+                    <li><strong>Expiry time for unaccepted VPC peering connection request:</strong> 1 week</li>
+                    <li><strong>VPC endpoints per VPC:</strong> 255</li>
+                    <li><strong>Interface VPC endpoints per VPC:</strong> 50</li>
+                    <li><strong>Gateway VPC endpoints per VPC:</strong> 255</li>
+                    <li><strong>Policy size for VPC endpoint:</strong> 20,480 characters</li>
+                </ul>
+            </div>
+
+            <!-- Network Performance -->
+            <div class="content-card rounded-lg p-6">
+                <h2 class="text-2xl font-montserrat font-bold mb-4 text-yellow-400">
+                    <i class="fas fa-tachometer-alt mr-2"></i>Network Performance
+                </h2>
+                <ul class="feature-list space-y-3 text-gray-300">
+                    <li><strong>NAT Gateway bandwidth:</strong> Up to 45 Gbps</li>
+                    <li><strong>VPN connection throughput:</strong> Up to 1.25 Gbps</li>
+                    <li><strong>Direct Connect bandwidth:</strong> 50 Mbps to 100 Gbps</li>
+                    <li><strong>Enhanced networking (SR-IOV):</strong> Up to 100 Gbps</li>
+                    <li><strong>Placement groups:</strong> Up to 25 Gbps between instances</li>
+                    <li><strong>Inter-AZ bandwidth:</strong> Up to 25 Gbps</li>
+                    <li><strong>Intra-AZ bandwidth:</strong> Up to 100 Gbps</li>
+                </ul>
+            </div>
+
+            <!-- DNS and DHCP -->
+            <div class="content-card rounded-lg p-6">
+                <h2 class="text-2xl font-montserrat font-bold mb-4 text-blue-400">
+                    <i class="fas fa-server mr-2"></i>DNS and DHCP Limits
+                </h2>
+                <ul class="feature-list space-y-3 text-gray-300">
+                    <li><strong>DHCP option sets per Region:</strong> 100</li>
+                    <li><strong>DNS resolution:</strong> Enabled by default</li>
+                    <li><strong>DNS hostnames:</strong> Disabled by default</li>
+                    <li><strong>DNS queries per second per network interface:</strong> 1,024</li>
+                    <li><strong>Maximum DNS response size:</strong> 4,096 bytes</li>
+                    <li><strong>Private hosted zones per VPC:</strong> 100</li>
+                    <li><strong>Rules per resolver rule group:</strong> 1,000</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- Exam Tips -->
+        <div class="exam-tip rounded-lg p-6 mt-8 max-w-4xl mx-auto">
+            <h3 class="text-xl font-montserrat font-bold mb-4 text-cyan-400">
+                <i class="fas fa-lightbulb mr-2"></i>Exam Tips for VPC Limitations
+            </h3>
+            <ul class="feature-list space-y-2 text-gray-300">
+                <li>Most VPC limits are soft limits that can be increased via AWS Support</li>
+                <li>Plan for security group rules carefully - 60 rules per group is the default limit</li>
+                <li>VPC peering has a limit of 50 connections per VPC - consider Transit Gateway for complex topologies</li>
+                <li>NAT Gateway bandwidth scales automatically up to 45 Gbps</li>
+                <li>Route table limits affect complex routing scenarios - plan accordingly</li>
+                <li>Remember that some limits are per Region, others per VPC or per resource</li>
+            </ul>
+        </div>
+
+        <!-- Page Number -->
+        <div class="text-center mt-8 text-gray-400">
+            <span class="text-sm">Page 6 of 9</span>
+        </div>
+        
+        <!-- Navigation -->
+        <div class="flex justify-between mt-8 pt-6 border-t border-gray-700">
+            <a href="route-tables.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Previous: Route Tables
+            </a>
+            <a href="connectivity.html" class="inline-flex items-center bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                Next: VPC Connectivity <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+        
+        <!-- Back to Topics -->
+        <div class="text-center mt-6">
+            <a href="index.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors mr-4">
+                <i class="fas fa-list mr-2"></i> Back to Topics
+            </a>
+            <a href="../index.html" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <i class="fas fa-home mr-2"></i> Back to Home
+            </a>
+        </div>
+    </div>
+</body>
+</html>

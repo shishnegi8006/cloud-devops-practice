@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Questions & Answers - VPC</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f0f0f0;
+            width: 100vw;
+            overflow-x: hidden;
+        }
+        .slide-container {
+            width: 100vw;
+            min-height: 100vh;
+            background-color: #232F3E;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            color: #ffffff;
+        }
+        .aws-orange { color: #FF9900; }
+        .bg-aws-orange { background-color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+        
+        .grid-pattern {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            z-index: 0;
+        }
+
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            z-index: 10;
+            min-height: 100vh;
+        }
+        @media (min-width: 640px) {
+            .content-wrapper {
+                padding: 2rem;
+            }
+        }
+        @media (min-width: 1024px) {
+            .content-wrapper {
+                padding: 3rem;
+            }
+        }
+
+        .question-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #FF9900;
+            min-height: fit-content;
+        }
+        @media (min-width: 640px) {
+            .question-card {
+                padding: 1.5rem;
+                margin-bottom: 2rem;
+            }
+        }
+
+        .header-stripe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background-color: #FF9900;
+            z-index: 20;
+        }
+
+        .option {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .option:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #FF9900;
+        }
+        .option.correct {
+            background: rgba(34, 197, 94, 0.2);
+            border-color: #22c55e;
+        }
+        .option.incorrect {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: #ef4444;
+        }
+
+        .explanation {
+            background: rgba(255, 153, 0, 0.1);
+            border: 1px solid #FF9900;
+            border-radius: 6px;
+            padding: 1rem;
+            margin-top: 1rem;
+            display: none;
+        }
+        .explanation.show {
+            display: block;
+        }
+
+        .question-number {
+            background: #FF9900;
+            color: #232F3E;
+            font-weight: bold;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="grid-pattern"></div>
+        <div class="header-stripe"></div>
+        
+        <div class="content-wrapper">
+            <!-- Navigation -->
+            <div class="mb-3 sm:mb-4">
+                <a href="index.html" class="inline-flex items-center text-aws-orange hover:text-white transition-colors text-sm sm:text-base">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to VPC Topics
+                </a>
+            </div>
+
+            <!-- Header -->
+            <div class="flex flex-col sm:flex-row items-start sm:items-center mb-4 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4">
+                <div class="bg-aws-orange p-2 rounded mr-0 sm:mr-4 mb-3 sm:mb-0">
+                    <i class="fas fa-question-circle text-white text-lg sm:text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-montserrat font-bold text-white">Questions & Answers</h2>
+                    <p class="text-gray-400 font-montserrat text-sm sm:text-base lg:text-lg">VPC Practice Questions</p>
+                </div>
+            </div>
+
+            <!-- Questions -->
+            <div class="max-w-4xl mx-auto w-full">
+                
+                <!-- Question 1 -->
+                <div class="question-card">
+                    <div class="question-number">Question 1</div>
+                    <h3 class="text-lg font-bold text-white mb-3">What is the maximum number of VPCs you can create per AWS region by default?</h3>
+                    
+                    <div class="option" onclick="selectOption(this, true, 1)">
+                        <strong>A)</strong> 5
+                    </div>
+                    <div class="option" onclick="selectOption(this, false, 1)">
+                        <strong>B)</strong> 10
+                    </div>
+                    <div class="option" onclick="selectOption(this, false, 1)">
+                        <strong>C)</strong> 20
+                    </div>
+                    <div class="option" onclick="selectOption(this, false, 1)">
+                        <strong>D)</strong> Unlimited
+                    </div>
+                    
+                    <div class="explanation" id="explanation-1">
+                        <strong class="text-yellow-400">Correct Answer: A) 5</strong><br><br>
+                        <strong>Explanation:</strong> By default, you can create up to 5 VPCs per AWS region. This is a soft limit that can be increased by contacting AWS Support. Each VPC is isolated and can have its own CIDR block, subnets, and networking configuration.
+                    </div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="question-card">
+                    <div class="question-number">Question 2</div>
+                    <h3 class="text-lg font-bold text-white mb-3">Which of the following CIDR blocks is NOT valid for a VPC?</h3>
+                    
+                    <div class="option" onclick="selectOption(this, false, 2)">
+                        <strong>A)</strong> 10.0.0.0/16
+                    </div>
+                    <div class="option" onclick="selectOption(this, false, 2)">
+                        <strong>B)</strong> 172.16.0.0/12
+                    </div>
+                    <div class="option" onclick="selectOption(this, false, 2)">
+                        <strong>C)</strong> 192.168.0.0/16
+                    </div>
+                    <div class="option" onclick="selectOption(this, true, 2)">
+                        <strong>D)</strong> 10.0.0.0/8
+                    </div>
+                    
+                    <div class="explanation" id="explanation-2">
+                        <strong class="text-yellow-400">Correct Answer: D) 10.0.0.0/8</strong><br><br>
+                        <strong>Explanation:</strong> VPC CIDR blocks must be between /16 and /28. The /8 netmask is too large for a VPC. Valid private IP ranges are 10.0.0.0/8, 172.16.0.0/12, and 192.168.0.0/16, but when used in VPC, they must be within the /16 to /28 range.
+                    </div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="question-card">
+                    <div class="question-number">Question 3</div>
+                    <h3 class="text-lg font-bold text-white mb-3">What is the main difference between Security Groups and Network ACLs?</h3>
+                    
+                    <div class="option" onclick="selectOption(this, false, 3)">
+                        <strong>A)</strong> Security Groups are stateless, NACLs are stateful
+                    </div>
+                    <div class="option" onclick="selectOption(this, true, 3)">
+                        <strong>B)</strong> Security Groups are stateful, NACLs are stateless
+                    </div>
+                    <div class="option" onclick="selectOption(this, false, 3)">
+                        <strong>C)</strong> Security Groups work at subnet level, NACLs at instance level
+                    </div>
+                    <div class="option" onclick="selectOption(this, false, 3)">
+                        <strong>D)</strong> There is no difference
+                    </div>
+                    
+                    <div class="explanation" id="explanation-3">
+                        <strong class="text-yellow-400">Correct Answer: B) Security Groups are stateful, NACLs are stateless</strong><br><br>
+                        <strong>Explanation:</strong> Security Groups are stateful (return traffic is automatically allowed), while Network ACLs are stateless (you must explicitly allow both inbound and outbound traffic). Security Groups operate at the instance level, while NACLs operate at the subnet level.
+                    </div>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="question-card">
+                    <div class="question-number">Question 4</div>
+                    <h3 class="text-lg font-bold text-white mb-3">Which AWS service allows private instances to access the internet for outbound connections?</h3>
+                    
+                    <div class="option" onclick="selectOption(this, false, 4)">
+                        <strong>A)</strong> Internet Gateway
+                    </div>
+                    <div class="option" onclick="selectOption(this, true, 4)">
+                        <strong>B)</strong> NAT Gateway
+                    </div>
+                    <div class="option" onclick="selectOption(this, false, 4)">
+                        <strong>C)</strong> VPC Endpoint
+                    </div>
+                    <div class="option" onclick="selectOption(this, false, 4)">
+                        <strong>D)</strong> Direct Connect
+                    </div>
+                    
+                    <div class="explanation" id="explanation-4">
+                        <strong class="text-yellow-400">Correct Answer: B) NAT Gateway</strong><br><br>
+                        <strong>Explanation:</strong> NAT Gateway allows instances in private subnets to access the internet for outbound connections while preventing inbound connections from the internet. Internet Gateway is for public subnets, VPC Endpoint is for AWS services, and Direct Connect is for on-premises connectivity.
+                    </div>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="question-card">
+                    <div class="question-number">Question 5</div>
+                    <h3 class="text-lg font-bold text-white mb-3">How many IP addresses are reserved by AWS in each subnet?</h3>
+                    
+                    <div class="option" onclick="selectOption(this, false, 5)">
+                        <strong>A)</strong> 3
+                    </div>
+                    <div class="option" onclick="selectOption(this, false, 5)">
+                        <strong>B)</strong> 4
+                    </div>
+                    <div class="option" onclick="selectOption(this, true, 5)">
+                        <strong>C)</strong> 5
+                    </div>
+                    <div class="option" onclick="selectOption(this, false, 5)">
+                        <strong>D)</strong> 6
+                    </div>
+                    
+                    <div class="explanation" id="explanation-5">
+                        <strong class="text-yellow-400">Correct Answer: C) 5</strong><br><br>
+                        <strong>Explanation:</strong> AWS reserves 5 IP addresses in each subnet: the first 4 IPs (network address, VPC router, DNS server, future use) and the last IP (broadcast address). For example, in 10.0.0.0/24, AWS reserves 10.0.0.0, 10.0.0.1, 10.0.0.2, 10.0.0.3, and 10.0.0.255.
+                    </div>
+                </div>
+
+                <!-- Question 6 -->
+                <div class="question-card">
+                    <div class="question-number">Question 6</div>
+                    <h3 class="text-lg font-bold text-white mb-3">What is required to enable communication between two VPCs in different regions?</h3>
+                    
+                    <div class="option" onclick="selectOption(this, true, 6)">
+                        <strong>A)</strong> VPC Peering
+                    </div>
+                    <div class="option" onclick="selectOption(this, false, 6)">
+                        <strong>B)</strong> Internet Gateway
+                    </div>
+                    <div class="option" onclick="selectOption(this, false, 6)">
+                        <strong>C)</strong> NAT Gateway
+                    </div>
+                    <div class="option" onclick="selectOption(this, false, 6)">
+                        <strong>D)</strong> VPC Endpoint
+                    </div>
+                    
+                    <div class="explanation" id="explanation-6">
+                        <strong class="text-yellow-400">Correct Answer: A) VPC Peering</strong><br><br>
+                        <strong>Explanation:</strong> VPC Peering allows you to connect VPCs across different regions (inter-region peering) or within the same region. The VPCs must have non-overlapping CIDR blocks, and you need to configure route tables and security groups to allow traffic between the peered VPCs.
+                    </div>
+                </div>
+
+                <!-- Question 7 -->
+                <div class="question-card">
+                    <div class="question-number">Question 7</div>
+                    <h3 class="text-lg font-bold text-white mb-3">Which statement about VPC subnets is correct?</h3>
+                    
+                    <div class="option" onclick="selectOption(this, false, 7)">
+                        <strong>A)</strong> Subnets can span multiple Availability Zones
+                    </div>
+                    <div class="option" onclick="selectOption(this, true, 7)">
+                        <strong>B)</strong> Each subnet must reside entirely within one Availability Zone
+                    </div>
+                    <div class="option" onclick="selectOption(this, false, 7)">
+                        <strong>C)</strong> Subnets can span multiple regions
+                    </div>
+                    <div class="option" onclick="selectOption(this, false, 7)">
+                        <strong>D)</strong> Subnets are automatically replicated across AZs
+                    </div>
+                    
+                    <div class="explanation" id="explanation-7">
+                        <strong class="text-yellow-400">Correct Answer: B) Each subnet must reside entirely within one Availability Zone</strong><br><br>
+                        <strong>Explanation:</strong> Subnets are AZ-specific and cannot span multiple Availability Zones. However, you can create multiple subnets in the same AZ. To achieve high availability, you should create subnets in multiple AZs within the same region.
+                    </div>
+                </div>
+
+                <!-- Question 8 -->
+                <div class="question-card">
+                    <div class="question-number">Question 8</div>
+                    <h3 class="text-lg font-bold text-white mb-3">What makes a subnet "public" in AWS VPC?</h3>
+                    
+                    <div class="option" onclick="selectOption(this, false, 8)">
+                        <strong>A)</strong> It has a public IP address range
+                    </div>
+                    <div class="option" onclick="selectOption(this, true, 8)">
+                        <strong>B)</strong> Its route table has a route to an Internet Gateway
+                    </div>
+                    <div class="option" onclick="selectOption(this, false, 8)">
+                        <strong>C)</strong> It's in a public Availability Zone
+                    </div>
+                    <div class="option" onclick="selectOption(this, false, 8)">
+                        <strong>D)</strong> It has no security groups attached
+                    </div>
+                    
+                    <div class="explanation" id="explanation-8">
+                        <strong class="text-yellow-400">Correct Answer: B) Its route table has a route to an Internet Gateway</strong><br><br>
+                        <strong>Explanation:</strong> A subnet is considered "public" if its associated route table has a route that directs internet-bound traffic (0.0.0.0/0) to an Internet Gateway. The subnet itself uses private IP ranges, but instances can have public IP addresses and internet access through the IGW.
+                    </div>
+                </div>
+
+                <!-- Question 9 -->
+                <div class="question-card">
+                    <div class="question-number">Question 9</div>
+                    <h3 class="text-lg font-bold text-white mb-3">Which AWS service provides a dedicated network connection from on-premises to AWS?</h3>
+                    
+                    <div class="option" onclick="selectOption(this, false, 9)">
+                        <strong>A)</strong> VPN Gateway
+                    </div>
+                    <div class="option" onclick="selectOption(this, true, 9)">
+                        <strong>B)</strong> AWS Direct Connect
+                    </div>
+                    <div class="option" onclick="selectOption(this, false, 9)">
+                        <strong>C)</strong> Internet Gateway
+                    </div>
+                    <div class="option" onclick="selectOption(this, false, 9)">
+                        <strong>D)</strong> NAT Gateway
+                    </div>
+                    
+                    <div class="explanation" id="explanation-9">
+                        <strong class="text-yellow-400">Correct Answer: B) AWS Direct Connect</strong><br><br>
+                        <strong>Explanation:</strong> AWS Direct Connect provides a dedicated, private network connection from your on-premises data center to AWS. It offers more consistent network performance, lower bandwidth costs, and better security compared to internet-based connections. VPN Gateway provides encrypted connections over the internet.
+                    </div>
+                </div>
+
+                <!-- Question 10 -->
+                <div class="question-card">
+                    <div class="question-number">Question 10</div>
+                    <h3 class="text-lg font-bold text-white mb-3">What is the purpose of a VPC Endpoint?</h3>
+                    
+                    <div class="option" onclick="selectOption(this, false, 10)">
+                        <strong>A)</strong> To connect VPCs together
+                    </div>
+                    <div class="option" onclick="selectOption(this, false, 10)">
+                        <strong>B)</strong> To provide internet access
+                    </div>
+                    <div class="option" onclick="selectOption(this, true, 10)">
+                        <strong>C)</strong> To privately connect VPC to AWS services
+                    </div>
+                    <div class="option" onclick="selectOption(this, false, 10)">
+                        <strong>D)</strong> To monitor VPC traffic
+                    </div>
+                    
+                    <div class="explanation" id="explanation-10">
+                        <strong class="text-yellow-400">Correct Answer: C) To privately connect VPC to AWS services</strong><br><br>
+                        <strong>Explanation:</strong> VPC Endpoints allow you to privately connect your VPC to supported AWS services without requiring an Internet Gateway, NAT device, VPN connection, or AWS Direct Connect. Traffic between your VPC and the AWS service does not leave the Amazon network, improving security and reducing data transfer costs.
+                    </div>
+                </div>
+
+                <!-- Question 11 -->
+                <div class="question-card">
+                    <div class="question-number">Question 11</div>
+                    <h3 class="text-lg font-bold text-white mb-3">What is the difference between NAT Gateway and NAT Instance?</h3>
+                    
+                    <div class="option" onclick="selectOption(this, true, 11)">
+                        <strong>A)</strong> NAT Gateway is managed by AWS, NAT Instance is managed by you
+                    </div>
+                    <div class="option" onclick="selectOption(this, false, 11)">
+                        <strong>B)</strong> NAT Gateway is cheaper than NAT Instance
+                    </div>
+                    <div class="option" onclick="selectOption(this, false, 11)">
+                        <strong>C)</strong> NAT Instance has better performance than NAT Gateway
+                    </div>
+                    <div class="option" onclick="selectOption(this, false, 11)">
+                        <strong>D)</strong> There is no difference
+                    </div>
+                    
+                    <div class="explanation" id="explanation-11">
+                        <strong class="text-yellow-400">Correct Answer: A) NAT Gateway is managed by AWS, NAT Instance is managed by you</strong><br><br>
+                        <strong>Explanation:</strong> NAT Gateway is a fully managed AWS service that provides better availability, higher bandwidth, and requires no administration. NAT Instance is an EC2 instance that you manage yourself, giving you more control but requiring more maintenance. NAT Gateway is generally preferred for production workloads.
+                    </div>
+                </div>
+
+                <!-- Question 12 -->
+                <div class="question-card">
+                    <div class="question-number">Question 12</div>
+                    <h3 class="text-lg font-bold text-white mb-3">Which routing table is automatically created when you create a VPC?</h3>
+                    
+                    <div class="option" onclick="selectOption(this, false, 12)">
+                        <strong>A)</strong> Public route table
+                    </div>
+                    <div class="option" onclick="selectOption(this, false, 12)">
+                        <strong>B)</strong> Private route table
+                    </div>
+                    <div class="option" onclick="selectOption(this, true, 12)">
+                        <strong>C)</strong> Main route table
+                    </div>
+                    <div class="option" onclick="selectOption(this, false, 12)">
+                        <strong>D)</strong> Custom route table
+                    </div>
+                    
+                    <div class="explanation" id="explanation-12">
+                        <strong class="text-yellow-400">Correct Answer: C) Main route table</strong><br><br>
+                        <strong>Explanation:</strong> When you create a VPC, AWS automatically creates a main route table. This route table contains a local route for communication within the VPC. Any subnet that doesn't have an explicit route table association uses the main route table by default.
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Score Display -->
+            <div class="text-center mt-8 p-4 bg-gray-800 rounded-lg max-w-md mx-auto">
+                <h3 class="text-lg font-bold text-white mb-2">Your Score</h3>
+                <div id="score" class="text-2xl font-bold text-aws-orange">0/12</div>
+                <button onclick="resetQuiz()" class="mt-3 px-4 py-2 bg-aws-orange text-white rounded hover:bg-yellow-600 transition-colors">
+                    Reset Quiz
+                </button>
+            </div>
+
+            <!-- Page Number -->
+            <div class="text-right mt-4 text-gray-500 text-xs">
+                Page 9
+            </div>
+            
+            <!-- Navigation -->
+            <div class="flex justify-between mt-8 pt-6 border-t border-gray-700">
+                <a href="hybrid-connectivity.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                    <i class="fas fa-arrow-left mr-2"></i> Previous: Hybrid Connectivity
+                </a>
+                <div></div>
+            </div>
+            
+            <!-- Back to Topics -->
+            <div class="text-center mt-6">
+                <a href="index.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors mr-4">
+                    <i class="fas fa-list mr-2"></i> Back to Topics
+                </a>
+                <a href="../index.html" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                    <i class="fas fa-home mr-2"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let score = 0;
+        let answered = new Set();
+
+        function selectOption(element, isCorrect, questionNum) {
+            if (answered.has(questionNum)) return;
+            
+            answered.add(questionNum);
+            
+            // Mark all options in this question
+            const questionCard = element.closest('.question-card');
+            const options = questionCard.querySelectorAll('.option');
+            
+            options.forEach(option => {
+                if (option === element) {
+                    option.classList.add(isCorrect ? 'correct' : 'incorrect');
+                } else if (option.onclick.toString().includes('true')) {
+                    option.classList.add('correct');
+                }
+                option.style.pointerEvents = 'none';
+            });
+            
+            // Show explanation
+            const explanation = document.getElementById(`explanation-${questionNum}`);
+            explanation.classList.add('show');
+            
+            // Update score
+            if (isCorrect) {
+                score++;
+                updateScore();
+            }
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = `${score}/12`;
+        }
+
+        function resetQuiz() {
+            score = 0;
+            answered.clear();
+            updateScore();
+            
+            // Reset all options and explanations
+            document.querySelectorAll('.option').forEach(option => {
+                option.classList.remove('correct', 'incorrect');
+                option.style.pointerEvents = 'auto';
+            });
+            
+            document.querySelectorAll('.explanation').forEach(explanation => {
+                explanation.classList.remove('show');
+            });
+        }
+    </script>
+</body>
+</html>

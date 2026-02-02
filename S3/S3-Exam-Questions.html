@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S3 Exam Questions</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, #232F3E 0%, #1a252f 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .aws-orange { color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+        .question-card {
+            background: rgba(55, 65, 81, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        .option {
+            background: rgba(75, 85, 99, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .option:hover {
+            background: rgba(75, 85, 99, 0.6);
+            border-color: rgba(255, 153, 0, 0.3);
+        }
+        .correct {
+            background: rgba(34, 197, 94, 0.2);
+            border-color: rgba(34, 197, 94, 0.5);
+        }
+        .incorrect {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.5);
+        }
+        .explanation {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid #3B82F6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-8">
+        <!-- Navigation -->
+        <div class="mb-8">
+            <a href="index.html" class="inline-flex items-center text-orange-400 hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Back to S3 Topics
+            </a>
+        </div>
+
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <div class="bg-yellow-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-question-circle text-white text-3xl"></i>
+            </div>
+            <h1 class="text-5xl font-montserrat font-bold mb-4">S3 Exam Questions</h1>
+            <p class="text-xl text-gray-300">Practice questions for SAA-C03 exam preparation</p>
+        </div>
+
+        <!-- Question 1 -->
+        <div class="question-card rounded-xl p-8 mb-8 border border-gray-600">
+            <div class="flex items-center mb-4">
+                <div class="bg-yellow-600 w-8 h-8 rounded-full flex items-center justify-center mr-3">
+                    <span class="text-white font-bold text-sm">1</span>
+                </div>
+                <h3 class="text-xl font-semibold">Storage Classes & Cost Optimization</h3>
+            </div>
+            
+            <p class="text-gray-300 mb-6">A company stores 100TB of data in S3 Standard. The data is accessed frequently for the first 30 days, then rarely accessed but must be available within minutes when needed. After 90 days, the data is archived and accessed only once per year. What is the most cost-effective storage strategy?</p>
+            
+            <div class="space-y-3 mb-6">
+                <div class="option rounded-lg p-4" onclick="selectOption(this, false)">
+                    <span class="font-semibold">A)</span> Keep all data in S3 Standard for immediate access
+                </div>
+                <div class="option rounded-lg p-4" onclick="selectOption(this, true)">
+                    <span class="font-semibold">B)</span> Use S3 Intelligent-Tiering with lifecycle policy: Standard → IA (30 days) → Glacier (90 days)
+                </div>
+                <div class="option rounded-lg p-4" onclick="selectOption(this, false)">
+                    <span class="font-semibold">C)</span> Move all data to S3 Glacier immediately
+                </div>
+                <div class="option rounded-lg p-4" onclick="selectOption(this, false)">
+                    <span class="font-semibold">D)</span> Use S3 One Zone-IA for all data
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <button onclick="showAnswer(this)" class="bg-aws-orange hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                    Show Answer
+                </button>
+            </div>
+            
+            <div class="explanation rounded-lg p-4 hidden">
+                <h4 class="font-semibold mb-2 text-blue-400">Explanation:</h4>
+                <p class="text-gray-300 text-sm"><strong>Correct Answer: B</strong><br>
+S3 Intelligent-Tiering automatically moves data between access tiers based on usage patterns, eliminating the guesswork. The lifecycle policy ensures data transitions to cheaper storage classes: Standard (0-30 days for frequent access) → Standard-IA (30-90 days for infrequent access with minute retrieval) → Glacier (90+ days for archival with hour retrieval). This provides the most cost-effective solution while meeting access requirements.</p>
+            </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="question-card rounded-xl p-8 mb-8 border border-gray-600">
+            <div class="flex items-center mb-4">
+                <div class="bg-yellow-600 w-8 h-8 rounded-full flex items-center justify-center mr-3">
+                    <span class="text-white font-bold text-sm">2</span>
+                </div>
+                <h3 class="text-xl font-semibold">Security & Access Control</h3>
+            </div>
+            
+            <p class="text-gray-300 mb-6">A web application needs to allow users to upload files directly to S3 without exposing AWS credentials. The uploads should be limited to specific file types and sizes. What is the best approach?</p>
+            
+            <div class="space-y-3 mb-6">
+                <div class="option rounded-lg p-4" onclick="selectOption(this, false)">
+                    <span class="font-semibold">A)</span> Create IAM users for each application user
+                </div>
+                <div class="option rounded-lg p-4" onclick="selectOption(this, true)">
+                    <span class="font-semibold">B)</span> Use pre-signed URLs with conditions for file type and size
+                </div>
+                <div class="option rounded-lg p-4" onclick="selectOption(this, false)">
+                    <span class="font-semibold">C)</span> Make the S3 bucket public and use client-side validation
+                </div>
+                <div class="option rounded-lg p-4" onclick="selectOption(this, false)">
+                    <span class="font-semibold">D)</span> Use S3 Transfer Acceleration with API Gateway
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <button onclick="showAnswer(this)" class="bg-aws-orange hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                    Show Answer
+                </button>
+            </div>
+            
+            <div class="explanation rounded-lg p-4 hidden">
+                <h4 class="font-semibold mb-2 text-blue-400">Explanation:</h4>
+                <p class="text-gray-300 text-sm"><strong>Correct Answer: B</strong><br>
+Pre-signed URLs provide temporary, secure access to S3 objects without exposing AWS credentials. You can include conditions in the pre-signed URL policy to restrict file types (content-type), file sizes (content-length-range), and other parameters. This approach is secure, scalable, and doesn't require creating individual IAM users or making buckets public.</p>
+            </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="question-card rounded-xl p-8 mb-8 border border-gray-600">
+            <div class="flex items-center mb-4">
+                <div class="bg-yellow-600 w-8 h-8 rounded-full flex items-center justify-center mr-3">
+                    <span class="text-white font-bold text-sm">3</span>
+                </div>
+                <h3 class="text-xl font-semibold">Performance & Scalability</h3>
+            </div>
+            
+            <p class="text-gray-300 mb-6">A global application experiences slow S3 upload speeds from users in different regions. The application uploads large video files (1-5GB each). What combination of solutions would improve performance?</p>
+            
+            <div class="space-y-3 mb-6">
+                <div class="option rounded-lg p-4" onclick="selectOption(this, false)">
+                    <span class="font-semibold">A)</span> Use S3 Standard-IA storage class
+                </div>
+                <div class="option rounded-lg p-4" onclick="selectOption(this, true)">
+                    <span class="font-semibold">B)</span> Enable S3 Transfer Acceleration and use multipart upload
+                </div>
+                <div class="option rounded-lg p-4" onclick="selectOption(this, false)">
+                    <span class="font-semibold">C)</span> Create multiple S3 buckets in different regions
+                </div>
+                <div class="option rounded-lg p-4" onclick="selectOption(this, false)">
+                    <span class="font-semibold">D)</span> Use CloudFront for uploads
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <button onclick="showAnswer(this)" class="bg-aws-orange hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                    Show Answer
+                </button>
+            </div>
+            
+            <div class="explanation rounded-lg p-4 hidden">
+                <h4 class="font-semibold mb-2 text-blue-400">Explanation:</h4>
+                <p class="text-gray-300 text-sm"><strong>Correct Answer: B</strong><br>
+S3 Transfer Acceleration uses CloudFront edge locations to speed up uploads from global users. Multipart upload is recommended for files larger than 100MB and allows parallel uploads of file parts, significantly improving performance for large files. This combination addresses both the global performance issue and large file upload optimization.</p>
+            </div>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="question-card rounded-xl p-8 mb-8 border border-gray-600">
+            <div class="flex items-center mb-4">
+                <div class="bg-yellow-600 w-8 h-8 rounded-full flex items-center justify-center mr-3">
+                    <span class="text-white font-bold text-sm">4</span>
+                </div>
+                <h3 class="text-xl font-semibold">Data Protection & Versioning</h3>
+            </div>
+            
+            <p class="text-gray-300 mb-6">A company needs to protect critical data in S3 from accidental deletion and ensure compliance with data retention policies. They need to keep data for 7 years but want to optimize costs. What is the best approach?</p>
+            
+            <div class="space-y-3 mb-6">
+                <div class="option rounded-lg p-4" onclick="selectOption(this, false)">
+                    <span class="font-semibold">A)</span> Enable versioning only
+                </div>
+                <div class="option rounded-lg p-4" onclick="selectOption(this, true)">
+                    <span class="font-semibold">B)</span> Enable versioning, MFA Delete, and lifecycle policy with Glacier Deep Archive
+                </div>
+                <div class="option rounded-lg p-4" onclick="selectOption(this, false)">
+                    <span class="font-semibold">C)</span> Use S3 Object Lock only
+                </div>
+                <div class="option rounded-lg p-4" onclick="selectOption(this, false)">
+                    <span class="font-semibold">D)</span> Create daily backups to another S3 bucket
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <button onclick="showAnswer(this)" class="bg-aws-orange hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                    Show Answer
+                </button>
+            </div>
+            
+            <div class="explanation rounded-lg p-4 hidden">
+                <h4 class="font-semibold mb-2 text-blue-400">Explanation:</h4>
+                <p class="text-gray-300 text-sm"><strong>Correct Answer: B</strong><br>
+This comprehensive approach provides: Versioning (protects against accidental overwrites), MFA Delete (prevents unauthorized deletion of versions), and lifecycle policy transitioning to Glacier Deep Archive (lowest cost for long-term retention). This combination ensures data protection, compliance, and cost optimization for the 7-year retention requirement.</p>
+            </div>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="question-card rounded-xl p-8 mb-8 border border-gray-600">
+            <div class="flex items-center mb-4">
+                <div class="bg-yellow-600 w-8 h-8 rounded-full flex items-center justify-center mr-3">
+                    <span class="text-white font-bold text-sm">5</span>
+                </div>
+                <h3 class="text-xl font-semibold">Cross-Region Replication</h3>
+            </div>
+            
+            <p class="text-gray-300 mb-6">A financial services company needs to replicate critical data from their primary S3 bucket in us-east-1 to eu-west-1 for disaster recovery. The data must be encrypted and the replication should be automatic. What configuration is required?</p>
+            
+            <div class="space-y-3 mb-6">
+                <div class="option rounded-lg p-4" onclick="selectOption(this, false)">
+                    <span class="font-semibold">A)</span> Enable Cross-Region Replication only
+                </div>
+                <div class="option rounded-lg p-4" onclick="selectOption(this, true)">
+                    <span class="font-semibold">B)</span> Enable versioning on both buckets, create IAM role, configure CRR with SSE-KMS
+                </div>
+                <div class="option rounded-lg p-4" onclick="selectOption(this, false)">
+                    <span class="font-semibold">C)</span> Use S3 Sync command with encryption
+                </div>
+                <div class="option rounded-lg p-4" onclick="selectOption(this, false)">
+                    <span class="font-semibold">D)</span> Set up Lambda function to copy objects
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <button onclick="showAnswer(this)" class="bg-aws-orange hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                    Show Answer
+                </button>
+            </div>
+            
+            <div class="explanation rounded-lg p-4 hidden">
+                <h4 class="font-semibold mb-2 text-blue-400">Explanation:</h4>
+                <p class="text-gray-300 text-sm"><strong>Correct Answer: B</strong><br>
+Cross-Region Replication (CRR) requires: 1) Versioning enabled on both source and destination buckets, 2) IAM role with permissions to read from source and write to destination, 3) CRR configuration specifying the destination bucket. Adding SSE-KMS ensures encryption in transit and at rest. This provides automatic, secure replication for disaster recovery.</p>
+            </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="bg-gray-800 bg-opacity-50 rounded-xl p-8 border border-gray-600">
+            <h2 class="text-2xl font-montserrat font-bold mb-6 aws-orange">Exam Tips for S3</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-lg font-semibold mb-3 text-blue-400">Key Topics to Master</h3>
+                    <ul class="space-y-2 text-gray-300 text-sm">
+                        <li>• Storage classes and cost optimization</li>
+                        <li>• Security models (IAM, bucket policies, ACLs)</li>
+                        <li>• Encryption options (SSE-S3, SSE-KMS, SSE-C)</li>
+                        <li>• Performance optimization techniques</li>
+                        <li>• Cross-Region Replication setup</li>
+                        <li>• Lifecycle management policies</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-3 text-green-400">Common Exam Scenarios</h3>
+                    <ul class="space-y-2 text-gray-300 text-sm">
+                        <li>• Cost optimization for different access patterns</li>
+                        <li>• Secure file upload mechanisms</li>
+                        <li>• Global performance optimization</li>
+                        <li>• Data protection and compliance</li>
+                        <li>• Disaster recovery strategies</li>
+                        <li>• Integration with other AWS services</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function selectOption(element, isCorrect) {
+            // Remove previous selections
+            const parent = element.parentElement;
+            const options = parent.querySelectorAll('.option');
+            options.forEach(opt => {
+                opt.classList.remove('correct', 'incorrect');
+            });
+            
+            // Mark selected option
+            if (isCorrect) {
+                element.classList.add('correct');
+            } else {
+                element.classList.add('incorrect');
+                // Also highlight the correct answer
+                options.forEach(opt => {
+                    if (opt.onclick.toString().includes('true')) {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+            
+            // Show explanation
+            const explanation = parent.nextElementSibling.nextElementSibling;
+            explanation.classList.remove('hidden');
+        }
+        
+        function showAnswer(button) {
+            // Find the correct option and highlight it
+            const questionCard = button.closest('.question-card');
+            const options = questionCard.querySelectorAll('.option');
+            options.forEach(opt => {
+                if (opt.onclick.toString().includes('true')) {
+                    opt.classList.add('correct');
+                }
+            });
+            
+            // Show explanation
+            const explanation = button.parentElement.nextElementSibling;
+            explanation.classList.remove('hidden');
+            
+            // Hide the button
+            button.style.display = 'none';
+        }
+    </script>
+</body>
+</html>

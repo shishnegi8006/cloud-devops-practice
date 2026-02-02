@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Exam Overview and Domains</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&amp;family=Open+Sans:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            font-family: 'Open Sans', sans-serif;
+            width: 100vw;
+            overflow-x: hidden;
+        }
+        .slide-container {
+            width: 100vw;
+            min-height: 100vh;
+            background-color: #232F3E;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            color: #ffffff;
+        }
+        .aws-orange {
+            color: #FF9900;
+        }
+        .bg-aws-orange {
+            background-color: #FF9900;
+        }
+        .border-aws-orange {
+            border-color: #FF9900;
+        }
+        .font-montserrat {
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        /* Background Grid */
+        .grid-pattern {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            z-index: 0;
+        }
+
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            z-index: 10;
+            min-height: 100vh;
+        }
+        @media (min-width: 640px) {
+            .content-wrapper {
+                padding: 2rem;
+            }
+        }
+        @media (min-width: 1024px) {
+            .content-wrapper {
+                padding: 3rem;
+            }
+        }
+
+        /* Stat Card Styling */
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 3px solid #FF9900;
+            height: 100%;
+        }
+
+        /* Progress Bar Container */
+        .progress-bg {
+            background: rgba(255, 255, 255, 0.1);
+            height: 12px;
+            border-radius: 6px;
+            width: 100%;
+            margin-top: 8px;
+        }
+        .progress-fill {
+            height: 100%;
+            border-radius: 6px;
+            background-color: #FF9900;
+        }
+
+        /* Tip Box */
+        .tip-box {
+            background: rgba(35, 47, 62, 0.8);
+            border: 1px solid #FF9900;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            align-items: flex-start;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Background Elements -->
+<div class="grid-pattern"></div>
+<!-- Header Stripe -->
+<div class="absolute top-0 left-0 w-full h-2 bg-aws-orange z-20"></div>
+<div class="content-wrapper">
+        <!-- Navigation -->
+        <div class="mb-4">
+            <a href="index.html" class="inline-flex items-center text-aws-orange hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Back to Home
+            </a>
+        </div>
+<!-- Header -->
+<div class="flex justify-between items-end mb-8 border-b border-gray-700 pb-4">
+<div>
+<h2 class="text-4xl font-montserrat font-bold text-white mb-2">Exam Overview &amp; Domains</h2>
+<p class="text-gray-400 font-montserrat text-lg">Format, Scoring, and Strategic Focus Areas</p>
+</div>
+<div class="text-right">
+<span class="bg-gray-700 text-white px-3 py-1 rounded text-sm font-bold tracking-wider">SAA-C03</span>
+</div>
+</div>
+<div class="flex gap-4 sm:gap-6 lg:gap-8 h-full flex-col lg:flex-row">
+<!-- Left Column: Key Stats -->
+<div class="w-full lg:w-1/3 flex flex-col gap-4 sm:gap-6">
+<div class="grid grid-cols-2 gap-4 h-64">
+<!-- Questions -->
+<div class="stat-card">
+<i class="fas fa-question-circle aws-orange text-3xl mb-2"></i>
+<p class="text-3xl font-bold">65</p>
+<p class="text-xs text-gray-400 uppercase tracking-wide">Questions</p>
+</div>
+<!-- Time -->
+<div class="stat-card">
+<i class="fas fa-clock aws-orange text-3xl mb-2"></i>
+<p class="text-3xl font-bold">130</p>
+<p class="text-xs text-gray-400 uppercase tracking-wide">Minutes</p>
+</div>
+<!-- Score -->
+<div class="stat-card">
+<i class="fas fa-trophy aws-orange text-3xl mb-2"></i>
+<p class="text-3xl font-bold">720</p>
+<p class="text-xs text-gray-400 uppercase tracking-wide">Passing Score</p>
+</div>
+<!-- Cost -->
+<div class="stat-card">
+<i class="fas fa-tag aws-orange text-3xl mb-2"></i>
+<p class="text-3xl font-bold">$150</p>
+<p class="text-xs text-gray-400 uppercase tracking-wide">USD Cost</p>
+</div>
+</div>
+<!-- Question Focus Box -->
+<div class="bg-gray-800 bg-opacity-50 p-6 rounded-lg border-l-4 border-blue-400 flex-1">
+<h3 class="text-xl font-bold mb-3 text-blue-300 font-montserrat">Question Style</h3>
+<p class="text-sm text-gray-300 mb-2 leading-relaxed">
+                            Questions are highly <strong>scenario-driven</strong>. You aren't just asked definitions; you are asked to choose the <em>best</em> solution based on constraints.
+                        </p>
+<ul class="text-sm text-gray-300 list-disc ml-5 space-y-1">
+<li>Multiple Choice (1 correct)</li>
+<li>Multiple Response (2+ correct)</li>
+<li>No penalty for incorrect answers</li>
+</ul>
+</div>
+</div>
+<!-- Right Column: Domains -->
+<div class="w-full lg:w-2/3 flex flex-col justify-between">
+<div class="bg-gray-800 bg-opacity-40 rounded-lg p-6">
+<h3 class="text-2xl font-montserrat font-bold mb-6 flex items-center">
+<i class="fas fa-chart-pie mr-3 aws-orange"></i> Domain Breakdown
+                        </h3>
+<div class="space-y-6">
+<!-- Domain 1 -->
+<div>
+<div class="flex justify-between mb-1">
+<span class="text-lg font-semibold">1. Design Secure Architectures</span>
+<span class="text-xl font-bold aws-orange">30%</span>
+</div>
+<div class="progress-bg">
+<div class="progress-fill" style="width: 30%"></div>
+</div>
+<p class="text-xs text-gray-400 mt-1">IAM, Encryption, Compliance, Network Security</p>
+</div>
+<!-- Domain 2 -->
+<div>
+<div class="flex justify-between mb-1">
+<span class="text-lg font-semibold">2. Design Resilient Architectures</span>
+<span class="text-xl font-bold aws-orange">26%</span>
+</div>
+<div class="progress-bg">
+<div class="progress-fill" style="width: 26%"></div>
+</div>
+<p class="text-xs text-gray-400 mt-1">Multi-AZ, Auto Scaling, Decoupling, Disaster Recovery</p>
+</div>
+<!-- Domain 3 -->
+<div>
+<div class="flex justify-between mb-1">
+<span class="text-lg font-semibold">3. Design High-Performing Architectures</span>
+<span class="text-xl font-bold aws-orange">24%</span>
+</div>
+<div class="progress-bg">
+<div class="progress-fill" style="width: 24%"></div>
+</div>
+<p class="text-xs text-gray-400 mt-1">Storage performance, Caching, Database selection</p>
+</div>
+<!-- Domain 4 -->
+<div>
+<div class="flex justify-between mb-1">
+<span class="text-lg font-semibold">4. Design Cost-Optimized Architectures</span>
+<span class="text-xl font-bold aws-orange">20%</span>
+</div>
+<div class="progress-bg">
+<div class="progress-fill" style="width: 20%"></div>
+</div>
+<p class="text-xs text-gray-400 mt-1">Pricing models, Right-sizing, Data transfer costs</p>
+</div>
+</div>
+</div>
+<!-- Exam Tip Footer -->
+<div class="tip-box mt-4">
+<div class="mr-4 mt-1">
+<i class="fas fa-lightbulb text-yellow-400 text-2xl"></i>
+</div>
+<div>
+<h4 class="font-bold text-yellow-400 uppercase text-sm mb-1">Exam Strategy Tip</h4>
+<p class="text-sm text-gray-200">
+                                Always identify the <strong>primary requirement</strong> in the question scenario first. Is the customer asking for the <em>cheapest</em> solution, the <em>most secure</em>, or the <em>most available</em>? This keyword often determines the correct answer among technically valid options.
+                            </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Page Number -->
+<div class="text-right mt-4 text-gray-500 text-xs">
+                Page 2
+            </div>
+</div>
+</div>
+</body>
+</html>

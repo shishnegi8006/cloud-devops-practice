@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>S3 Service Limitations</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #232F3E;
+            width: 100vw;
+            overflow-x: hidden;
+        }
+        .slide-container {
+            width: 100vw;
+            min-height: 100vh;
+            background-color: #232F3E;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            color: #ffffff;
+        }
+        .aws-orange { color: #FF9900; }
+        .bg-aws-orange { background-color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+        
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            z-index: 10;
+            min-height: 100vh;
+        }
+        @media (min-width: 640px) {
+            .content-wrapper {
+                padding: 2rem;
+            }
+        }
+        @media (min-width: 1024px) {
+            .content-wrapper {
+                padding: 3rem;
+            }
+        }
+
+        .limitation-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #ef4444;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .limit-item {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #ef4444;
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+        }
+
+        .quota-table {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .quota-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            padding: 0.75rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .quota-row:last-child {
+            border-bottom: none;
+        }
+
+        .quota-header {
+            background: rgba(239, 68, 68, 0.2);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="absolute top-0 left-0 w-full h-2 bg-aws-orange z-20"></div>
+        
+        <div class="content-wrapper">
+            <!-- Navigation -->
+            <div class="mb-3 sm:mb-4">
+                <a href="index.html" class="inline-flex items-center text-aws-orange hover:text-white transition-colors text-sm sm:text-base">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to S3 Topics
+                </a>
+            </div>
+
+            <!-- Header -->
+            <div class="flex flex-col sm:flex-row items-start sm:items-center mb-4 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4">
+                <div class="bg-aws-orange p-2 rounded mr-0 sm:mr-4 mb-3 sm:mb-0">
+                    <i class="fas fa-exclamation-triangle text-white text-lg sm:text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-montserrat font-bold text-white">S3 Service Limitations</h2>
+                    <p class="text-gray-400 font-montserrat text-sm sm:text-base lg:text-lg">Storage Limits, Quotas, and Constraints</p>
+                </div>
+            </div>
+
+            <!-- Service Limits -->
+            <div class="max-w-5xl mx-auto w-full">
+                
+                <!-- Bucket & Object Limits -->
+                <div class="limitation-card">
+                    <h3 class="font-bold text-xl mb-4 text-red-400 flex items-center">
+                        <i class="fas fa-bucket mr-3"></i>Bucket & Object Limitations
+                    </h3>
+                    
+                    <div class="quota-table">
+                        <div class="quota-row quota-header">
+                            <div>Resource</div>
+                            <div>Limit</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">Buckets per AWS account</div>
+                            <div class="text-sm font-bold text-red-300">1,000</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">Objects per bucket</div>
+                            <div class="text-sm font-bold text-red-300">Unlimited</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">Object size (single PUT)</div>
+                            <div class="text-sm font-bold text-red-300">5 TB</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">Object size (multipart upload)</div>
+                            <div class="text-sm font-bold text-red-300">5 TB</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">Part size (multipart upload)</div>
+                            <div class="text-sm font-bold text-red-300">5 MB - 5 GB</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bucket Naming Constraints -->
+                <div class="limitation-card">
+                    <h3 class="font-bold text-xl mb-4 text-red-400 flex items-center">
+                        <i class="fas fa-tag mr-3"></i>Bucket Naming Constraints
+                    </h3>
+                    
+                    <div class="limit-item">
+                        <h4 class="font-bold text-sm mb-2 text-red-300">Bucket Name Requirements</h4>
+                        <ul class="text-sm text-gray-300 space-y-1 ml-4">
+                            <li>• Must be <strong>3-63 characters</strong> long</li>
+                            <li>• Must be <strong>globally unique</strong> across all AWS accounts</li>
+                            <li>• Must start and end with lowercase letter or number</li>
+                            <li>• Cannot contain uppercase letters or underscores</li>
+                            <li>• Cannot be formatted as IP address (e.g., 192.168.1.1)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="limit-item">
+                        <h4 class="font-bold text-sm mb-2 text-red-300">Object Key Constraints</h4>
+                        <p class="text-sm text-gray-300">Object keys can be up to <strong>1,024 characters</strong> long. Safe characters include letters, numbers, and special characters like !, -, _, ., *, ', (, and ).</p>
+                    </div>
+                </div>
+
+                <!-- Performance Limits -->
+                <div class="limitation-card">
+                    <h3 class="font-bold text-xl mb-4 text-red-400 flex items-center">
+                        <i class="fas fa-tachometer-alt mr-3"></i>Performance Limitations
+                    </h3>
+                    
+                    <div class="quota-table">
+                        <div class="quota-row quota-header">
+                            <div>Operation Type</div>
+                            <div>Request Rate</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">PUT/COPY/POST/DELETE requests</div>
+                            <div class="text-sm font-bold text-red-300">3,500/sec per prefix</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">GET/HEAD requests</div>
+                            <div class="text-sm font-bold text-red-300">5,500/sec per prefix</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">LIST requests</div>
+                            <div class="text-sm font-bold text-red-300">No specific limit</div>
+                        </div>
+                    </div>
+                    
+                    <div class="limit-item">
+                        <h4 class="font-bold text-sm mb-2 text-red-300">Multipart Upload Constraints</h4>
+                        <ul class="text-sm text-gray-300 space-y-1 ml-4">
+                            <li>• Maximum <strong>10,000 parts</strong> per multipart upload</li>
+                            <li>• Part numbers: <strong>1 to 10,000</strong></li>
+                            <li>• Mandatory for objects larger than <strong>5 GB</strong></li>
+                            <li>• Recommended for objects larger than <strong>100 MB</strong></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Access Control Limits -->
+                <div class="limitation-card">
+                    <h3 class="font-bold text-xl mb-4 text-red-400 flex items-center">
+                        <i class="fas fa-shield-alt mr-3"></i>Access Control Limitations
+                    </h3>
+                    
+                    <div class="quota-table">
+                        <div class="quota-row quota-header">
+                            <div>Access Control Feature</div>
+                            <div>Limit</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">Bucket policy size</div>
+                            <div class="text-sm font-bold text-red-300">20 KB</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">Access points per bucket</div>
+                            <div class="text-sm font-bold text-red-300">10,000</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">Access points per account per region</div>
+                            <div class="text-sm font-bold text-red-300">10,000</div>
+                        </div>
+                    </div>
+                    
+                    <div class="limit-item">
+                        <h4 class="font-bold text-sm mb-2 text-red-300">ACL Limitations</h4>
+                        <p class="text-sm text-gray-300">Maximum of <strong>100 grants</strong> per ACL. AWS recommends using bucket policies instead of ACLs for access control.</p>
+                    </div>
+                </div>
+
+                <!-- Lifecycle & Versioning Limits -->
+                <div class="limitation-card">
+                    <h3 class="font-bold text-xl mb-4 text-red-400 flex items-center">
+                        <i class="fas fa-recycle mr-3"></i>Lifecycle & Versioning Constraints
+                    </h3>
+                    
+                    <div class="quota-table">
+                        <div class="quota-row quota-header">
+                            <div>Feature</div>
+                            <div>Limitation</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">Lifecycle rules per bucket</div>
+                            <div class="text-sm font-bold text-red-300">1,000</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">Object versions per object</div>
+                            <div class="text-sm font-bold text-red-300">Unlimited</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">MFA Delete</div>
+                            <div class="text-sm font-bold text-red-300">Root user only</div>
+                        </div>
+                    </div>
+                    
+                    <div class="limit-item">
+                        <h4 class="font-bold text-sm mb-2 text-red-300">Cross-Region Replication</h4>
+                        <p class="text-sm text-gray-300">Requires <strong>versioning enabled</strong> on both source and destination buckets. Cannot replicate to the same region.</p>
+                    </div>
+                </div>
+
+                <!-- Event Notification Limits -->
+                <div class="limitation-card">
+                    <h3 class="font-bold text-xl mb-4 text-red-400 flex items-center">
+                        <i class="fas fa-bell mr-3"></i>Event Notification Limitations
+                    </h3>
+                    
+                    <div class="quota-table">
+                        <div class="quota-row quota-header">
+                            <div>Notification Type</div>
+                            <div>Limit</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">SNS topics per bucket</div>
+                            <div class="text-sm font-bold text-red-300">100</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">SQS queues per bucket</div>
+                            <div class="text-sm font-bold text-red-300">100</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">Lambda functions per bucket</div>
+                            <div class="text-sm font-bold text-red-300">100</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Regional Constraints -->
+                <div class="limitation-card">
+                    <h3 class="font-bold text-xl mb-4 text-red-400 flex items-center">
+                        <i class="fas fa-globe mr-3"></i>Regional & Transfer Constraints
+                    </h3>
+                    
+                    <div class="limit-item">
+                        <h4 class="font-bold text-sm mb-2 text-red-300">Bucket Region Binding</h4>
+                        <p class="text-sm text-gray-300">Buckets are created in a specific region and <strong>cannot be moved</strong> to another region. Objects must be copied to change regions.</p>
+                    </div>
+                    
+                    <div class="limit-item">
+                        <h4 class="font-bold text-sm mb-2 text-red-300">Transfer Acceleration</h4>
+                        <p class="text-sm text-gray-300">Not available in all regions. Cannot be used with buckets that have <strong>periods (.) in the name</strong>.</p>
+                    </div>
+                    
+                    <div class="limit-item">
+                        <h4 class="font-bold text-sm mb-2 text-red-300">VPC Endpoint Limitations</h4>
+                        <p class="text-sm text-gray-300">Gateway VPC endpoints for S3 are <strong>region-specific</strong> and only work within the same region as the bucket.</p>
+                    </div>
+                </div>
+
+                <!-- Important Notes -->
+                <div class="limitation-card">
+                    <h3 class="font-bold text-xl mb-4 text-yellow-400 flex items-center">
+                        <i class="fas fa-lightbulb mr-3"></i>Important Considerations
+                    </h3>
+                    
+                    <div class="space-y-3">
+                        <div class="bg-yellow-900 bg-opacity-20 border border-yellow-600 rounded p-3">
+                            <p class="text-sm text-gray-300"><strong class="text-yellow-300">Eventually Consistent:</strong> S3 provides strong read-after-write consistency for all operations as of December 2020.</p>
+                        </div>
+                        <div class="bg-yellow-900 bg-opacity-20 border border-yellow-600 rounded p-3">
+                            <p class="text-sm text-gray-300"><strong class="text-yellow-300">Soft Limits:</strong> Many S3 limits can be increased by contacting AWS Support, but some are architectural constraints.</p>
+                        </div>
+                        <div class="bg-yellow-900 bg-opacity-20 border border-yellow-600 rounded p-3">
+                            <p class="text-sm text-gray-300"><strong class="text-yellow-300">Storage Classes:</strong> Not all storage classes support all features. Check compatibility before implementation.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Page Number -->
+            <div class="text-right mt-4 text-gray-500 text-xs">
+                S3 Service Limitations
+            </div>
+        </div>
+    </div>
+</body>
+</html>

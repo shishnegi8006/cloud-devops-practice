@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Hosted Zones - Route 53</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f0f0f0;
+            width: 100vw;
+            overflow-x: hidden;
+        }
+        .slide-container {
+            width: 100vw;
+            min-height: 100vh;
+            background-color: #232F3E;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            color: #ffffff;
+        }
+        .aws-orange { color: #FF9900; }
+        .bg-aws-orange { background-color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+        
+        .grid-pattern {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            z-index: 0;
+        }
+
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            z-index: 10;
+            min-height: 100vh;
+        }
+        @media (min-width: 640px) {
+            .content-wrapper {
+                padding: 2rem;
+            }
+        }
+        @media (min-width: 1024px) {
+            .content-wrapper {
+                padding: 3rem;
+            }
+        }
+
+        .content-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #FF9900;
+            min-height: fit-content;
+        }
+        @media (min-width: 640px) {
+            .content-card {
+                padding: 1.5rem;
+                margin-bottom: 2rem;
+            }
+        }
+
+        .header-stripe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background-color: #FF9900;
+            z-index: 20;
+        }
+
+        .feature-list li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 8px;
+            font-size: 0.8rem;
+            color: #e5e7eb;
+        }
+        @media (min-width: 640px) {
+            .feature-list li {
+                font-size: 0.9rem;
+            }
+        }
+        .feature-list li::before {
+            content: "▹";
+            color: #FF9900;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .exam-tip {
+            background-color: #2D3748;
+            border: 2px solid #FF9900;
+            border-radius: 8px;
+            padding: 1rem;
+            display: flex;
+            align-items: flex-start;
+            margin-top: auto;
+        }
+        @media (min-width: 640px) {
+            .exam-tip {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="grid-pattern"></div>
+        <div class="header-stripe"></div>
+        
+        <div class="content-wrapper">
+            <!-- Navigation -->
+            <div class="mb-3 sm:mb-4">
+                <a href="index.html" class="inline-flex items-center text-aws-orange hover:text-white transition-colors text-sm sm:text-base">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to Route 53 Topics
+                </a>
+            </div>
+
+            <!-- Header -->
+            <div class="flex flex-col sm:flex-row items-start sm:items-center mb-4 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4">
+                <div class="bg-aws-orange p-2 rounded mr-0 sm:mr-4 mb-3 sm:mb-0">
+                    <i class="fas fa-layer-group text-white text-lg sm:text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-montserrat font-bold text-white">Hosted Zones</h2>
+                    <p class="text-gray-400 font-montserrat text-sm sm:text-base lg:text-lg">Public & Private DNS Management</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 flex-1">
+                <!-- Left Column -->
+                <div class="flex flex-col">
+                    <div class="content-card">
+                        <h3 class="text-lg sm:text-xl font-bold font-montserrat mb-2 sm:mb-3 flex items-center">
+                            <i class="fas fa-info-circle aws-orange mr-2 sm:mr-3"></i> What are Hosted Zones?
+                        </h3>
+                        <p class="text-gray-300 text-sm mb-3">A hosted zone is a container for DNS records for a particular domain. Route 53 automatically creates NS and SOA records.</p>
+                        <div class="bg-gray-800 rounded p-3 text-xs">
+                            <div class="text-gray-400 mb-2">Key Components:</div>
+                            <ul class="feature-list">
+                                <li><strong class="text-white">NS Records:</strong> Name servers that respond to DNS queries</li>
+                                <li><strong class="text-white">SOA Record:</strong> Start of Authority with zone information</li>
+                                <li><strong class="text-white">DNS Records:</strong> A, AAAA, CNAME, MX, TXT, etc.</li>
+                                <li><strong class="text-white">Hosted Zone ID:</strong> Unique identifier for the zone</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="content-card">
+                        <h3 class="text-lg sm:text-xl font-bold font-montserrat mb-3 sm:mb-4 flex items-center">
+                            <i class="fas fa-globe aws-orange mr-2 sm:mr-3"></i> Public Hosted Zones
+                        </h3>
+                        <p class="text-gray-300 text-sm mb-3">Public hosted zones respond to DNS queries from the internet for public domains.</p>
+                        <div class="space-y-2">
+                            <div class="bg-gray-800 rounded p-2">
+                                <h4 class="text-white font-bold text-xs mb-1">Use Cases</h4>
+                                <ul class="feature-list text-xs">
+                                    <li>Public websites</li>
+                                    <li>Email servers</li>
+                                    <li>API endpoints</li>
+                                    <li>CDN distributions</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-800 rounded p-2">
+                                <h4 class="text-white font-bold text-xs mb-1">Features</h4>
+                                <ul class="feature-list text-xs">
+                                    <li>Internet-accessible</li>
+                                    <li>Global DNS resolution</li>
+                                    <li>Health checks</li>
+                                    <li>DNSSEC support</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="flex flex-col">
+                    <div class="content-card">
+                        <h3 class="text-lg sm:text-xl font-bold font-montserrat mb-3 sm:mb-4 flex items-center">
+                            <i class="fas fa-lock aws-orange mr-2 sm:mr-3"></i> Private Hosted Zones
+                        </h3>
+                        <p class="text-gray-300 text-sm mb-3">Private hosted zones respond to DNS queries from within specified VPCs for internal domains.</p>
+                        <div class="space-y-2">
+                            <div class="bg-gray-800 rounded p-2">
+                                <h4 class="text-white font-bold text-xs mb-1">Use Cases</h4>
+                                <ul class="feature-list text-xs">
+                                    <li>Internal applications</li>
+                                    <li>Database endpoints</li>
+                                    <li>Microservices</li>
+                                    <li>Development environments</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-800 rounded p-2">
+                                <h4 class="text-white font-bold text-xs mb-1">Requirements</h4>
+                                <ul class="feature-list text-xs">
+                                    <li>Associated with VPC(s)</li>
+                                    <li>DNS resolution enabled</li>
+                                    <li>DNS hostnames enabled</li>
+                                    <li>Cross-account sharing possible</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-card flex-1">
+                        <h3 class="text-lg sm:text-xl font-bold font-montserrat mb-3 sm:mb-4 flex items-center">
+                            <i class="fas fa-code-branch aws-orange mr-2 sm:mr-3"></i> Split-View DNS
+                        </h3>
+                        <p class="text-gray-300 text-sm mb-3">Use the same domain name for both public and private hosted zones with different records.</p>
+                        <div class="bg-gray-800 rounded p-3 text-xs">
+                            <div class="text-gray-400 mb-2">Example Scenario:</div>
+                            <div class="grid grid-cols-1 gap-2">
+                                <div class="bg-gray-900 rounded p-2">
+                                    <div class="text-blue-400 font-semibold mb-1">Public Zone</div>
+                                    <code class="text-gray-300">api.company.com → 203.0.113.10<br/>(External load balancer)</code>
+                                </div>
+                                <div class="bg-gray-900 rounded p-2">
+                                    <div class="text-green-400 font-semibold mb-1">Private Zone</div>
+                                    <code class="text-gray-300">api.company.com → 10.0.1.100<br/>(Internal server)</code>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exam Tip Footer -->
+            <div class="exam-tip">
+                <i class="fas fa-lightbulb text-yellow-400 text-xl sm:text-2xl mr-3 sm:mr-4 mt-1"></i>
+                <div>
+                    <h4 class="font-bold text-yellow-400 uppercase text-xs sm:text-sm mb-1">Exam Strategy Tip</h4>
+                    <p class="text-xs sm:text-sm text-gray-200">
+                        Remember: <strong>Public zones</strong> are for internet-facing domains, <strong>Private zones</strong> require VPC association. <strong>Split-view DNS</strong> allows same domain for public/private. Each hosted zone has unique <strong>NS records</strong>.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Page Number -->
+            <div class="text-right mt-4 text-gray-500 text-xs">
+                Page 2
+            </div>
+            
+            <!-- Navigation -->
+            <div class="flex justify-between mt-8 pt-6 border-t border-gray-700">
+                <a href="dns-fundamentals.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                    <i class="fas fa-arrow-left mr-2"></i> Previous: DNS Fundamentals
+                </a>
+                <a href="routing-policies.html" class="inline-flex items-center bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                    Next: Routing Policies <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+            
+            <!-- Back to Topics -->
+            <div class="text-center mt-6">
+                <a href="index.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors mr-4">
+                    <i class="fas fa-list mr-2"></i> Back to Topics
+                </a>
+                <a href="../index.html" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                    <i class="fas fa-home mr-2"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

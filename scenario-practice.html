@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Architecture Diagram - Enterprise Grade</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1d3a 50%, #0a0e27 100%);
+            padding: 2px;
+            overflow: hidden;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border-radius: 12px;
+            padding: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7), 
+                        0 0 30px rgba(255, 153, 0, 0.1);
+            border: 1px solid rgba(255, 153, 0, 0.2);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        h1 {
+            color: #ff9900;
+            font-size: 1.5em;
+            font-weight: 800;
+            margin-bottom: 3px;
+            text-shadow: 0 0 10px rgba(255, 153, 0, 0.5);
+            background: linear-gradient(135deg, #ff9900, #ffb84d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            color: #94a3b8;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+        
+        .diagram-wrapper {
+            position: relative;
+            background: #1e293b;
+            border-radius: 10px;
+            padding: 10px;
+            border: 2px solid #334155;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.3);
+        }
+        
+        .diagram {
+            position: relative;
+            width: 100%;
+            min-height: 550px;
+        }
+        
+        /* Service Cards */
+        .service-card {
+            position: absolute;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            border-radius: 8px;
+            padding: 8px;
+            border: 2px solid;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            min-width: 90px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+            z-index: 1000 !important;
+        }
+        
+        .service-icon {
+            width: 24px;
+            height: 24px;
+            margin: 0 auto 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .service-name {
+            font-size: 10px;
+            font-weight: 700;
+            margin-bottom: 3px;
+            text-align: center;
+        }
+        
+        .service-desc {
+            font-size: 7px;
+            opacity: 0.8;
+            text-align: center;
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+        
+        .service-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+        }
+        
+        .tag {
+            font-size: 6px;
+            padding: 1px 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Color Themes for Services */
+        .route53-card {
+            border-color: #8b5cf6;
+            color: #c4b5fd;
+        }
+        .route53-card .service-icon { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+        
+        .cloudfront-card {
+            border-color: #ec4899;
+            color: #fbcfe8;
+        }
+        .cloudfront-card .service-icon { background: linear-gradient(135deg, #ec4899, #db2777); }
+        
+        .iam-card {
+            border-color: #f59e0b;
+            color: #fde68a;
+        }
+        .iam-card .service-icon { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        
+        .alb-card {
+            border-color: #10b981;
+            color: #a7f3d0;
+        }
+        .alb-card .service-icon { background: linear-gradient(135deg, #10b981, #059669); }
+        
+        .ec2-card {
+            border-color: #f97316;
+            color: #fed7aa;
+        }
+        .ec2-card .service-icon { background: linear-gradient(135deg, #f97316, #ea580c); }
+        
+        .elasticache-card {
+            border-color: #ef4444;
+            color: #fecaca;
+        }
+        .elasticache-card .service-icon { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        
+        .aurora-card {
+            border-color: #3b82f6;
+            color: #bfdbfe;
+        }
+        .aurora-card .service-icon { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+        
+        .s3-card {
+            border-color: #22c55e;
+            color: #bbf7d0;
+        }
+        .s3-card .service-icon { background: linear-gradient(135deg, #22c55e, #16a34a); }
+        
+        .secrets-card {
+            border-color: #a855f7;
+            color: #e9d5ff;
+        }
+        .secrets-card .service-icon { background: linear-gradient(135deg, #a855f7, #9333ea); }
+        
+        .systems-card {
+            border-color: #06b6d4;
+            color: #a5f3fc;
+        }
+        .systems-card .service-icon { background: linear-gradient(135deg, #06b6d4, #0e7490); }
+        
+        .cloudwatch-card {
+            border-color: #f43f5e;
+            color: #fecdd3;
+        }
+        .cloudwatch-card .service-icon { background: linear-gradient(135deg, #f43f5e, #e11d48); }
+        
+        /* VPC Container */
+        .vpc-container {
+            position: absolute;
+            top: 85px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 94%;
+            height: 400px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(37, 99, 235, 0.05) 100%);
+            border: 2px dashed #3b82f6;
+            border-radius: 10px;
+            padding: 25px 15px 15px 15px;
+            box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.1);
+        }
+        
+        .vpc-label {
+            position: absolute;
+            top: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 9px;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+        }
+        
+        /* ASG Container */
+        .asg-container {
+            position: absolute;
+            top: 110px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 84%;
+            height: 120px;
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.08) 0%, rgba(14, 116, 144, 0.08) 100%);
+            border: 2px dashed #06b6d4;
+            border-radius: 10px;
+            padding: 20px 12px 12px 12px;
+        }
+        
+        .asg-label {
+            position: absolute;
+            top: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 8px;
+            box-shadow: 0 2px 6px rgba(6, 182, 212, 0.4);
+        }
+        
+        /* Availability Zones */
+        .az-zone {
+            position: absolute;
+            padding: 4px 8px;
+            background: rgba(59, 130, 246, 0.15);
+            border: 2px solid #3b82f6;
+            border-radius: 6px;
+            color: #60a5fa;
+            font-weight: 700;
+            font-size: 7px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .az-1 { top: 95px; left: 15px; }
+        .az-2 { top: 95px; right: 15px; }
+        
+        /* AZ Containers */
+        .az-container-1 {
+            position: absolute;
+            top: 120px;
+            left: 5%;
+            width: 40%;
+            height: 200px;
+            background: rgba(59, 130, 246, 0.03);
+            border: 1px dashed rgba(59, 130, 246, 0.3);
+            border-radius: 8px;
+            z-index: 1;
+        }
+        
+        .az-container-2 {
+            position: absolute;
+            top: 120px;
+            right: 5%;
+            width: 40%;
+            height: 200px;
+            background: rgba(59, 130, 246, 0.03);
+            border: 1px dashed rgba(59, 130, 246, 0.3);
+            border-radius: 8px;
+            z-index: 1;
+        }
+        
+        /* Positioning */
+        .pos-route53 { top: 8px; left: 50%; transform: translateX(-50%); z-index: 100; }
+        .pos-cloudfront { top: 8px; right: 30px; z-index: 100; }
+        .pos-iam { top: 8px; left: 30px; z-index: 100; }
+        .pos-alb { top: 55px; left: 50%; transform: translateX(-50%); z-index: 90; }
+        .pos-ec2-1 { top: 40px; left: 15%; z-index: 80; }
+        .pos-ec2-2 { top: 40px; left: 25%; z-index: 80; }
+        .pos-ec2-3 { top: 40px; right: 15%; z-index: 80; }
+        .pos-elasticache { top: 260px; left: 15%; z-index: 80; }
+        .pos-aurora { top: 260px; right: 15%; z-index: 80; }
+        .pos-s3 { top: 350px; left: 50%; transform: translateX(-50%); z-index: 80; }
+        .pos-secrets { top: 140px; right: -110px; z-index: 90; }
+        .pos-systems { top: 220px; right: -110px; z-index: 90; }
+        .pos-cloudwatch { top: 300px; right: -110px; z-index: 90; }
+        
+        /* SVG Flows */
+        svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .flow-line {
+            fill: none;
+            stroke-width: 3;
+            stroke-linecap: round;
+            opacity: 0.7;
+        }
+        
+        .flow-animated {
+            stroke-dasharray: 15, 10;
+            animation: flowMove 3s linear infinite;
+        }
+        
+        @keyframes flowMove {
+            to { stroke-dashoffset: -100; }
+        }
+        
+        .flow-glow {
+            filter: drop-shadow(0 0 8px currentColor);
+        }
+        
+        /* Particles */
+        .particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 5;
+        }
+        
+        .particle-1 {
+            background: #ff9900;
+            box-shadow: 0 0 15px #ff9900;
+            animation: particle1 5s ease-in-out infinite;
+        }
+        
+        .particle-2 {
+            background: #10b981;
+            box-shadow: 0 0 15px #10b981;
+            animation: particle2 4s ease-in-out infinite;
+        }
+        
+        .particle-3 {
+            background: #3b82f6;
+            box-shadow: 0 0 15px #3b82f6;
+            animation: particle3 6s ease-in-out infinite;
+        }
+        
+        @keyframes particle1 {
+            0%, 100% { top: 100px; left: 50%; opacity: 0; }
+            10% { opacity: 1; }
+            50% { top: 450px; left: 25%; }
+            90% { opacity: 1; }
+            100% { top: 950px; left: 50%; opacity: 0; }
+        }
+        
+        @keyframes particle2 {
+            0%, 100% { top: 100px; left: 50%; opacity: 0; }
+            10% { opacity: 1; }
+            50% { top: 450px; left: 50%; }
+            90% { opacity: 1; }
+            100% { top: 750px; right: 20%; opacity: 0; }
+        }
+        
+        @keyframes particle3 {
+            0%, 100% { top: 100px; left: 50%; opacity: 0; }
+            10% { opacity: 1; }
+            50% { top: 450px; left: 75%; }
+            90% { opacity: 1; }
+            100% { top: 950px; left: 50%; opacity: 0; }
+        }
+        
+        /* Info Panel */
+        .info-panel {
+            position: fixed;
+            right: -450px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 420px;
+            max-height: 80vh;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-radius: 25px 0 0 25px;
+            padding: 35px;
+            box-shadow: -10px 0 50px rgba(0,0,0,0.5);
+            border: 2px solid #334155;
+            border-right: none;
+            transition: right 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+        
+        .info-panel.active {
+            right: 0;
+        }
+        
+        .info-toggle {
+            position: absolute;
+            left: -50px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 120px;
+            background: linear-gradient(135deg, #ff9900, #ffb84d);
+            border-radius: 15px 0 0 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 24px;
+            color: white;
+            box-shadow: -5px 0 20px rgba(255, 153, 0, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .info-toggle:hover {
+            background: linear-gradient(135deg, #ffb84d, #ff9900);
+            box-shadow: -8px 0 30px rgba(255, 153, 0, 0.6);
+        }
+        
+        .info-content h3 {
+            color: #ff9900;
+            margin-bottom: 20px;
+            font-size: 22px;
+            font-weight: 700;
+        }
+        
+        .info-section {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .info-section h4 {
+            color: #10b981;
+            margin-bottom: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .info-section p, .info-section ul {
+            color: #cbd5e1;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+        
+        .info-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .info-section li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .info-section li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+        
+        /* Info Button */
+        .info-button {
+            position: fixed;
+            right: 10px;
+            top: 20px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            color: white;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+            transition: all 0.3s ease;
+            z-index: 200;
+        }
+        
+        .info-button:hover {
+            background: linear-gradient(135deg, #059669, #10b981);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.6);
+            transform: scale(1.1);
+        }
+        .stats-panel {
+            position: fixed;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            width: 80px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            z-index: 150;
+        }
+        
+        .stats-panel h4 {
+            color: #ff9900;
+            margin-bottom: 8px;
+            font-size: 8px;
+            font-weight: 700;
+            text-align: center;
+        }
+        
+        .stat-mini {
+            text-align: center;
+            margin-bottom: 6px;
+        }
+        
+        .stat-mini-value {
+            font-size: 12px;
+            font-weight: 800;
+            color: #ff9900;
+            margin-bottom: 1px;
+        }
+        
+        .stat-mini-label {
+            font-size: 6px;
+            color: #94a3b8;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+        .legend {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            min-width: 120px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            z-index: 100;
+        }
+        
+        .legend h4 {
+            color: #ff9900;
+            margin-bottom: 8px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 6px;
+            color: #cbd5e1;
+            font-size: 8px;
+        }
+        
+        .legend-line {
+            width: 25px;
+            height: 2px;
+            margin-right: 8px;
+            border-radius: 2px;
+            position: relative;
+        }
+        
+        .legend-line.animated {
+            background: linear-gradient(90deg, transparent, currentColor, transparent);
+            background-size: 200% 100%;
+            animation: legendFlow 2s linear infinite;
+        }
+        
+        @keyframes legendFlow {
+            0% { background-position: -100% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: fixed;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            font-size: 13px;
+            pointer-events: none;
+            z-index: 3000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border: 2px solid #334155;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            max-width: 300px;
+        }
+        
+        .tooltip.show {
+            opacity: 1;
+        }
+        
+
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #ff9900;
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ffb84d;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 1600px) {
+            .pos-secrets, .pos-systems, .pos-cloudwatch {
+                right: -95px;
+            }
+        }
+        
+        @media (max-width: 1400px) {
+            .pos-secrets, .pos-systems, .pos-cloudwatch {
+                right: -85px;
+            }
+        }
+        
+        @media (max-width: 1200px) {
+            .pos-secrets, .pos-systems, .pos-cloudwatch {
+                right: -75px;
+            }
+        }
+        
+        @media (max-width: 1000px) {
+            .pos-secrets, .pos-systems, .pos-cloudwatch {
+                right: -65px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>☁️ AWS Cloud Architecture</h1>
+            <p class="subtitle">Enterprise-Grade High Availability Infrastructure</p>
+        </div>
+        
+        <div class="diagram-wrapper">
+            <div class="diagram">
+                <!-- SVG for Connection Lines -->
+                <svg>
+                    <!-- User to Route53 -->
+                    <path d="M 500 30 L 500 55" class="flow-line flow-animated flow-glow" stroke="#8b5cf6" />
+                    
+                    <!-- Route53 to CloudFront -->
+                    <path d="M 520 40 Q 650 35 750 40" class="flow-line flow-animated flow-glow" stroke="#ec4899" />
+                    
+                    <!-- Route53 to ALB -->
+                    <path d="M 500 55 L 500 85" class="flow-line flow-animated flow-glow" stroke="#ff9900" />
+                    
+                    <!-- CloudFront to ALB -->
+                    <path d="M 750 55 Q 625 70 520 85" class="flow-line flow-animated flow-glow" stroke="#ec4899" />
+                    
+                    <!-- ALB to EC2 instances (AZ separation) -->
+                    <path d="M 480 100 Q 350 140 250 170" class="flow-line flow-animated flow-glow" stroke="#10b981" />
+                    <path d="M 490 100 Q 350 140 300 170" class="flow-line flow-animated flow-glow" stroke="#10b981" />
+                    <path d="M 520 100 Q 650 140 750 170" class="flow-line flow-animated flow-glow" stroke="#10b981" />
+                    
+                    <!-- AZ-1 flows (left side) -->
+                    <path d="M 250 200 L 220 290" class="flow-line flow-animated flow-glow" stroke="#ef4444" />
+                    <path d="M 300 200 L 250 290" class="flow-line flow-animated flow-glow" stroke="#ef4444" />
+                    <path d="M 250 200 Q 375 320 480 380" class="flow-line flow-animated flow-glow" stroke="#22c55e" />
+                    <path d="M 300 200 Q 400 320 490 380" class="flow-line flow-animated flow-glow" stroke="#22c55e" />
+                    
+                    <!-- AZ-2 flows (right side) -->
+                    <path d="M 750 200 L 780 290" class="flow-line flow-animated flow-glow" stroke="#3b82f6" />
+                    <path d="M 750 200 Q 625 320 520 380" class="flow-line flow-animated flow-glow" stroke="#22c55e" />
+                    
+                    <!-- Management connections -->
+                    <path d="M 890 170 Q 750 160 550 170" class="flow-line flow-glow" stroke="#a855f7" stroke-dasharray="3,3" opacity="0.6" />
+                    <path d="M 890 250 Q 750 220 550 200" class="flow-line flow-glow" stroke="#06b6d4" stroke-dasharray="3,3" opacity="0.6" />
+                    <path d="M 890 330 Q 700 300 550 220" class="flow-line flow-glow" stroke="#f43f5e" stroke-dasharray="3,3" opacity="0.6" />
+                </svg>
+                
+                <!-- Animated Particles -->
+                <div class="particle particle-1"></div>
+                <div class="particle particle-2"></div>
+                <div class="particle particle-3"></div>
+                
+                <!-- VPC Container -->
+                <div class="vpc-container">
+                    <div class="vpc-label">🔒 VPC - Virtual Private Cloud (10.0.0.0/16)</div>
+                    
+                    <!-- AZ Containers -->
+                    <div class="az-container-1"></div>
+                    <div class="az-container-2"></div>
+                    
+                    <!-- Availability Zones -->
+                    <div class="az-zone az-1">📍 AZ-1: us-east-1a</div>
+                    <div class="az-zone az-2">📍 AZ-2: us-east-1b</div>
+                    
+                    <!-- ALB -->
+                    <div class="service-card alb-card pos-alb">
+                        <div class="service-icon">⚖️</div>
+                        <div class="service-name">Application Load Balancer</div>
+                        <div class="service-desc">Distributes incoming traffic across multiple targets in multiple AZs</div>
+                        <div class="service-tags">
+                            <span class="tag">Layer 7</span>
+                            <span class="tag">HTTP/HTTPS</span>
+                            <span class="tag">SSL/TLS</span>
+                        </div>
+                    </div>
+                    
+                    <!-- ASG Container -->
+                    <div class="asg-container">
+                        <div class="asg-label">🔄 Auto Scaling Group (Min: 2, Max: 10, Desired: 3)</div>
+                        
+                        <!-- EC2 Instances -->
+                        <div class="service-card ec2-card pos-ec2-1">
+                            <div class="service-icon">🖥️</div>
+                            <div class="service-name">EC2 Instance</div>
+                            <div class="service-desc">t3.large - 2 vCPU, 8GB RAM</div>
+                            <div class="service-tags">
+                                <span class="tag">AZ-1</span>
+                                <span class="tag">Ubuntu 22.04</span>
+                                <span class="tag">Primary</span>
+                            </div>
+                        </div>
+                        
+                        <div class="service-card ec2-card pos-ec2-2">
+                            <div class="service-icon">🖥️</div>
+                            <div class="service-name">EC2 Instance</div>
+                            <div class="service-desc">t3.large - 2 vCPU, 8GB RAM</div>
+                            <div class="service-tags">
+                                <span class="tag">AZ-1</span>
+                                <span class="tag">Ubuntu 22.04</span>
+                                <span class="tag">Active</span>
+                            </div>
+                        </div>
+                        
+                        <div class="service-card ec2-card pos-ec2-3">
+                            <div class="service-icon">🖥️</div>
+                            <div class="service-name">EC2 Instance</div>
+                            <div class="service-desc">t3.large - 2 vCPU, 8GB RAM</div>
+                            <div class="service-tags">
+                                <span class="tag">AZ-2</span>
+                                <span class="tag">Ubuntu 22.04</span>
+                                <span class="tag">Standby</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- ElastiCache -->
+                    <div class="service-card elasticache-card pos-elasticache">
+                        <div class="service-icon">⚡</div>
+                        <div class="service-name">ElastiCache Redis</div>
+                        <div class="service-desc">In-memory cache for session storage and data caching</div>
+                        <div class="service-tags">
+                            <span class="tag">Redis 7.0</span>
+                            <span class="tag">cache.r6g.large</span>
+                            <span class="tag">Multi-AZ</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Aurora -->
+                    <div class="service-card aurora-card pos-aurora">
+                        <div class="service-icon">🗄️</div>
+                        <div class="service-name">Aurora PostgreSQL</div>
+                        <div class="service-desc">Managed relational database with automatic failover</div>
+                        <div class="service-tags">
+                            <span class="tag">PostgreSQL 15</span>
+                            <span class="tag">db.r6g.xlarge</span>
+                            <span class="tag">Read Replicas</span>
+                        </div>
+                    </div>
+                    
+                    <!-- S3 -->
+                    <div class="service-card s3-card pos-s3">
+                        <div class="service-icon">🪣</div>
+                        <div class="service-name">S3 Bucket</div>
+                        <div class="service-desc">Object storage for static assets, backups, and user uploads</div>
+                        <div class="service-tags">
+                            <span class="tag">Standard</span>
+                            <span class="tag">Versioning</span>
+                            <span class="tag">Encryption</span>
+                            <span class="tag">Lifecycle</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- External Services -->
+                <div class="service-card route53-card pos-route53">
+                    <div class="service-icon">🌐</div>
+                    <div class="service-name">Route 53</div>
+                    <div class="service-desc">DNS service with health checks and traffic routing policies</div>
+                    <div class="service-tags">
+                        <span class="tag">Failover</span>
+                        <span class="tag">Latency-based</span>
+                        <span class="tag">Health Checks</span>
+                    </div>
+                </div>
+                
+                <div class="service-card cloudfront-card pos-cloudfront">
+                    <div class="service-icon">🚀</div>
+                    <div class="service-name">CloudFront CDN</div>
+                    <div class="service-desc">Global content delivery with edge locations worldwide</div>
+                    <div class="service-tags">
+                        <span class="tag">Edge Cache</span>
+                        <span class="tag">SSL/TLS</span>
+                        <span class="tag">DDoS Protection</span>
+                    </div>
+                </div>
+                
+                <div class="service-card iam-card pos-iam">
+                    <div class="service-icon">🔐</div>
+                    <div class="service-name">IAM</div>
+                    <div class="service-desc">Identity and access management for secure resource control</div>
+                    <div class="service-tags">
+                        <span class="tag">Roles</span>
+                        <span class="tag">Policies</span>
+                        <span class="tag">MFA</span>
+                        <span class="tag">Federation</span>
+                    </div>
+                </div>
+                
+                <!-- Management Services -->
+                <div class="service-card secrets-card pos-secrets">
+                    <div class="service-icon">🔑</div>
+                    <div class="service-name">Secrets Manager</div>
+                    <div class="service-desc">Centralized secrets storage with automatic rotation</div>
+                    <div class="service-tags">
+                        <span class="tag">Rotation</span>
+                        <span class="tag">Encryption</span>
+                        <span class="tag">Audit</span>
+                    </div>
+                </div>
+                
+                <div class="service-card systems-card pos-systems">
+                    <div class="service-icon">⚙️</div>
+                    <div class="service-name">Systems Manager</div>
+                    <div class="service-desc">Operational hub for managing infrastructure at scale</div>
+                    <div class="service-tags">
+                        <span class="tag">Patch Manager</span>
+                        <span class="tag">Session Manager</span>
+                        <span class="tag">Automation</span>
+                    </div>
+                </div>
+                
+                <div class="service-card cloudwatch-card pos-cloudwatch">
+                    <div class="service-icon">📊</div>
+                    <div class="service-name">CloudWatch</div>
+                    <div class="service-desc">Monitoring and observability for AWS resources and applications</div>
+                    <div class="service-tags">
+                        <span class="tag">Metrics</span>
+                        <span class="tag">Logs</span>
+                        <span class="tag">Alarms</span>
+                        <span class="tag">Dashboards</span>
+                    </div>
+                </div>
+                
+                <!-- Legend -->
+                <div class="legend">
+                    <h4>📋 Data Flow Legend</h4>
+                    <div class="legend-item">
+                        <div class="legend-line animated" style="color: #ff9900;"></div>
+                        <span>User Request Flow</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-line animated" style="color: #10b981;"></div>
+                        <span>Load Balancing</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-line animated" style="color: #3b82f6;"></div>
+                        <span>Database Queries</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-line animated" style="color: #ef4444;"></div>
+                        <span>Cache Operations</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-line animated" style="color: #22c55e;"></div>
+                        <span>S3 Storage</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-line" style="background: #a855f7; opacity: 0.6;"></div>
+                        <span>System Operations</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Info Button -->
+        <div class="info-button" onclick="toggleInfo()" title="Architecture Overview">📋</div>
+        
+        <!-- Stats Panel -->
+        <div class="stats-panel">
+            <h4>📊 Stats</h4>
+            <div class="stat-mini">
+                <div class="stat-mini-value">12</div>
+                <div class="stat-mini-label">AWS Services</div>
+            </div>
+            <div class="stat-mini">
+                <div class="stat-mini-value">2</div>
+                <div class="stat-mini-label">Availability Zones</div>
+            </div>
+            <div class="stat-mini">
+                <div class="stat-mini-value">99.99%</div>
+                <div class="stat-mini-label">Uptime SLA</div>
+            </div>
+            <div class="stat-mini">
+                <div class="stat-mini-value">Auto</div>
+                <div class="stat-mini-label">Scaling Enabled</div>
+            </div>
+            <div class="stat-mini">
+                <div class="stat-mini-value">3</div>
+                <div class="stat-mini-label">EC2 Instances</div>
+            </div>
+        </div>
+
+    </div>
+    
+    <!-- Info Panel -->
+    <div class="info-panel" id="infoPanel">
+        <div class="info-toggle" onclick="toggleInfo()">📖</div>
+        <div class="info-content">
+            <h3>🏗️ Architecture Overview</h3>
+            
+            <div class="info-section">
+                <h4>🌍 1. Entry & Distribution Layer</h4>
+                <p><strong>Route 53</strong> provides DNS resolution with:</p>
+                <ul>
+                    <li>Health checks and automatic failover</li>
+                    <li>Latency-based routing for optimal performance</li>
+                    <li>Geo-location routing for compliance</li>
+                </ul>
+                <p><strong>CloudFront CDN</strong> accelerates content delivery:</p>
+                <ul>
+                    <li>225+ edge locations globally</li>
+                    <li>DDoS protection via AWS Shield</li>
+                    <li>SSL/TLS encryption at the edge</li>
+                </ul>
+            </div>
+            
+            <div class="info-section">
+                <h4>🔒 2. Security & Access Control</h4>
+                <p><strong>IAM</strong> manages all access permissions:</p>
+                <ul>
+                    <li>Role-based access control (RBAC)</li>
+                    <li>Multi-factor authentication (MFA)</li>
+                    <li>Service-to-service authentication</li>
+                </ul>
+                <p><strong>Secrets Manager</strong> secures sensitive data:</p>
+                <ul>
+                    <li>Automatic credential rotation</li>
+                    <li>Encryption at rest and in transit</li>
+                    <li>Integration with RDS and Aurora</li>
+                </ul>
+            </div>
+            
+            <div class="info-section">
+                <h4>🌐 3. Network Layer (VPC)</h4>
+                <p>Private network infrastructure with:</p>
+                <ul>
+                    <li>Public subnets for ALB (10.0.1.0/24, 10.0.2.0/24)</li>
+                    <li>Private subnets for EC2 (10.0.10.0/24, 10.0.11.0/24)</li>
+                    <li>Database subnets (10.0.20.0/24, 10.0.21.0/24)</li>
+                    <li>NAT Gateways for outbound traffic</li>
+                    <li>VPC Flow Logs for network monitoring</li>
+                </ul>
+            </div>
+            
+            <div class="info-section">
+                <h4>⚖️ 4. Load Balancing</h4>
+                <p><strong>Application Load Balancer</strong> features:</p>
+                <ul>
+                    <li>Layer 7 (HTTP/HTTPS) routing</li>
+                    <li>Path-based and host-based routing</li>
+                    <li>SSL/TLS termination</li>
+                    <li>Health checks every 30 seconds</li>
+                    <li>Cross-zone load balancing</li>
+                </ul>
+            </div>
+            
+            <div class="info-section">
+                <h4>🔄 5. Auto Scaling & Compute</h4>
+                <p><strong>Auto Scaling Group</strong> configuration:</p>
+                <ul>
+                    <li>Min: 2, Max: 10, Desired: 3 instances</li>
+                    <li>Target tracking based on CPU (70%)</li>
+                    <li>Scale-out: Add 2 instances when CPU > 70%</li>
+                    <li>Scale-in: Remove 1 instance when CPU < 40%</li>
+                </ul>
+                <p><strong>EC2 Instances</strong> specifications:</p>
+                <ul>
+                    <li>Instance type: t3.large (2 vCPU, 8GB RAM)</li>
+                    <li>EBS volumes: gp3, 100GB, encrypted</li>
+                    <li>Automated patching via Systems Manager</li>
+                    <li>CloudWatch agent for detailed metrics</li>
+                </ul>
+            </div>
+            
+            <div class="info-section">
+                <h4>💾 6. Data Layer</h4>
+                <p><strong>Aurora PostgreSQL</strong> database:</p>
+                <ul>
+                    <li>1 writer + 2 reader instances</li>
+                    <li>Automatic failover in < 30 seconds</li>
+                    <li>Continuous backup to S3</li>
+                    <li>Point-in-time recovery up to 35 days</li>
+                </ul>
+                <p><strong>ElastiCache Redis</strong> cluster:</p>
+                <ul>
+                    <li>Multi-AZ with automatic failover</li>
+                    <li>Session storage and application caching</li>
+                    <li>Sub-millisecond latency</li>
+                    <li>Encryption in-transit and at-rest</li>
+                </ul>
+                <p><strong>S3 Bucket</strong> configuration:</p>
+                <ul>
+                    <li>Versioning enabled for data protection</li>
+                    <li>Server-side encryption (SSE-S3)</li>
+                    <li>Lifecycle policies for cost optimization</li>
+                    <li>CloudFront integration for CDN</li>
+                </ul>
+            </div>
+            
+            <div class="info-section">
+                <h4>🛠️ 7. Operations & Management</h4>
+                <p><strong>Systems Manager</strong> capabilities:</p>
+                <ul>
+                    <li>Session Manager for secure SSH access</li>
+                    <li>Patch Manager for automated updates</li>
+                    <li>Parameter Store for configuration</li>
+                    <li>Automation runbooks for common tasks</li>
+                </ul>
+                <p><strong>CloudWatch</strong> monitoring:</p>
+                <ul>
+                    <li>Custom dashboards for real-time metrics</li>
+                    <li>Log aggregation from all services</li>
+                    <li>Alarms for critical thresholds</li>
+                    <li>SNS integration for notifications</li>
+                </ul>
+            </div>
+            
+            <div class="info-section">
+                <h4>🎯 8. High Availability Strategy</h4>
+                <ul>
+                    <li>Multi-AZ deployment across 2+ zones</li>
+                    <li>Automatic failover for all data stores</li>
+                    <li>Health checks at every layer</li>
+                    <li>Auto-scaling based on demand</li>
+                    <li>Regular disaster recovery testing</li>
+                    <li>RTO: < 5 minutes, RPO: < 1 minute</li>
+                </ul>
+            </div>
+            
+            <div class="info-section">
+                <h4>💰 9. Cost Optimization</h4>
+                <ul>
+                    <li>Reserved Instances for predictable workloads</li>
+                    <li>Auto Scaling to match demand</li>
+                    <li>S3 Intelligent-Tiering for storage</li>
+                    <li>CloudFront to reduce data transfer costs</li>
+                    <li>Cost allocation tags for tracking</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Tooltip -->
+    <div class="tooltip" id="tooltip"></div>
+    
+    <script>
+        // Toggle Info Panel
+        function toggleInfo() {
+            document.getElementById('infoPanel').classList.toggle('active');
+        }
+        
+        // Tooltip functionality
+        const tooltip = document.getElementById('tooltip');
+        const services = document.querySelectorAll('.service-card');
+        
+        services.forEach(service => {
+            service.addEventListener('mouseenter', (e) => {
+                const name = service.querySelector('.service-name').textContent;
+                const desc = service.querySelector('.service-desc').textContent;
+                tooltip.innerHTML = `<strong>${name}</strong><br>${desc}`;
+                tooltip.classList.add('show');
+            });
+            
+            service.addEventListener('mousemove', (e) => {
+                tooltip.style.left = e.pageX + 20 + 'px';
+                tooltip.style.top = e.pageY + 20 + 'px';
+            });
+            
+            service.addEventListener('mouseleave', () => {
+                tooltip.classList.remove('show');
+            });
+            
+            // Click to show more details
+            service.addEventListener('click', () => {
+                const name = service.querySelector('.service-name').textContent;
+                alert(`📋 ${name}\n\nClick the info panel button (📖) on the right side for detailed architecture information!`);
+            });
+        });
+        
+        // Auto-show info panel on load
+        // setTimeout(() => {
+        //     document.getElementById('infoPanel').classList.add('active');
+        // }, 1000);
+        
+        // Auto-hide info panel after 5 seconds
+        // setTimeout(() => {
+        //     document.getElementById('infoPanel').classList.remove('active');
+        // }, 6000);
+    </script>
+</body>
+</html>
