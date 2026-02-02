@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>IAM Architecture Questions</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #232F3E;
+            width: 100vw;
+            overflow-x: hidden;
+        }
+        .slide-container {
+            width: 100vw;
+            min-height: 100vh;
+            background-color: #232F3E;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            color: #ffffff;
+        }
+        .aws-orange { color: #FF9900; }
+        .bg-aws-orange { background-color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+        
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            z-index: 10;
+            min-height: 100vh;
+        }
+        @media (min-width: 640px) {
+            .content-wrapper {
+                padding: 2rem;
+            }
+        }
+        @media (min-width: 1024px) {
+            .content-wrapper {
+                padding: 3rem;
+            }
+        }
+
+        .scenario-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid #FF9900;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .solution-box {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid #22c55e;
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin-top: 1rem;
+        }
+
+        .architecture-step {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #ef4444;
+            border-radius: 6px;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="absolute top-0 left-0 w-full h-2 bg-aws-orange z-20"></div>
+        
+        <div class="content-wrapper">
+            <!-- Navigation -->
+            <div class="mb-3 sm:mb-4">
+                <a href="index.html" class="inline-flex items-center text-aws-orange hover:text-white transition-colors text-sm sm:text-base">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to IAM Topics
+                </a>
+            </div>
+
+            <!-- Header -->
+            <div class="flex flex-col sm:flex-row items-start sm:items-center mb-4 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4">
+                <div class="bg-aws-orange p-2 rounded mr-0 sm:mr-4 mb-3 sm:mb-0">
+                    <i class="fas fa-drafting-compass text-white text-lg sm:text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-montserrat font-bold text-white">IAM Architecture Questions</h2>
+                    <p class="text-gray-400 font-montserrat text-sm sm:text-base lg:text-lg">Real-World Scenarios & Solutions</p>
+                </div>
+            </div>
+
+            <!-- Architecture Scenarios -->
+            <div class="max-w-5xl mx-auto w-full">
+                
+                <!-- Scenario 1 -->
+                <div class="scenario-card">
+                    <h3 class="font-bold text-xl mb-4 text-aws-orange flex items-center">
+                        <i class="fas fa-building mr-3"></i>Scenario 1: Multi-Account Enterprise Setup
+                    </h3>
+                    <div class="bg-gray-800 p-4 rounded-lg mb-4">
+                        <p class="text-sm text-gray-300 mb-3"><strong>Situation:</strong> A large enterprise has multiple AWS accounts for different departments (Dev, Staging, Production). They need to:</p>
+                        <ul class="text-sm text-gray-400 space-y-1 ml-4">
+                            <li>• Allow developers to access only Dev account resources</li>
+                            <li>• Prevent any department from using expensive services like Redshift</li>
+                            <li>• Enable cross-account access for DevOps team to all environments</li>
+                            <li>• Ensure all actions are audited centrally</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="solution-box">
+                        <h4 class="font-bold text-green-400 mb-3 flex items-center">
+                            <i class="fas fa-lightbulb mr-2"></i>Architecture Solution
+                        </h4>
+                        
+                        <div class="architecture-step">
+                            <h5 class="font-bold text-blue-300 mb-2">Step 1: AWS Organizations Setup</h5>
+                            <p class="text-sm text-gray-300">Create AWS Organizations with separate OUs for Dev, Staging, and Production accounts.</p>
+                        </div>
+                        
+                        <div class="architecture-step">
+                            <h5 class="font-bold text-blue-300 mb-2">Step 2: Service Control Policies (SCPs)</h5>
+                            <p class="text-sm text-gray-300">Apply SCPs to deny Redshift access across all accounts while allowing other services.</p>
+                            <div class="bg-gray-900 p-2 rounded mt-2 text-xs font-mono">
+                                <span class="text-red-300">"Effect": "Deny"</span><br/>
+                                <span class="text-blue-300">"Action": "redshift:*"</span>
+                            </div>
+                        </div>
+                        
+                        <div class="architecture-step">
+                            <h5 class="font-bold text-blue-300 mb-2">Step 3: Cross-Account Roles</h5>
+                            <p class="text-sm text-gray-300">Create cross-account IAM roles in each account that DevOps team can assume from their home account.</p>
+                        </div>
+                        
+                        <div class="architecture-step">
+                            <h5 class="font-bold text-blue-300 mb-2">Step 4: Centralized Logging</h5>
+                            <p class="text-sm text-gray-300">Enable CloudTrail in all accounts with logs sent to a central S3 bucket in the master account.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scenario 2 -->
+                <div class="scenario-card">
+                    <h3 class="font-bold text-xl mb-4 text-aws-orange flex items-center">
+                        <i class="fas fa-code mr-3"></i>Scenario 2: Developer Access Control
+                    </h3>
+                    <div class="bg-gray-800 p-4 rounded-lg mb-4">
+                        <p class="text-sm text-gray-300 mb-3"><strong>Situation:</strong> You need to allow junior developers to create IAM users and policies but prevent them from:</p>
+                        <ul class="text-sm text-gray-400 space-y-1 ml-4">
+                            <li>• Creating users with administrative privileges</li>
+                            <li>• Accessing production S3 buckets</li>
+                            <li>• Modifying existing production resources</li>
+                            <li>• Creating roles that can be assumed by external accounts</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="solution-box">
+                        <h4 class="font-bold text-green-400 mb-3 flex items-center">
+                            <i class="fas fa-cogs mr-2"></i>Implementation Strategy
+                        </h4>
+                        
+                        <div class="architecture-step">
+                            <h5 class="font-bold text-blue-300 mb-2">Permission Boundaries Implementation</h5>
+                            <p class="text-sm text-gray-300">Create a permission boundary that defines maximum permissions for any user/role created by developers.</p>
+                            <div class="bg-gray-900 p-2 rounded mt-2 text-xs">
+                                <p class="text-gray-400">Boundary Policy denies:</p>
+                                <ul class="text-red-300 ml-4 mt-1">
+                                    <li>• iam:AttachUserPolicy for admin policies</li>
+                                    <li>• s3:* on production buckets</li>
+                                    <li>• sts:AssumeRole for external accounts</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="architecture-step">
+                            <h5 class="font-bold text-blue-300 mb-2">Developer IAM Policy</h5>
+                            <p class="text-sm text-gray-300">Grant developers IAM permissions with condition that they must attach the permission boundary to any user/role they create.</p>
+                        </div>
+                        
+                        <div class="warning-box">
+                            <p class="text-red-300 text-sm font-bold flex items-center">
+                                <i class="fas fa-exclamation-triangle mr-2"></i>Important Note
+                            </p>
+                            <p class="text-sm text-gray-300 mt-1">Permission boundaries only limit permissions; they don't grant them. Developers still need identity-based policies to perform actions.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scenario 3 -->
+                <div class="scenario-card">
+                    <h3 class="font-bold text-xl mb-4 text-aws-orange flex items-center">
+                        <i class="fas fa-globe mr-3"></i>Scenario 3: Third-Party Integration
+                    </h3>
+                    <div class="bg-gray-800 p-4 rounded-lg mb-4">
+                        <p class="text-sm text-gray-300 mb-3"><strong>Situation:</strong> Your company needs to integrate with a third-party monitoring service that requires:</p>
+                        <ul class="text-sm text-gray-400 space-y-1 ml-4">
+                            <li>• Read-only access to CloudWatch metrics</li>
+                            <li>• Access to EC2 instance information</li>
+                            <li>• No access to sensitive data or configuration</li>
+                            <li>• Temporary access that can be easily revoked</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="solution-box">
+                        <h4 class="font-bold text-green-400 mb-3 flex items-center">
+                            <i class="fas fa-handshake mr-2"></i>Secure Integration Architecture
+                        </h4>
+                        
+                        <div class="architecture-step">
+                            <h5 class="font-bold text-blue-300 mb-2">Cross-Account Role Creation</h5>
+                            <p class="text-sm text-gray-300">Create an IAM role that can be assumed by the third-party's AWS account with specific external ID for additional security.</p>
+                        </div>
+                        
+                        <div class="architecture-step">
+                            <h5 class="font-bold text-blue-300 mb-2">Least Privilege Policy</h5>
+                            <p class="text-sm text-gray-300">Attach a custom policy with only required permissions:</p>
+                            <div class="bg-gray-900 p-2 rounded mt-2 text-xs font-mono">
+                                <span class="text-green-300">"cloudwatch:GetMetricStatistics"</span><br/>
+                                <span class="text-green-300">"ec2:DescribeInstances"</span><br/>
+                                <span class="text-green-300">"ec2:DescribeTags"</span>
+                            </div>
+                        </div>
+                        
+                        <div class="architecture-step">
+                            <h5 class="font-bold text-blue-300 mb-2">Additional Security Measures</h5>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Add condition for specific IP ranges if possible</li>
+                                <li>• Set maximum session duration (e.g., 1 hour)</li>
+                                <li>• Enable CloudTrail logging for role assumption</li>
+                                <li>• Regular access review and rotation of external ID</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scenario 4 -->
+                <div class="scenario-card">
+                    <h3 class="font-bold text-xl mb-4 text-aws-orange flex items-center">
+                        <i class="fas fa-mobile-alt mr-3"></i>Scenario 4: Mobile App Backend
+                    </h3>
+                    <div class="bg-gray-800 p-4 rounded-lg mb-4">
+                        <p class="text-sm text-gray-300 mb-3"><strong>Situation:</strong> A mobile application needs to:</p>
+                        <ul class="text-sm text-gray-400 space-y-1 ml-4">
+                            <li>• Allow users to upload photos to S3</li>
+                            <li>• Each user should only access their own folder</li>
+                            <li>• Support social login (Google, Facebook)</li>
+                            <li>• Scale to millions of users without managing individual IAM users</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="solution-box">
+                        <h4 class="font-bold text-green-400 mb-3 flex items-center">
+                            <i class="fas fa-mobile-alt mr-2"></i>Federated Identity Solution
+                        </h4>
+                        
+                        <div class="architecture-step">
+                            <h5 class="font-bold text-blue-300 mb-2">Amazon Cognito Identity Pools</h5>
+                            <p class="text-sm text-gray-300">Use Cognito Identity Pools to provide temporary AWS credentials to mobile app users after authentication.</p>
+                        </div>
+                        
+                        <div class="architecture-step">
+                            <h5 class="font-bold text-blue-300 mb-2">Dynamic Policy with Variables</h5>
+                            <p class="text-sm text-gray-300">Create IAM role with policy using policy variables to restrict access to user-specific S3 paths:</p>
+                            <div class="bg-gray-900 p-2 rounded mt-2 text-xs font-mono">
+                                <span class="text-blue-300">"Resource"</span>: <span class="text-green-300">"arn:aws:s3:::mybucket/${cognito-identity.amazonaws.com:sub}/*"</span>
+                            </div>
+                        </div>
+                        
+                        <div class="architecture-step">
+                            <h5 class="font-bold text-blue-300 mb-2">Authentication Flow</h5>
+                            <p class="text-sm text-gray-300">1. User authenticates with social provider → 2. Cognito validates token → 3. Cognito returns temporary AWS credentials → 4. App uses credentials to access S3</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Page Number -->
+            <div class="text-right mt-4 text-gray-500 text-xs">
+                IAM Architecture Scenarios
+            </div>
+            
+            <!-- Navigation -->
+            <div class="flex justify-between mt-8 pt-6 border-t border-gray-700">
+                <div></div>
+                <a href="IAM-Exam-Questions.html" class="inline-flex items-center bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                    Next: Exam Questions <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+            
+            <!-- Back to Topics -->
+            <div class="text-center mt-6">
+                <a href="index.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors mr-4">
+                    <i class="fas fa-list mr-2"></i> Back to Topics
+                </a>
+                <a href="../index.html" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                    <i class="fas fa-home mr-2"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

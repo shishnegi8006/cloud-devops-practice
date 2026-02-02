@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IAM Roles & Cross-Account Access</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            font-family: 'Open Sans', sans-serif;
+            width: 100vw;
+            overflow-x: hidden;
+        }
+        .slide-container {
+            width: 100vw;
+            min-height: 100vh;
+            background-color: #232F3E;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            color: #ffffff;
+        }
+        .aws-orange { color: #FF9900; }
+        .bg-aws-orange { background-color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+        .font-mono { font-family: 'Roboto Mono', monospace; }
+        
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            z-index: 10;
+            min-height: 100vh;
+        }
+        @media (min-width: 640px) {
+            .content-wrapper { padding: 2rem; }
+        }
+        @media (min-width: 1024px) {
+            .content-wrapper { padding: 3rem; }
+        }
+
+        .section-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 24px;
+            border-left: 4px solid #FF9900;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 153, 0, 0.15);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            flex-shrink: 0;
+        }
+
+        .role-flow {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+            border: 1px solid rgba(255, 153, 0, 0.3);
+        }
+
+        .assume-role-step {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(59, 130, 246, 0.1);
+            padding: 12px;
+            border-radius: 6px;
+            margin: 8px 0;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .step-arrow {
+            color: #FF9900;
+            font-size: 1.2rem;
+            margin: 0 8px;
+        }
+
+        .feature-list li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            font-size: 0.9rem;
+        }
+        .feature-list li::before {
+            content: "•";
+            color: #FF9900;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            font-size: 1.2em;
+        }
+
+        .code-block {
+            background-color: #161b22;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: #e6edf3;
+            border: 1px solid #30363d;
+            margin-top: 10px;
+        }
+
+        .role-type {
+            padding: 12px;
+            border-radius: 6px;
+            margin: 8px 0;
+            font-size: 0.85rem;
+        }
+
+        .ec2-role {
+            background: rgba(34, 197, 94, 0.2);
+            border-left: 4px solid #22C55E;
+            color: #86EFAC;
+        }
+
+        .lambda-role {
+            background: rgba(59, 130, 246, 0.2);
+            border-left: 4px solid #3B82F6;
+            color: #93C5FD;
+        }
+
+        .cross-account-role {
+            background: rgba(245, 158, 11, 0.2);
+            border-left: 4px solid #F59E0B;
+            color: #FCD34D;
+        }
+
+        .service-linked-role {
+            background: rgba(139, 92, 246, 0.2);
+            border-left: 4px solid #8B5CF6;
+            color: #C4B5FD;
+        }
+
+        .trust-policy {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 153, 0, 0.3);
+            border-radius: 6px;
+            padding: 12px;
+            margin: 12px 0;
+        }
+
+        .account-diagram {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 16px;
+            align-items: center;
+            margin: 16px 0;
+        }
+
+        .account-box {
+            background: rgba(59, 130, 246, 0.1);
+            border: 2px solid rgba(59, 130, 246, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .account-a {
+            border-color: rgba(34, 197, 94, 0.5);
+            background: rgba(34, 197, 94, 0.1);
+        }
+
+        .account-b {
+            border-color: rgba(239, 68, 68, 0.5);
+            background: rgba(239, 68, 68, 0.1);
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container">
+    <div class="absolute top-0 left-0 w-full h-2 bg-aws-orange z-20"></div>
+    <div class="content-wrapper">
+        <!-- Navigation -->
+        <div class="mb-3 sm:mb-4">
+            <a href="index.html" class="inline-flex items-center text-aws-orange hover:text-white transition-colors text-sm sm:text-base">
+                <i class="fas fa-arrow-left mr-2"></i> Back to IAM Topics
+            </a>
+        </div>
+
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center mb-4 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4">
+            <div class="bg-aws-orange p-2 rounded mr-4">
+                <i class="fas fa-user-tag text-white text-xl"></i>
+            </div>
+            <div>
+                <h2 class="text-4xl font-montserrat font-bold text-white">IAM Roles & Cross-Account Access</h2>
+                <p class="text-gray-400 font-montserrat text-lg">Role Types, AssumeRole, and Trust Relationships</p>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 lg:gap-8 flex-1">
+            
+            <!-- IAM Roles Overview -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-user-tag aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">IAM Roles Overview</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">IAM roles provide temporary security credentials for entities to access AWS resources without long-term credentials.</p>
+                
+                <div class="space-y-3">
+                    <div class="ec2-role">
+                        <h4 class="font-bold text-sm mb-2"><i class="fas fa-server mr-2"></i>Service Roles (EC2, Lambda)</h4>
+                        <ul class="text-xs space-y-1">
+                            <li>• Assumed by AWS services</li>
+                            <li>• EC2 instances, Lambda functions</li>
+                            <li>• No credential management needed</li>
+                            <li>• Automatic credential rotation</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="cross-account-role">
+                        <h4 class="font-bold text-sm mb-2"><i class="fas fa-exchange-alt mr-2"></i>Cross-Account Roles</h4>
+                        <ul class="text-xs space-y-1">
+                            <li>• Access resources in different accounts</li>
+                            <li>• Trusted relationships between accounts</li>
+                            <li>• Temporary access with STS tokens</li>
+                            <li>• Centralized identity management</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="lambda-role">
+                        <h4 class="font-bold text-sm mb-2"><i class="fas fa-users mr-2"></i>Federated Roles</h4>
+                        <ul class="text-xs space-y-1">
+                            <li>• External identity providers</li>
+                            <li>• SAML, OIDC, Web Identity Federation</li>
+                            <li>• Single sign-on (SSO) integration</li>
+                            <li>• Corporate directory integration</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="service-linked-role">
+                        <h4 class="font-bold text-sm mb-2"><i class="fas fa-link mr-2"></i>Service-Linked Roles</h4>
+                        <ul class="text-xs space-y-1">
+                            <li>• Pre-defined by AWS services</li>
+                            <li>• Cannot be modified by customers</li>
+                            <li>• Automatically created when needed</li>
+                            <li>• Examples: ELB, RDS, Auto Scaling</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AssumeRole Process -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-key aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">AssumeRole Process</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">The AssumeRole API allows entities to obtain temporary security credentials for a role.</p>
+                
+                <div class="role-flow">
+                    <div class="text-center text-aws-orange font-bold mb-3">AssumeRole Flow</div>
+                    
+                    <div class="assume-role-step">
+                        <div class="text-sm">
+                            <div class="font-bold text-blue-200">1. Request</div>
+                            <div class="text-xs text-gray-400">Entity calls sts:AssumeRole</div>
+                        </div>
+                    </div>
+                    
+                    <div class="assume-role-step">
+                        <div class="text-sm">
+                            <div class="font-bold text-green-200">2. Validation</div>
+                            <div class="text-xs text-gray-400">STS validates trust policy</div>
+                        </div>
+                    </div>
+                    
+                    <div class="assume-role-step">
+                        <div class="text-sm">
+                            <div class="font-bold text-yellow-200">3. Token Issue</div>
+                            <div class="text-xs text-gray-400">Temporary credentials returned</div>
+                        </div>
+                    </div>
+                    
+                    <div class="assume-role-step">
+                        <div class="text-sm">
+                            <div class="font-bold text-purple-200">4. Access</div>
+                            <div class="text-xs text-gray-400">Use credentials for API calls</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="trust-policy">
+                    <h4 class="text-aws-orange font-bold text-sm mb-2">Trust Policy Components</h4>
+                    <ul class="feature-list text-gray-200 text-xs">
+                        <li><strong>Principal:</strong> Who can assume the role</li>
+                        <li><strong>Action:</strong> sts:AssumeRole (required)</li>
+                        <li><strong>Condition:</strong> Additional constraints</li>
+                        <li><strong>Effect:</strong> Allow (trust policies only allow)</li>
+                    </ul>
+                </div>
+
+                <div class="code-block font-mono">
+                    <span class="text-gray-500"># Assume role with AWS CLI</span><br/>
+                    aws sts assume-role \<br/>
+                    &nbsp;&nbsp;--role-arn arn:aws:iam::123456789012:role/MyRole \<br/>
+                    &nbsp;&nbsp;--role-session-name MySession \<br/>
+                    &nbsp;&nbsp;--duration-seconds 3600
+                </div>
+            </div>
+
+            <!-- Cross-Account Access -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-exchange-alt aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Cross-Account Access</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">Enable secure access to resources across different AWS accounts using IAM roles.</p>
+                
+                <div class="account-diagram">
+                    <div class="account-box account-a">
+                        <div class="font-bold text-green-200 mb-2">Account A</div>
+                        <div class="text-xs text-gray-300">Trusted Account</div>
+                        <div class="text-xs text-gray-400">Users/Roles</div>
+                    </div>
+                    
+                    <div class="step-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                    
+                    <div class="account-box account-b">
+                        <div class="font-bold text-red-200 mb-2">Account B</div>
+                        <div class="text-xs text-gray-300">Trusting Account</div>
+                        <div class="text-xs text-gray-400">Resources</div>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="bg-blue-900 bg-opacity-30 p-3 rounded border-l-4 border-blue-400">
+                        <h4 class="text-blue-200 font-bold text-sm mb-2"><i class="fas fa-cog mr-2"></i>Setup Steps</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Create role in trusting account (Account B)</li>
+                            <li>• Configure trust policy to allow Account A</li>
+                            <li>• Attach permissions policy to the role</li>
+                            <li>• Grant AssumeRole permission in Account A</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-green-900 bg-opacity-30 p-3 rounded border-l-4 border-green-400">
+                        <h4 class="text-green-200 font-bold text-sm mb-2"><i class="fas fa-shield-alt mr-2"></i>Security Benefits</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• No long-term credentials sharing</li>
+                            <li>• Temporary access with expiration</li>
+                            <li>• Centralized access control</li>
+                            <li>• Detailed CloudTrail logging</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-block font-mono">
+                    <span class="text-gray-500">// Trust policy example</span><br/>
+                    {<br/>
+                    &nbsp;&nbsp;<span class="text-blue-300">"Version"</span>: <span class="text-green-300">"2012-10-17"</span>,<br/>
+                    &nbsp;&nbsp;<span class="text-blue-300">"Statement"</span>: [{<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-yellow-300">"Effect"</span>: <span class="text-green-300">"Allow"</span>,<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-yellow-300">"Principal"</span>: {<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-purple-300">"AWS"</span>: <span class="text-green-300">"arn:aws:iam::111122223333:root"</span><br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;},<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-yellow-300">"Action"</span>: <span class="text-green-300">"sts:AssumeRole"</span><br/>
+                    &nbsp;&nbsp;}]<br/>
+                    }
+                </div>
+            </div>
+
+            <!-- Service-Linked Roles -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-link aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Service-Linked Roles</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">Pre-defined roles that AWS services use to perform actions on your behalf.</p>
+                
+                <ul class="feature-list text-gray-200 mb-4">
+                    <li><strong class="text-white">Automatic Creation:</strong> Created when service is first used</li>
+                    <li><strong class="text-white">Predefined Permissions:</strong> Cannot be modified by customers</li>
+                    <li><strong class="text-white">Service Managed:</strong> AWS maintains and updates policies</li>
+                    <li><strong class="text-white">Deletion Protection:</strong> Can only be deleted when safe</li>
+                </ul>
+
+                <div class="space-y-3">
+                    <div class="bg-purple-900 bg-opacity-30 p-3 rounded border-l-4 border-purple-400">
+                        <h4 class="text-purple-200 font-bold text-sm mb-2"><i class="fas fa-balance-scale mr-2"></i>Common Service-Linked Roles</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• <strong>ELB:</strong> AWSServiceRoleForElasticLoadBalancing</li>
+                            <li>• <strong>Auto Scaling:</strong> AWSServiceRoleForAutoScaling</li>
+                            <li>• <strong>RDS:</strong> AWSServiceRoleForRDS</li>
+                            <li>• <strong>Lambda:</strong> AWSServiceRoleForLambdaReplicator</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-yellow-900 bg-opacity-30 p-3 rounded border-l-4 border-yellow-400">
+                        <h4 class="text-yellow-200 font-bold text-sm mb-2"><i class="fas fa-exclamation-triangle mr-2"></i>Management Considerations</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Cannot modify trust or permissions policies</li>
+                            <li>• Deletion requires service cleanup first</li>
+                            <li>• Some services create multiple SLRs</li>
+                            <li>• Monitor via IAM console or APIs</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-block font-mono">
+                    <span class="text-gray-500"># List service-linked roles</span><br/>
+                    aws iam list-roles \<br/>
+                    &nbsp;&nbsp;--path-prefix /aws-service-role/<br/><br/>
+                    <span class="text-gray-500"># Delete service-linked role</span><br/>
+                    aws iam delete-service-linked-role \<br/>
+                    &nbsp;&nbsp;--role-name AWSServiceRoleForAutoScaling
+                </div>
+            </div>
+
+            <!-- Role Session Management -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-clock aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Session Management</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">Control and monitor role sessions for security and compliance.</p>
+                
+                <div class="space-y-4">
+                    <div class="bg-blue-900 bg-opacity-30 p-3 rounded border-l-4 border-blue-400">
+                        <h4 class="text-blue-200 font-bold text-sm mb-2"><i class="fas fa-hourglass-half mr-2"></i>Session Duration</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Default: 1 hour (3600 seconds)</li>
+                            <li>• Maximum: 12 hours for roles</li>
+                            <li>• Configurable per role</li>
+                            <li>• Shorter durations for higher security</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-green-900 bg-opacity-30 p-3 rounded border-l-4 border-green-400">
+                        <h4 class="text-green-200 font-bold text-sm mb-2"><i class="fas fa-tag mr-2"></i>Session Tags</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Pass tags during AssumeRole</li>
+                            <li>• Use in policy conditions</li>
+                            <li>• Attribute-based access control</li>
+                            <li>• Enhanced audit capabilities</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-orange-900 bg-opacity-30 p-3 rounded border-l-4 border-orange-400">
+                        <h4 class="text-orange-200 font-bold text-sm mb-2"><i class="fas fa-eye mr-2"></i>Session Monitoring</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• CloudTrail logs AssumeRole events</li>
+                            <li>• Monitor session duration and frequency</li>
+                            <li>• Track role usage patterns</li>
+                            <li>• Set up anomaly detection</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-block font-mono">
+                    <span class="text-gray-500"># AssumeRole with session tags</span><br/>
+                    aws sts assume-role \<br/>
+                    &nbsp;&nbsp;--role-arn arn:aws:iam::123456789012:role/MyRole \<br/>
+                    &nbsp;&nbsp;--role-session-name MySession \<br/>
+                    &nbsp;&nbsp;--tags Key=Department,Value=Finance \<br/>
+                    &nbsp;&nbsp;--duration-seconds 7200
+                </div>
+            </div>
+
+            <!-- Best Practices -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-star aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Role Best Practices</h3>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="bg-green-900 bg-opacity-30 p-3 rounded border-l-4 border-green-400">
+                        <h4 class="text-green-200 font-bold text-sm mb-2"><i class="fas fa-shield-alt mr-2"></i>Security</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Use external ID for third-party access</li>
+                            <li>• Implement MFA conditions when appropriate</li>
+                            <li>• Regular trust policy reviews</li>
+                            <li>• Monitor unused roles</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-blue-900 bg-opacity-30 p-3 rounded border-l-4 border-blue-400">
+                        <h4 class="text-blue-200 font-bold text-sm mb-2"><i class="fas fa-cogs mr-2"></i>Management</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Consistent naming conventions</li>
+                            <li>• Document role purposes and owners</li>
+                            <li>• Use tags for organization</li>
+                            <li>• Automate role lifecycle management</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-purple-900 bg-opacity-30 p-3 rounded border-l-4 border-purple-400">
+                        <h4 class="text-purple-200 font-bold text-sm mb-2"><i class="fas fa-chart-line mr-2"></i>Monitoring</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Enable CloudTrail for all regions</li>
+                            <li>• Set up role usage alerts</li>
+                            <li>• Regular access reviews</li>
+                            <li>• Use IAM Access Analyzer</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-red-900 bg-opacity-30 p-3 rounded border-l-4 border-red-400">
+                        <h4 class="text-red-200 font-bold text-sm mb-2"><i class="fas fa-exclamation-triangle mr-2"></i>Common Pitfalls</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Overly permissive trust policies</li>
+                            <li>• Long session durations</li>
+                            <li>• Lack of condition constraints</li>
+                            <li>• Insufficient monitoring and alerting</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page Number -->
+        <div class="text-right mt-4 text-gray-500 text-xs">
+            IAM Roles & Cross-Account Access
+        </div>
+        
+        <!-- Navigation -->
+        <div class="flex justify-between mt-8 pt-6 border-t border-gray-700">
+            <a href="IAM-Policies-Deep-Dive.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Previous: Policies Deep Dive
+            </a>
+            <a href="IAM-Identity-Federation.html" class="inline-flex items-center bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                Next: Identity Federation <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+        
+        <!-- Back to Topics -->
+        <div class="text-center mt-6">
+            <a href="index.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors mr-4">
+                <i class="fas fa-list mr-2"></i> Back to Topics
+            </a>
+            <a href="../index.html" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <i class="fas fa-home mr-2"></i> Back to Home
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

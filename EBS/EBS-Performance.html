@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EBS Performance</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Open Sans', sans-serif; background: linear-gradient(135deg, #232F3E 0%, #1a252f 50%, #0f1419 100%); min-height: 100vh; color: white; }
+        .feature-card { background: rgba(55, 65, 81, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.3s ease; backdrop-filter: blur(10px); }
+        .feature-card:hover { background: rgba(75, 85, 99, 0.8); border-color: rgba(34, 197, 94, 0.3); transform: translateY(-2px); }
+        .aws-orange { color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-8">
+        <div class="mb-8">
+            <a href="index.html" class="inline-flex items-center text-green-400 hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Back to EBS Topics
+            </a>
+        </div>
+        <div class="text-center mb-12">
+            <div class="bg-gradient-to-r from-green-600 to-green-800 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-tachometer-alt text-white text-3xl"></i>
+            </div>
+            <h1 class="text-5xl font-montserrat font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">EBS Performance</h1>
+            <p class="text-xl text-gray-300">Optimize IOPS, throughput, and monitoring for EBS volumes</p>
+        </div>
+
+        <!-- Performance Fundamentals -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Performance Fundamentals</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">IOPS vs Throughput</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-bolt text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>IOPS:</strong> Input/Output Operations Per Second - measures random access performance</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-stream text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Throughput:</strong> Amount of data transferred per second - measures sequential access</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-balance-scale text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Balance:</strong> Choose based on workload pattern - random vs sequential</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">Performance Factors</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-hdd text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Volume Type:</strong> gp3, io2 offer highest performance</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-expand text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Volume Size:</strong> Larger volumes generally provide better performance</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-server text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Instance Type:</strong> EBS-optimized instances provide dedicated bandwidth</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- IOPS Optimization -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">IOPS Optimization</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-green-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-bolt text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Provisioned IOPS</h3>
+                    <p class="text-gray-300 text-sm mb-4">io1 and io2 volumes allow you to provision specific IOPS independent of volume size.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>io2 Ratios:</strong></p>
+                        <p class="text-xs text-gray-300">Up to 500 IOPS per GiB (max 64,000 IOPS)</p>
+                    </div>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>io1 Ratios:</strong></p>
+                        <p class="text-xs text-gray-300">Up to 50 IOPS per GiB (max 64,000 IOPS)</p>
+                    </div>
+                    <div class="text-xs text-green-300">
+                        <strong>Best For:</strong> Consistent, predictable performance requirements
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-green-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-chart-line text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Burstable IOPS</h3>
+                    <p class="text-gray-300 text-sm mb-4">gp2 volumes use a credit system to burst above baseline performance.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Baseline:</strong></p>
+                        <p class="text-xs text-gray-300">3 IOPS per GiB (minimum 100 IOPS)</p>
+                    </div>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Burst:</strong></p>
+                        <p class="text-xs text-gray-300">Up to 3,000 IOPS using I/O credits</p>
+                    </div>
+                    <div class="text-xs text-green-300">
+                        <strong>Credit Rate:</strong> 3 credits per GiB per second
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-green-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-cog text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">gp3 Flexibility</h3>
+                    <p class="text-gray-300 text-sm mb-4">gp3 allows independent provisioning of IOPS and throughput.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Baseline:</strong></p>
+                        <p class="text-xs text-gray-300">3,000 IOPS and 125 MiB/s included</p>
+                    </div>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Maximum:</strong></p>
+                        <p class="text-xs text-gray-300">16,000 IOPS and 1,000 MiB/s</p>
+                    </div>
+                    <div class="text-xs text-green-300">
+                        <strong>Advantage:</strong> Pay only for performance you need
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Throughput Optimization -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Throughput Optimization</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-orange-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-stream text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">st1 Throughput</h3>
+                    <p class="text-gray-300 text-sm mb-4">Throughput Optimized HDD designed for sequential workloads.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Baseline:</strong></p>
+                        <p class="text-xs text-gray-300">40 MiB/s per TiB</p>
+                    </div>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Burst:</strong></p>
+                        <p class="text-xs text-gray-300">250 MiB/s per TiB (max 500 MiB/s)</p>
+                    </div>
+                    <div class="text-xs text-orange-300">
+                        <strong>Best For:</strong> Big data, data warehouses, log processing
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-orange-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-database text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Large Block Sizes</h3>
+                    <p class="text-gray-300 text-sm mb-4">Optimize I/O block sizes for better throughput performance.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Recommended:</strong></p>
+                        <p class="text-xs text-gray-300">1 MiB block sizes for sequential workloads</p>
+                    </div>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Impact:</strong></p>
+                        <p class="text-xs text-gray-300">Reduces overhead and improves efficiency</p>
+                    </div>
+                    <div class="text-xs text-orange-300">
+                        <strong>Tools:</strong> Use fio or dd for testing
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-orange-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-layer-group text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">RAID Configurations</h3>
+                    <p class="text-gray-300 text-sm mb-4">Combine multiple EBS volumes for higher aggregate performance.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>RAID 0:</strong></p>
+                        <p class="text-xs text-gray-300">Stripe for performance (no redundancy)</p>
+                    </div>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>RAID 1:</strong></p>
+                        <p class="text-xs text-gray-300">Mirror for redundancy (no performance gain)</p>
+                    </div>
+                    <div class="text-xs text-orange-300">
+                        <strong>Note:</strong> Consider single large volume first
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EBS-Optimized Instances -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">EBS-Optimized Instances</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">Dedicated Bandwidth</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Isolation:</strong> Separate network bandwidth for EBS traffic</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Consistency:</strong> Predictable performance without network contention</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Availability:</strong> Default on newer instance types</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">Bandwidth Specifications</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-server text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>m5.large:</strong> Up to 4,750 Mbps</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-server text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>m5.xlarge:</strong> Up to 4,750 Mbps</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-server text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>m5.24xlarge:</strong> 19,000 Mbps</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Monitoring -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Performance Monitoring</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-blue-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-chart-line text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">CloudWatch Metrics</h3>
+                    <p class="text-gray-300 text-sm mb-4">Monitor EBS performance using built-in CloudWatch metrics.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Key Metrics:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• VolumeReadOps/VolumeWriteOps</li>
+                            <li>• VolumeReadBytes/VolumeWriteBytes</li>
+                            <li>• VolumeThroughputPercentage</li>
+                            <li>• VolumeConsumedReadWriteOps</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-blue-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-exclamation-triangle text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Performance Alerts</h3>
+                    <p class="text-gray-300 text-sm mb-4">Set up CloudWatch alarms for performance thresholds.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Alert Conditions:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• IOPS utilization > 80%</li>
+                            <li>• Throughput utilization > 80%</li>
+                            <li>• Queue depth consistently high</li>
+                            <li>• I/O credit balance low (gp2)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-blue-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-tools text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Performance Testing</h3>
+                    <p class="text-gray-300 text-sm mb-4">Use tools to benchmark and validate EBS performance.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Tools:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• fio - Flexible I/O tester</li>
+                            <li>• iostat - I/O statistics</li>
+                            <li>• iotop - I/O monitoring</li>
+                            <li>• dd - Basic throughput testing</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Best Practices -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Performance Best Practices</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">Optimization Strategies</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Pre-warm volumes:</strong> Initialize new volumes from snapshots</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Queue depth:</strong> Maintain optimal queue depth (1-32)</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>I/O size:</strong> Use appropriate block sizes for workload</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">Common Pitfalls</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-times-circle text-red-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Avoid:</strong> Small random I/O on st1/sc1 volumes</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-times-circle text-red-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Avoid:</strong> Exceeding instance EBS bandwidth limits</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-times-circle text-red-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Avoid:</strong> Ignoring I/O credit depletion on gp2</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Navigation -->
+        <div class="flex justify-between mt-8 pt-6 border-t border-gray-600">
+            <a href="EBS-Volume-Types.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Previous: EBS Volume Types
+            </a>
+            <a href="EBS-Snapshots.html" class="inline-flex items-center bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                Next: EBS Snapshots <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+        
+        <!-- Back to Topics -->
+        <div class="text-center mt-6">
+            <a href="index.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors mr-4">
+                <i class="fas fa-list mr-2"></i> Back to Topics
+            </a>
+            <a href="../index.html" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <i class="fas fa-home mr-2"></i> Back to Home
+            </a>
+        </div>
+    </div>
+</body>
+</html>

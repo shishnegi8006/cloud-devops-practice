@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudWatch Service Limitations - AWS Solution Architect</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="../styles.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Navigation -->
+        <nav class="mb-8">
+            <a href="index.html" class="text-aws-orange hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i>Back to CloudWatch
+            </a>
+        </nav>
+
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <div class="bg-rose-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-exclamation-triangle text-white text-3xl"></i>
+            </div>
+            <h1 class="text-4xl font-montserrat font-bold mb-4">CloudWatch Service Limitations</h1>
+            <p class="text-xl text-gray-300">Quotas, Limits & Regional Constraints</p>
+        </header>
+
+        <!-- Content -->
+        <div class="max-w-4xl mx-auto">
+            
+            <!-- Overview -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Service Limits Overview</h2>
+                <div class="bg-gray-800 rounded-lg p-6 mb-6">
+                    <p class="text-gray-300 mb-4">
+                        AWS CloudWatch has various service limits and quotas that you should be aware of when designing monitoring solutions. These limits help ensure service stability and fair resource allocation.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-semibold text-rose-400 mb-2">Types of Limits</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Hard limits (cannot be increased)</li>
+                                <li>• Soft limits (can request increases)</li>
+                                <li>• Regional limits</li>
+                                <li>• Account-level limits</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-semibold text-rose-400 mb-2">Impact Areas</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Metric publishing</li>
+                                <li>• Log ingestion</li>
+                                <li>• API call rates</li>
+                                <li>• Storage capacity</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Metrics Limits -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Metrics Limits</h2>
+                
+                <div class="space-y-6">
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-blue-400">
+                            <i class="fas fa-tachometer-alt mr-2"></i>Custom Metrics
+                        </h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm">
+                                <thead>
+                                    <tr class="border-b border-gray-600">
+                                        <th class="text-left py-2 text-blue-400">Limit Type</th>
+                                        <th class="text-left py-2 text-blue-400">Default Limit</th>
+                                        <th class="text-left py-2 text-blue-400">Adjustable</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-gray-300">
+                                    <tr class="border-b border-gray-700">
+                                        <td class="py-2">PutMetricData requests per second</td>
+                                        <td class="py-2">150 TPS per region</td>
+                                        <td class="py-2">Yes</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-700">
+                                        <td class="py-2">Metrics per PutMetricData request</td>
+                                        <td class="py-2">20 metrics</td>
+                                        <td class="py-2">No</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-700">
+                                        <td class="py-2">Dimensions per metric</td>
+                                        <td class="py-2">10 dimensions</td>
+                                        <td class="py-2">No</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-700">
+                                        <td class="py-2">Unique metrics per month</td>
+                                        <td class="py-2">10 million</td>
+                                        <td class="py-2">Yes</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-green-400">
+                            <i class="fas fa-clock mr-2"></i>Data Retention
+                        </h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm">
+                                <thead>
+                                    <tr class="border-b border-gray-600">
+                                        <th class="text-left py-2 text-green-400">Data Point Period</th>
+                                        <th class="text-left py-2 text-green-400">Retention Period</th>
+                                        <th class="text-left py-2 text-green-400">Adjustable</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-gray-300">
+                                    <tr class="border-b border-gray-700">
+                                        <td class="py-2">Less than 60 seconds</td>
+                                        <td class="py-2">3 hours</td>
+                                        <td class="py-2">No</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-700">
+                                        <td class="py-2">60 seconds (1 minute)</td>
+                                        <td class="py-2">15 days</td>
+                                        <td class="py-2">No</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-700">
+                                        <td class="py-2">300 seconds (5 minutes)</td>
+                                        <td class="py-2">63 days</td>
+                                        <td class="py-2">No</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-700">
+                                        <td class="py-2">3600 seconds (1 hour)</td>
+                                        <td class="py-2">455 days (15 months)</td>
+                                        <td class="py-2">No</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Alarms Limits -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Alarms Limits</h2>
+                
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b border-gray-600">
+                                    <th class="text-left py-2 text-red-400">Resource</th>
+                                    <th class="text-left py-2 text-red-400">Default Limit</th>
+                                    <th class="text-left py-2 text-red-400">Adjustable</th>
+                                    <th class="text-left py-2 text-red-400">Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-300">
+                                <tr class="border-b border-gray-700">
+                                    <td class="py-2">Alarms per region</td>
+                                    <td class="py-2">10,000</td>
+                                    <td class="py-2">Yes</td>
+                                    <td class="py-2">Per AWS account</td>
+                                </tr>
+                                <tr class="border-b border-gray-700">
+                                    <td class="py-2">Composite alarms per region</td>
+                                    <td class="py-2">10,000</td>
+                                    <td class="py-2">Yes</td>
+                                    <td class="py-2">Included in total alarm count</td>
+                                </tr>
+                                <tr class="border-b border-gray-700">
+                                    <td class="py-2">Alarms per composite alarm</td>
+                                    <td class="py-2">100</td>
+                                    <td class="py-2">No</td>
+                                    <td class="py-2">Maximum child alarms</td>
+                                </tr>
+                                <tr class="border-b border-gray-700">
+                                    <td class="py-2">SNS topics per alarm</td>
+                                    <td class="py-2">5</td>
+                                    <td class="py-2">No</td>
+                                    <td class="py-2">Per alarm action</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Logs Limits -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">CloudWatch Logs Limits</h2>
+                
+                <div class="space-y-6">
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-purple-400">
+                            <i class="fas fa-file-alt mr-2"></i>Log Groups & Streams
+                        </h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm">
+                                <thead>
+                                    <tr class="border-b border-gray-600">
+                                        <th class="text-left py-2 text-purple-400">Resource</th>
+                                        <th class="text-left py-2 text-purple-400">Default Limit</th>
+                                        <th class="text-left py-2 text-purple-400">Adjustable</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-gray-300">
+                                    <tr class="border-b border-gray-700">
+                                        <td class="py-2">Log groups per region</td>
+                                        <td class="py-2">20,000</td>
+                                        <td class="py-2">Yes</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-700">
+                                        <td class="py-2">Log streams per log group</td>
+                                        <td class="py-2">10,000</td>
+                                        <td class="py-2">No</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-700">
+                                        <td class="py-2">Log event size</td>
+                                        <td class="py-2">256 KB</td>
+                                        <td class="py-2">No</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-700">
+                                        <td class="py-2">Batch size (PutLogEvents)</td>
+                                        <td class="py-2">1 MB</td>
+                                        <td class="py-2">No</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-yellow-400">
+                            <i class="fas fa-upload mr-2"></i>Ingestion Limits
+                        </h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm">
+                                <thead>
+                                    <tr class="border-b border-gray-600">
+                                        <th class="text-left py-2 text-yellow-400">Limit Type</th>
+                                        <th class="text-left py-2 text-yellow-400">Default Limit</th>
+                                        <th class="text-left py-2 text-yellow-400">Adjustable</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-gray-300">
+                                    <tr class="border-b border-gray-700">
+                                        <td class="py-2">PutLogEvents requests per second</td>
+                                        <td class="py-2">800 TPS per log stream</td>
+                                        <td class="py-2">No</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-700">
+                                        <td class="py-2">Data ingestion rate</td>
+                                        <td class="py-2">5 MB/sec per log stream</td>
+                                        <td class="py-2">No</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-700">
+                                        <td class="py-2">CreateLogGroup requests</td>
+                                        <td class="py-2">50 TPS per region</td>
+                                        <td class="py-2">Yes</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-700">
+                                        <td class="py-2">CreateLogStream requests</td>
+                                        <td class="py-2">50 TPS per log group</td>
+                                        <td class="py-2">No</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- API Limits -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">API Rate Limits</h2>
+                
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b border-gray-600">
+                                    <th class="text-left py-2 text-indigo-400">API Operation</th>
+                                    <th class="text-left py-2 text-indigo-400">Default Limit (TPS)</th>
+                                    <th class="text-left py-2 text-indigo-400">Adjustable</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-300">
+                                <tr class="border-b border-gray-700">
+                                    <td class="py-2">GetMetricStatistics</td>
+                                    <td class="py-2">400</td>
+                                    <td class="py-2">Yes</td>
+                                </tr>
+                                <tr class="border-b border-gray-700">
+                                    <td class="py-2">ListMetrics</td>
+                                    <td class="py-2">25</td>
+                                    <td class="py-2">Yes</td>
+                                </tr>
+                                <tr class="border-b border-gray-700">
+                                    <td class="py-2">PutMetricData</td>
+                                    <td class="py-2">150</td>
+                                    <td class="py-2">Yes</td>
+                                </tr>
+                                <tr class="border-b border-gray-700">
+                                    <td class="py-2">GetMetricData</td>
+                                    <td class="py-2">50</td>
+                                    <td class="py-2">Yes</td>
+                                </tr>
+                                <tr class="border-b border-gray-700">
+                                    <td class="py-2">DescribeAlarms</td>
+                                    <td class="py-2">9</td>
+                                    <td class="py-2">Yes</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dashboards Limits -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Dashboards Limits</h2>
+                
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b border-gray-600">
+                                    <th class="text-left py-2 text-cyan-400">Resource</th>
+                                    <th class="text-left py-2 text-cyan-400">Default Limit</th>
+                                    <th class="text-left py-2 text-cyan-400">Adjustable</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-300">
+                                <tr class="border-b border-gray-700">
+                                    <td class="py-2">Dashboards per region</td>
+                                    <td class="py-2">500</td>
+                                    <td class="py-2">Yes</td>
+                                </tr>
+                                <tr class="border-b border-gray-700">
+                                    <td class="py-2">Widgets per dashboard</td>
+                                    <td class="py-2">500</td>
+                                    <td class="py-2">No</td>
+                                </tr>
+                                <tr class="border-b border-gray-700">
+                                    <td class="py-2">Metrics per widget</td>
+                                    <td class="py-2">500</td>
+                                    <td class="py-2">No</td>
+                                </tr>
+                                <tr class="border-b border-gray-700">
+                                    <td class="py-2">Dashboard size</td>
+                                    <td class="py-2">1 MB</td>
+                                    <td class="py-2">No</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Regional Availability -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Regional Availability</h2>
+                
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <p class="text-gray-300 mb-4">
+                        CloudWatch is available in all AWS regions, but some features may have regional limitations or different availability timelines.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-semibold text-green-400 mb-3">Globally Available</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• CloudWatch Metrics</li>
+                                <li>• CloudWatch Alarms</li>
+                                <li>• CloudWatch Logs</li>
+                                <li>• CloudWatch Dashboards</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-semibold text-yellow-400 mb-3">Limited Availability</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Container Insights (select regions)</li>
+                                <li>• Lambda Insights (select regions)</li>
+                                <li>• Application Insights (select regions)</li>
+                                <li>• Synthetics (select regions)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Mitigation Strategies -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Mitigation Strategies</h2>
+                <div class="space-y-4">
+                    <div class="bg-green-900 bg-opacity-50 border-l-4 border-green-500 p-4 rounded-lg">
+                        <h4 class="font-semibold text-green-400 mb-2">Request Limit Increases</h4>
+                        <p class="text-gray-300 text-sm">For adjustable limits, submit a support case to request increases. Provide justification and expected usage patterns.</p>
+                    </div>
+                    
+                    <div class="bg-blue-900 bg-opacity-50 border-l-4 border-blue-500 p-4 rounded-lg">
+                        <h4 class="font-semibold text-blue-400 mb-2">Batch Operations</h4>
+                        <p class="text-gray-300 text-sm">Use batch APIs like PutMetricData to send multiple metrics in a single request, reducing API call overhead.</p>
+                    </div>
+                    
+                    <div class="bg-purple-900 bg-opacity-50 border-l-4 border-purple-500 p-4 rounded-lg">
+                        <h4 class="font-semibold text-purple-400 mb-2">Implement Backoff</h4>
+                        <p class="text-gray-300 text-sm">Use exponential backoff and jitter when encountering rate limits to avoid overwhelming the service.</p>
+                    </div>
+                    
+                    <div class="bg-yellow-900 bg-opacity-50 border-l-4 border-yellow-500 p-4 rounded-lg">
+                        <h4 class="font-semibold text-yellow-400 mb-2">Optimize Metrics</h4>
+                        <p class="text-gray-300 text-sm">Reduce metric cardinality by carefully choosing dimensions. Aggregate metrics at the application level when possible.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Key Takeaways -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Key Takeaways</h2>
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <ul class="space-y-3 text-gray-300">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>CloudWatch has various service limits that affect metrics, logs, alarms, and API operations</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>Some limits are adjustable through support requests, while others are hard limits</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>Data retention periods are fixed and cannot be extended beyond the default limits</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>API rate limits can be increased, but proper batching and backoff strategies are essential</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>Understanding limits is crucial for designing scalable monitoring solutions</span>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+        </div>
+    </div>
+</body>
+</html>

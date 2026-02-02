@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudWatch Exam Questions - AWS Solution Architect</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="../styles.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Navigation -->
+        <nav class="mb-8">
+            <a href="index.html" class="text-aws-orange hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i>Back to CloudWatch
+            </a>
+        </nav>
+
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <div class="bg-pink-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-question-circle text-white text-3xl"></i>
+            </div>
+            <h1 class="text-4xl font-montserrat font-bold mb-4">CloudWatch Exam Questions</h1>
+            <p class="text-xl text-gray-300">Practice Tests with Detailed Explanations</p>
+        </header>
+
+        <!-- Content -->
+        <div class="max-w-4xl mx-auto">
+            
+            <!-- Instructions -->
+            <section class="mb-12">
+                <div class="bg-blue-900 bg-opacity-50 border-l-4 border-blue-500 p-6 rounded-lg">
+                    <h3 class="text-lg font-semibold text-blue-400 mb-3">
+                        <i class="fas fa-info-circle mr-2"></i>Instructions
+                    </h3>
+                    <ul class="text-gray-300 space-y-2">
+                        <li>• Read each question carefully and select the best answer</li>
+                        <li>• Click on the answer choices to reveal explanations</li>
+                        <li>• Focus on understanding the reasoning behind correct answers</li>
+                        <li>• Review incorrect answers to identify knowledge gaps</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Question 1 -->
+            <section class="mb-12">
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <div class="flex items-start mb-4">
+                        <div class="bg-pink-600 text-white rounded-full w-8 h-8 flex items-center justify-center mr-4 font-bold">1</div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold mb-4">
+                                A company wants to monitor the memory utilization of their EC2 instances. They notice that CloudWatch is not showing memory metrics by default. What is the best solution to monitor memory utilization?
+                            </h3>
+                            
+                            <div class="space-y-3">
+                                <div class="answer-choice bg-gray-700 p-3 rounded cursor-pointer hover:bg-gray-600" onclick="toggleAnswer(this, false)">
+                                    <div class="flex items-center">
+                                        <span class="font-semibold mr-2">A.</span>
+                                        <span>Enable detailed monitoring for EC2 instances</span>
+                                    </div>
+                                    <div class="explanation hidden mt-3 p-3 bg-red-900 bg-opacity-50 rounded">
+                                        <strong>Incorrect:</strong> Detailed monitoring only provides higher frequency for existing metrics, not additional metrics like memory utilization.
+                                    </div>
+                                </div>
+                                
+                                <div class="answer-choice bg-gray-700 p-3 rounded cursor-pointer hover:bg-gray-600" onclick="toggleAnswer(this, true)">
+                                    <div class="flex items-center">
+                                        <span class="font-semibold mr-2">B.</span>
+                                        <span>Install and configure the CloudWatch Agent on EC2 instances</span>
+                                    </div>
+                                    <div class="explanation hidden mt-3 p-3 bg-green-900 bg-opacity-50 rounded">
+                                        <strong>Correct:</strong> The CloudWatch Agent can collect system-level metrics including memory utilization, disk usage, and other custom metrics not available by default.
+                                    </div>
+                                </div>
+                                
+                                <div class="answer-choice bg-gray-700 p-3 rounded cursor-pointer hover:bg-gray-600" onclick="toggleAnswer(this, false)">
+                                    <div class="flex items-center">
+                                        <span class="font-semibold mr-2">C.</span>
+                                        <span>Use AWS Systems Manager to collect memory metrics</span>
+                                    </div>
+                                    <div class="explanation hidden mt-3 p-3 bg-red-900 bg-opacity-50 rounded">
+                                        <strong>Incorrect:</strong> While Systems Manager can collect some metrics, CloudWatch Agent is the recommended solution for detailed system metrics.
+                                    </div>
+                                </div>
+                                
+                                <div class="answer-choice bg-gray-700 p-3 rounded cursor-pointer hover:bg-gray-600" onclick="toggleAnswer(this, false)">
+                                    <div class="flex items-center">
+                                        <span class="font-semibold mr-2">D.</span>
+                                        <span>Create custom metrics using the CloudWatch API</span>
+                                    </div>
+                                    <div class="explanation hidden mt-3 p-3 bg-red-900 bg-opacity-50 rounded">
+                                        <strong>Incorrect:</strong> While possible, this would require custom scripting and is not the best solution when CloudWatch Agent is available.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Question 2 -->
+            <section class="mb-12">
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <div class="flex items-start mb-4">
+                        <div class="bg-pink-600 text-white rounded-full w-8 h-8 flex items-center justify-center mr-4 font-bold">2</div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold mb-4">
+                                An application generates high-frequency metrics that need to be monitored in near real-time. The default 5-minute metric resolution is not sufficient. What should be implemented?
+                            </h3>
+                            
+                            <div class="space-y-3">
+                                <div class="answer-choice bg-gray-700 p-3 rounded cursor-pointer hover:bg-gray-600" onclick="toggleAnswer(this, false)">
+                                    <div class="flex items-center">
+                                        <span class="font-semibold mr-2">A.</span>
+                                        <span>Enable detailed monitoring for all AWS services</span>
+                                    </div>
+                                    <div class="explanation hidden mt-3 p-3 bg-red-900 bg-opacity-50 rounded">
+                                        <strong>Incorrect:</strong> Detailed monitoring only provides 1-minute resolution, which may still not be sufficient for high-frequency monitoring.
+                                    </div>
+                                </div>
+                                
+                                <div class="answer-choice bg-gray-700 p-3 rounded cursor-pointer hover:bg-gray-600" onclick="toggleAnswer(this, true)">
+                                    <div class="flex items-center">
+                                        <span class="font-semibold mr-2">B.</span>
+                                        <span>Publish high-resolution custom metrics with 1-second granularity</span>
+                                    </div>
+                                    <div class="explanation hidden mt-3 p-3 bg-green-900 bg-opacity-50 rounded">
+                                        <strong>Correct:</strong> High-resolution metrics can be published with up to 1-second granularity, enabling near real-time monitoring for critical applications.
+                                    </div>
+                                </div>
+                                
+                                <div class="answer-choice bg-gray-700 p-3 rounded cursor-pointer hover:bg-gray-600" onclick="toggleAnswer(this, false)">
+                                    <div class="flex items-center">
+                                        <span class="font-semibold mr-2">C.</span>
+                                        <span>Use CloudWatch Logs for real-time monitoring</span>
+                                    </div>
+                                    <div class="explanation hidden mt-3 p-3 bg-red-900 bg-opacity-50 rounded">
+                                        <strong>Incorrect:</strong> CloudWatch Logs is for log data, not metrics. While you can create metrics from logs, it's not the best solution for high-frequency metrics.
+                                    </div>
+                                </div>
+                                
+                                <div class="answer-choice bg-gray-700 p-3 rounded cursor-pointer hover:bg-gray-600" onclick="toggleAnswer(this, false)">
+                                    <div class="flex items-center">
+                                        <span class="font-semibold mr-2">D.</span>
+                                        <span>Implement a third-party monitoring solution</span>
+                                    </div>
+                                    <div class="explanation hidden mt-3 p-3 bg-red-900 bg-opacity-50 rounded">
+                                        <strong>Incorrect:</strong> CloudWatch supports high-resolution metrics natively, so there's no need for a third-party solution.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Question 3 -->
+            <section class="mb-12">
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <div class="flex items-start mb-4">
+                        <div class="bg-pink-600 text-white rounded-full w-8 h-8 flex items-center justify-center mr-4 font-bold">3</div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold mb-4">
+                                A company wants to automatically scale their Auto Scaling Group when CPU utilization exceeds 70% for 2 consecutive periods of 5 minutes. How should this be configured?
+                            </h3>
+                            
+                            <div class="space-y-3">
+                                <div class="answer-choice bg-gray-700 p-3 rounded cursor-pointer hover:bg-gray-600" onclick="toggleAnswer(this, false)">
+                                    <div class="flex items-center">
+                                        <span class="font-semibold mr-2">A.</span>
+                                        <span>Create an alarm with threshold 70%, period 5 minutes, evaluation periods 1</span>
+                                    </div>
+                                    <div class="explanation hidden mt-3 p-3 bg-red-900 bg-opacity-50 rounded">
+                                        <strong>Incorrect:</strong> This would trigger after only 1 period, not 2 consecutive periods as required.
+                                    </div>
+                                </div>
+                                
+                                <div class="answer-choice bg-gray-700 p-3 rounded cursor-pointer hover:bg-gray-600" onclick="toggleAnswer(this, true)">
+                                    <div class="flex items-center">
+                                        <span class="font-semibold mr-2">B.</span>
+                                        <span>Create an alarm with threshold 70%, period 5 minutes, evaluation periods 2, datapoints to alarm 2</span>
+                                    </div>
+                                    <div class="explanation hidden mt-3 p-3 bg-green-900 bg-opacity-50 rounded">
+                                        <strong>Correct:</strong> This configuration will trigger the alarm only when CPU exceeds 70% for 2 out of 2 consecutive 5-minute periods.
+                                    </div>
+                                </div>
+                                
+                                <div class="answer-choice bg-gray-700 p-3 rounded cursor-pointer hover:bg-gray-600" onclick="toggleAnswer(this, false)">
+                                    <div class="flex items-center">
+                                        <span class="font-semibold mr-2">C.</span>
+                                        <span>Create an alarm with threshold 70%, period 10 minutes, evaluation periods 1</span>
+                                    </div>
+                                    <div class="explanation hidden mt-3 p-3 bg-red-900 bg-opacity-50 rounded">
+                                        <strong>Incorrect:</strong> This uses a 10-minute period instead of the required 5-minute periods.
+                                    </div>
+                                </div>
+                                
+                                <div class="answer-choice bg-gray-700 p-3 rounded cursor-pointer hover:bg-gray-600" onclick="toggleAnswer(this, false)">
+                                    <div class="flex items-center">
+                                        <span class="font-semibold mr-2">D.</span>
+                                        <span>Create an alarm with threshold 70%, period 5 minutes, evaluation periods 2, datapoints to alarm 1</span>
+                                    </div>
+                                    <div class="explanation hidden mt-3 p-3 bg-red-900 bg-opacity-50 rounded">
+                                        <strong>Incorrect:</strong> This would trigger if only 1 out of 2 periods breaches the threshold, not requiring consecutive breaches.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Question 4 -->
+            <section class="mb-12">
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <div class="flex items-start mb-4">
+                        <div class="bg-pink-600 text-white rounded-full w-8 h-8 flex items-center justify-center mr-4 font-bold">4</div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold mb-4">
+                                A development team needs to analyze application logs to identify error patterns and create metrics from log data. Which CloudWatch feature should they use?
+                            </h3>
+                            
+                            <div class="space-y-3">
+                                <div class="answer-choice bg-gray-700 p-3 rounded cursor-pointer hover:bg-gray-600" onclick="toggleAnswer(this, false)">
+                                    <div class="flex items-center">
+                                        <span class="font-semibold mr-2">A.</span>
+                                        <span>CloudWatch Dashboards</span>
+                                    </div>
+                                    <div class="explanation hidden mt-3 p-3 bg-red-900 bg-opacity-50 rounded">
+                                        <strong>Incorrect:</strong> Dashboards are for visualization, not for analyzing log data or creating metrics from logs.
+                                    </div>
+                                </div>
+                                
+                                <div class="answer-choice bg-gray-700 p-3 rounded cursor-pointer hover:bg-gray-600" onclick="toggleAnswer(this, false)">
+                                    <div class="flex items-center">
+                                        <span class="font-semibold mr-2">B.</span>
+                                        <span>CloudWatch Alarms</span>
+                                    </div>
+                                    <div class="explanation hidden mt-3 p-3 bg-red-900 bg-opacity-50 rounded">
+                                        <strong>Incorrect:</strong> Alarms monitor metrics and trigger actions, but don't analyze log data or create metrics from logs.
+                                    </div>
+                                </div>
+                                
+                                <div class="answer-choice bg-gray-700 p-3 rounded cursor-pointer hover:bg-gray-600" onclick="toggleAnswer(this, true)">
+                                    <div class="flex items-center">
+                                        <span class="font-semibold mr-2">C.</span>
+                                        <span>CloudWatch Logs Insights and Metric Filters</span>
+                                    </div>
+                                    <div class="explanation hidden mt-3 p-3 bg-green-900 bg-opacity-50 rounded">
+                                        <strong>Correct:</strong> Logs Insights provides powerful querying capabilities for log analysis, while Metric Filters can create metrics from log data patterns.
+                                    </div>
+                                </div>
+                                
+                                <div class="answer-choice bg-gray-700 p-3 rounded cursor-pointer hover:bg-gray-600" onclick="toggleAnswer(this, false)">
+                                    <div class="flex items-center">
+                                        <span class="font-semibold mr-2">D.</span>
+                                        <span>CloudWatch Events</span>
+                                    </div>
+                                    <div class="explanation hidden mt-3 p-3 bg-red-900 bg-opacity-50 rounded">
+                                        <strong>Incorrect:</strong> CloudWatch Events (now EventBridge) is for event-driven architectures, not log analysis.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Question 5 -->
+            <section class="mb-12">
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <div class="flex items-start mb-4">
+                        <div class="bg-pink-600 text-white rounded-full w-8 h-8 flex items-center justify-center mr-4 font-bold">5</div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold mb-4">
+                                A company has multiple alarms that often trigger false positives due to temporary spikes. They want to create a more sophisticated alerting system that only triggers when multiple conditions are met. What should they implement?
+                            </h3>
+                            
+                            <div class="space-y-3">
+                                <div class="answer-choice bg-gray-700 p-3 rounded cursor-pointer hover:bg-gray-600" onclick="toggleAnswer(this, false)">
+                                    <div class="flex items-center">
+                                        <span class="font-semibold mr-2">A.</span>
+                                        <span>Increase the threshold values for all alarms</span>
+                                    </div>
+                                    <div class="explanation hidden mt-3 p-3 bg-red-900 bg-opacity-50 rounded">
+                                        <strong>Incorrect:</strong> Simply increasing thresholds might miss legitimate issues and doesn't address the need for multiple conditions.
+                                    </div>
+                                </div>
+                                
+                                <div class="answer-choice bg-gray-700 p-3 rounded cursor-pointer hover:bg-gray-600" onclick="toggleAnswer(this, false)">
+                                    <div class="flex items-center">
+                                        <span class="font-semibold mr-2">B.</span>
+                                        <span>Use longer evaluation periods for all alarms</span>
+                                    </div>
+                                    <div class="explanation hidden mt-3 p-3 bg-red-900 bg-opacity-50 rounded">
+                                        <strong>Incorrect:</strong> Longer periods might reduce false positives but delay legitimate alerts and don't provide complex logic.
+                                    </div>
+                                </div>
+                                
+                                <div class="answer-choice bg-gray-700 p-3 rounded cursor-pointer hover:bg-gray-600" onclick="toggleAnswer(this, true)">
+                                    <div class="flex items-center">
+                                        <span class="font-semibold mr-2">C.</span>
+                                        <span>Create composite alarms using Boolean logic (AND, OR, NOT)</span>
+                                    </div>
+                                    <div class="explanation hidden mt-3 p-3 bg-green-900 bg-opacity-50 rounded">
+                                        <strong>Correct:</strong> Composite alarms allow combining multiple alarms with Boolean logic to create sophisticated alerting rules and reduce false positives.
+                                    </div>
+                                </div>
+                                
+                                <div class="answer-choice bg-gray-700 p-3 rounded cursor-pointer hover:bg-gray-600" onclick="toggleAnswer(this, false)">
+                                    <div class="flex items-center">
+                                        <span class="font-semibold mr-2">D.</span>
+                                        <span>Disable all alarms and rely on manual monitoring</span>
+                                    </div>
+                                    <div class="explanation hidden mt-3 p-3 bg-red-900 bg-opacity-50 rounded">
+                                        <strong>Incorrect:</strong> Manual monitoring is not scalable and defeats the purpose of automated alerting.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Question 6 -->
+            <section class="mb-12">
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <div class="flex items-start mb-4">
+                        <div class="bg-pink-600 text-white rounded-full w-8 h-8 flex items-center justify-center mr-4 font-bold">6</div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold mb-4">
+                                An organization needs to retain CloudWatch Logs data for 7 years for compliance purposes, but the maximum retention period in CloudWatch Logs is 10 years. What is the most cost-effective solution?
+                            </h3>
+                            
+                            <div class="space-y-3">
+                                <div class="answer-choice bg-gray-700 p-3 rounded cursor-pointer hover:bg-gray-600" onclick="toggleAnswer(this, false)">
+                                    <div class="flex items-center">
+                                        <span class="font-semibold mr-2">A.</span>
+                                        <span>Set CloudWatch Logs retention to 10 years</span>
+                                    </div>
+                                    <div class="explanation hidden mt-3 p-3 bg-red-900 bg-opacity-50 rounded">
+                                        <strong>Incorrect:</strong> While this meets the requirement, it's not cost-effective as CloudWatch Logs storage is more expensive than S3 for long-term retention.
+                                    </div>
+                                </div>
+                                
+                                <div class="answer-choice bg-gray-700 p-3 rounded cursor-pointer hover:bg-gray-600" onclick="toggleAnswer(this, true)">
+                                    <div class="flex items-center">
+                                        <span class="font-semibold mr-2">B.</span>
+                                        <span>Export logs to S3 and use S3 lifecycle policies for long-term archival</span>
+                                    </div>
+                                    <div class="explanation hidden mt-3 p-3 bg-green-900 bg-opacity-50 rounded">
+                                        <strong>Correct:</strong> Exporting to S3 and using lifecycle policies (Glacier, Deep Archive) is the most cost-effective solution for long-term log retention.
+                                    </div>
+                                </div>
+                                
+                                <div class="answer-choice bg-gray-700 p-3 rounded cursor-pointer hover:bg-gray-600" onclick="toggleAnswer(this, false)">
+                                    <div class="flex items-center">
+                                        <span class="font-semibold mr-2">C.</span>
+                                        <span>Use multiple CloudWatch Logs accounts to extend retention</span>
+                                    </div>
+                                    <div class="explanation hidden mt-3 p-3 bg-red-900 bg-opacity-50 rounded">
+                                        <strong>Incorrect:</strong> This doesn't extend retention beyond the service limits and adds unnecessary complexity.
+                                    </div>
+                                </div>
+                                
+                                <div class="answer-choice bg-gray-700 p-3 rounded cursor-pointer hover:bg-gray-600" onclick="toggleAnswer(this, false)">
+                                    <div class="flex items-center">
+                                        <span class="font-semibold mr-2">D.</span>
+                                        <span>Store logs in EBS volumes attached to EC2 instances</span>
+                                    </div>
+                                    <div class="explanation hidden mt-3 p-3 bg-red-900 bg-opacity-50 rounded">
+                                        <strong>Incorrect:</strong> EBS storage is more expensive than S3 for archival and doesn't provide the durability and lifecycle management features needed.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Study Tips -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Study Tips for CloudWatch</h2>
+                <div class="space-y-4">
+                    <div class="bg-green-900 bg-opacity-50 border-l-4 border-green-500 p-4 rounded-lg">
+                        <h4 class="font-semibold text-green-400 mb-2">Understand Metric Types</h4>
+                        <p class="text-gray-300 text-sm">Know the difference between default AWS metrics and custom metrics. Understand when to use high-resolution metrics and their cost implications.</p>
+                    </div>
+                    
+                    <div class="bg-blue-900 bg-opacity-50 border-l-4 border-blue-500 p-4 rounded-lg">
+                        <h4 class="font-semibold text-blue-400 mb-2">Master Alarm Configuration</h4>
+                        <p class="text-gray-300 text-sm">Practice configuring alarms with different evaluation periods, datapoints to alarm, and missing data treatment options.</p>
+                    </div>
+                    
+                    <div class="bg-purple-900 bg-opacity-50 border-l-4 border-purple-500 p-4 rounded-lg">
+                        <h4 class="font-semibold text-purple-400 mb-2">Know Integration Points</h4>
+                        <p class="text-gray-300 text-sm">Understand how CloudWatch integrates with Auto Scaling, SNS, Lambda, and other AWS services for automated responses.</p>
+                    </div>
+                    
+                    <div class="bg-yellow-900 bg-opacity-50 border-l-4 border-yellow-500 p-4 rounded-lg">
+                        <h4 class="font-semibold text-yellow-400 mb-2">Practice Log Analysis</h4>
+                        <p class="text-gray-300 text-sm">Get hands-on experience with CloudWatch Logs Insights queries and metric filters to extract meaningful data from logs.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Key Exam Topics -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Key Exam Topics</h2>
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="font-semibold text-pink-400 mb-3">High-Priority Topics</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• CloudWatch Agent configuration</li>
+                                <li>• Custom metrics and dimensions</li>
+                                <li>• Alarm configuration and actions</li>
+                                <li>• Composite alarms</li>
+                                <li>• Log retention and export</li>
+                                <li>• Metric filters</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-pink-400 mb-3">Integration Scenarios</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Auto Scaling integration</li>
+                                <li>• SNS notification setup</li>
+                                <li>• Cross-region monitoring</li>
+                                <li>• Cost optimization strategies</li>
+                                <li>• Security and access control</li>
+                                <li>• Troubleshooting common issues</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script>
+        function toggleAnswer(element, isCorrect) {
+            const explanation = element.querySelector('.explanation');
+            const allExplanations = document.querySelectorAll('.explanation');
+            
+            // Hide all other explanations in the same question
+            const questionDiv = element.closest('.bg-gray-800');
+            const questionExplanations = questionDiv.querySelectorAll('.explanation');
+            questionExplanations.forEach(exp => {
+                if (exp !== explanation) {
+                    exp.classList.add('hidden');
+                    exp.parentElement.classList.remove('ring-2', 'ring-green-500', 'ring-red-500');
+                }
+            });
+            
+            // Toggle current explanation
+            explanation.classList.toggle('hidden');
+            
+            // Add visual feedback
+            if (!explanation.classList.contains('hidden')) {
+                element.classList.add('ring-2');
+                element.classList.add(isCorrect ? 'ring-green-500' : 'ring-red-500');
+            } else {
+                element.classList.remove('ring-2', 'ring-green-500', 'ring-red-500');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EC2 Fundamentals</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&amp;family=Open+Sans:wght@400;600&amp;family=Roboto+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            font-family: 'Open Sans', sans-serif;
+            width: 100vw;
+            overflow-x: hidden;
+        }
+        .slide-container {
+            width: 100vw;
+            min-height: 100vh;
+            background-color: #232F3E;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            color: #ffffff;
+        }
+        .aws-orange {
+            color: #FF9900;
+        }
+        .bg-aws-orange {
+            background-color: #FF9900;
+        }
+        .font-montserrat {
+            font-family: 'Montserrat', sans-serif;
+        }
+        .font-mono {
+            font-family: 'Roboto Mono', monospace;
+        }
+        
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            z-index: 10;
+            min-height: 100vh;
+        }
+        @media (min-width: 640px) {
+            .content-wrapper {
+                padding: 2rem;
+            }
+        }
+        @media (min-width: 1024px) {
+            .content-wrapper {
+                padding: 3rem;
+            }
+        }
+
+        /* Section Cards */
+        .section-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 24px;
+            border-left: 4px solid #FF9900;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 153, 0, 0.15);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            flex-shrink: 0;
+        }
+
+        /* Lists */
+        .feature-list li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            font-size: 0.95rem;
+        }
+        .feature-list li::before {
+            content: "•";
+            color: #FF9900;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            font-size: 1.2em;
+        }
+
+        /* Code Block */
+        .code-block {
+            background-color: #161b22;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: #e6edf3;
+            border: 1px solid #30363d;
+            margin-top: 10px;
+        }
+        
+        /* Grid Table for Families */
+        .family-grid {
+            display: grid;
+            grid-template-columns: 40px 1fr;
+            gap: 8px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+        .family-tag {
+            background-color: rgba(255,255,255,0.1);
+            color: #FF9900;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 4px;
+            padding: 2px 0;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Header Stripe -->
+<div class="absolute top-0 left-0 w-full h-2 bg-aws-orange z-20"></div>
+<div class="content-wrapper">
+        <!-- Navigation -->
+        <div class="mb-3 sm:mb-4">
+            <a href="index.html" class="inline-flex items-center text-aws-orange hover:text-white transition-colors text-sm sm:text-base">
+                <i class="fas fa-arrow-left mr-2"></i> Back to EC2 Topics
+            </a>
+        </div>
+<!-- Header -->
+<div class="flex flex-col sm:flex-row items-start sm:items-center mb-4 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4">
+<div class="bg-aws-orange p-2 rounded mr-4">
+<i class="fas fa-server text-white text-xl"></i>
+</div>
+<div>
+<h2 class="text-4xl font-montserrat font-bold text-white">EC2 Fundamentals</h2>
+<p class="text-gray-400 font-montserrat text-lg">Elastic Compute Cloud Core Concepts</p>
+</div>
+</div>
+<!-- Main Content Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 flex-1">
+<!-- Left Column -->
+<div class="flex flex-col gap-6">
+<!-- Instance Families -->
+<div class="section-card">
+<div class="flex items-center mb-4">
+<div class="icon-box">
+<i class="fas fa-layer-group aws-orange text-xl"></i>
+</div>
+<h3 class="text-2xl font-bold font-montserrat">Instance Families</h3>
+</div>
+<div class="text-gray-200 text-sm space-y-2">
+<div class="family-grid">
+<span class="family-tag">T/M</span>
+<span><strong class="text-white">General Purpose:</strong> Balanced resources for web servers.</span>
+</div>
+<div class="family-grid">
+<span class="family-tag">C</span>
+<span><strong class="text-white">Compute Optimized:</strong> High performance processors for batch processing, gaming.</span>
+</div>
+<div class="family-grid">
+<span class="family-tag">R</span>
+<span><strong class="text-white">Memory Optimized:</strong> RAM intensive for databases, caching.</span>
+</div>
+<div class="family-grid">
+<span class="family-tag">I/D</span>
+<span><strong class="text-white">Storage Optimized:</strong> High I/O for NoSQL DBs, data warehousing.</span>
+</div>
+<div class="family-grid">
+<span class="family-tag">P/G</span>
+<span><strong class="text-white">Accelerated:</strong> GPU for machine learning, graphics.</span>
+</div>
+</div>
+</div>
+<!-- Bootstrapping -->
+<div class="section-card">
+<div class="flex items-center mb-3">
+<div class="icon-box">
+<i class="fas fa-terminal aws-orange text-xl"></i>
+</div>
+<h3 class="text-2xl font-bold font-montserrat">Bootstrapping</h3>
+</div>
+<ul class="feature-list text-gray-200 text-sm mb-2">
+<li><strong class="text-white">User Data:</strong> Script run once at first launch with root privileges.</li>
+<li><strong class="text-white">IMDSv2:</strong> Securely access instance metadata (IP, AMI ID) from within the OS.</li>
+</ul>
+<div class="code-block font-mono">
+<span class="text-gray-500">#!/bin/bash</span><br/>
+yum update -y<br/>
+yum install -y httpd<br/>
+systemctl start httpd<br/>
+systemctl enable httpd<br/>
+echo <span class="text-green-300">"Hello World from $(hostname -f)"</span> &gt; /var/www/html/index.html
+                    </div>
+</div>
+</div>
+<!-- Right Column -->
+<div class="flex flex-col gap-6">
+<!-- Networking & Security -->
+<div class="section-card">
+<div class="flex items-center mb-4">
+<div class="icon-box">
+<i class="fas fa-shield-alt aws-orange text-xl"></i>
+</div>
+<h3 class="text-2xl font-bold font-montserrat">Security Groups</h3>
+</div>
+<p class="text-gray-300 text-sm mb-3">A virtual firewall that controls inbound and outbound traffic for your instances.</p>
+<ul class="feature-list text-gray-200">
+<li>
+<strong class="text-white">Stateful:</strong> If you send a request out, the response traffic is automatically allowed back in.
+                        </li>
+<li>
+<strong class="text-white">Allow Rules Only:</strong> You cannot explicitly deny traffic (use NACLs for deny rules).
+                        </li>
+<li>
+<strong class="text-white">Scope:</strong> Applied at the instance level (Network Interface), not the subnet level.
+                        </li>
+</ul>
+</div>
+<!-- Storage Options -->
+<div class="section-card">
+<div class="flex items-center mb-4">
+<div class="icon-box">
+<i class="fas fa-hdd aws-orange text-xl"></i>
+</div>
+<h3 class="text-2xl font-bold font-montserrat">Storage Options</h3>
+</div>
+<div class="space-y-4">
+<div>
+<h4 class="text-white font-bold mb-1 flex items-center text-sm"><i class="fas fa-network-wired text-aws-orange mr-2"></i> EBS (Elastic Block Store)</h4>
+<p class="text-gray-400 text-xs pl-6">Network drive. Persistent data. Can be detached and re-attached to other instances in the same AZ.</p>
+</div>
+<div>
+<h4 class="text-white font-bold mb-1 flex items-center text-sm"><i class="fas fa-microchip text-aws-orange mr-2"></i> Instance Store</h4>
+<p class="text-gray-400 text-xs pl-6">Physically attached to the host. Ephemeral (data is LOST if instance stops). Extremely high I/O performance.</p>
+</div>
+<div>
+<h4 class="text-white font-bold mb-1 flex items-center text-sm"><i class="fas fa-compact-disc text-aws-orange mr-2"></i> AMI (Amazon Machine Image)</h4>
+<p class="text-gray-400 text-xs pl-6">A template for the root volume (OS, app server, applications) used to launch instances.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Page Number -->
+<div class="text-right mt-4 text-gray-500 text-xs">
+            Page 5
+        </div>
+        
+        <!-- Navigation -->
+        <div class="flex justify-between mt-8 pt-6 border-t border-gray-700">
+            <div></div>
+            <a href="EC2-Instance-Types-Deep-Dive.html" class="inline-flex items-center bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                Next: Instance Types <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+        
+        <!-- Back to Topics -->
+        <div class="text-center mt-6">
+            <a href="index.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors mr-4">
+                <i class="fas fa-list mr-2"></i> Back to Topics
+            </a>
+            <a href="../index.html" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <i class="fas fa-home mr-2"></i> Back to Home
+            </a>
+        </div>
+        
+        <!-- Navigation -->
+        <div class="flex justify-between mt-8 pt-6 border-t border-gray-700">
+            <div></div>
+            <a href="EC2-Instance-Types-Deep-Dive.html" class="inline-flex items-center bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                Next: Instance Types <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+        
+        <!-- Back to Topics -->
+        <div class="text-center mt-6">
+            <a href="index.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors mr-4">
+                <i class="fas fa-list mr-2"></i> Back to Topics
+            </a>
+            <a href="../index.html" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <i class="fas fa-home mr-2"></i> Back to Home
+            </a>
+        </div>
+</div>
+</div>
+</body>
+</html>

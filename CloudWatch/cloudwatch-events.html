@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudWatch Events - AWS Solution Architect</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="../styles.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <nav class="mb-8">
+            <a href="index.html" class="text-aws-orange hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i>Back to CloudWatch
+            </a>
+        </nav>
+
+        <header class="text-center mb-12">
+            <div class="bg-yellow-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-bolt text-white text-3xl"></i>
+            </div>
+            <h1 class="text-4xl font-montserrat font-bold mb-4">CloudWatch Events</h1>
+            <p class="text-xl text-gray-300">Event-Driven Architecture & Automation</p>
+        </header>
+
+        <div class="max-w-4xl mx-auto">
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">CloudWatch Events Overview</h2>
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <p class="text-gray-300 mb-4">
+                        CloudWatch Events (now Amazon EventBridge) delivers a near real-time stream of system events that describe changes in AWS resources. You can create rules to match events and route them to targets for processing.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-gray-700 p-4 rounded-lg text-center">
+                            <i class="fas fa-eye text-yellow-400 text-2xl mb-2"></i>
+                            <h4 class="font-semibold text-yellow-400">Monitor</h4>
+                            <p class="text-sm text-gray-300">Watch for events</p>
+                        </div>
+                        <div class="bg-gray-700 p-4 rounded-lg text-center">
+                            <i class="fas fa-filter text-blue-400 text-2xl mb-2"></i>
+                            <h4 class="font-semibold text-blue-400">Filter</h4>
+                            <p class="text-sm text-gray-300">Match event patterns</p>
+                        </div>
+                        <div class="bg-gray-700 p-4 rounded-lg text-center">
+                            <i class="fas fa-cogs text-green-400 text-2xl mb-2"></i>
+                            <h4 class="font-semibold text-green-400">Act</h4>
+                            <p class="text-sm text-gray-300">Trigger responses</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Event Sources</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold mb-4 text-blue-400">AWS Services</h3>
+                        <ul class="text-sm text-gray-300 space-y-1">
+                            <li>• EC2 instance state changes</li>
+                            <li>• Auto Scaling events</li>
+                            <li>• CodePipeline state changes</li>
+                            <li>• S3 bucket notifications</li>
+                            <li>• CloudTrail API calls</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold mb-4 text-green-400">Custom Applications</h3>
+                        <ul class="text-sm text-gray-300 space-y-1">
+                            <li>• Application-generated events</li>
+                            <li>• Third-party integrations</li>
+                            <li>• Scheduled events (cron)</li>
+                            <li>• Custom event patterns</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Event Targets</h2>
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                        <div class="bg-gray-700 p-3 rounded-lg">
+                            <i class="fas fa-bolt text-yellow-400 text-xl mb-2"></i>
+                            <h4 class="text-sm font-semibold">Lambda</h4>
+                        </div>
+                        <div class="bg-gray-700 p-3 rounded-lg">
+                            <i class="fas fa-envelope text-blue-400 text-xl mb-2"></i>
+                            <h4 class="text-sm font-semibold">SNS</h4>
+                        </div>
+                        <div class="bg-gray-700 p-3 rounded-lg">
+                            <i class="fas fa-list text-green-400 text-xl mb-2"></i>
+                            <h4 class="text-sm font-semibold">SQS</h4>
+                        </div>
+                        <div class="bg-gray-700 p-3 rounded-lg">
+                            <i class="fas fa-stream text-purple-400 text-xl mb-2"></i>
+                            <h4 class="text-sm font-semibold">Kinesis</h4>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Key Takeaways</h2>
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <ul class="space-y-3 text-gray-300">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>CloudWatch Events enables event-driven architectures and automation</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>Rules match events and route them to multiple targets</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>Supports both AWS service events and custom application events</span>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

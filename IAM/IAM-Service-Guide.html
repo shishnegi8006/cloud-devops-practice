@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IAM Service Guide - Features & Use Cases</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, #232F3E 0%, #1a252f 50%, #0f1419 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .feature-card {
+            background: rgba(55, 65, 81, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        .feature-card:hover {
+            background: rgba(75, 85, 99, 0.8);
+            border-color: rgba(139, 92, 246, 0.3);
+            transform: translateY(-2px);
+        }
+        .aws-orange { color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-8">
+        <!-- Navigation -->
+        <div class="mb-8">
+            <a href="index.html" class="inline-flex items-center text-purple-400 hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Back to IAM Topics
+            </a>
+        </div>
+
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <div class="bg-gradient-to-r from-purple-600 to-purple-800 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-users text-white text-3xl"></i>
+            </div>
+            <h1 class="text-5xl font-montserrat font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">IAM Service Guide</h1>
+            <p class="text-xl text-gray-300">Complete reference with features, options, and real-world use cases</p>
+        </div>
+
+        <!-- Core Features -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Core IAM Features</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-purple-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-user text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Users</h3>
+                    <p class="text-gray-300 text-sm mb-4">Individual identities with unique credentials for accessing AWS resources.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Use Case:</strong></p>
+                        <p class="text-xs text-gray-300">Create separate accounts for each developer on your team</p>
+                    </div>
+                    <div class="text-xs text-purple-300">
+                        <strong>Best Practice:</strong> Enable MFA for all users
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-purple-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-users text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Groups</h3>
+                    <p class="text-gray-300 text-sm mb-4">Collections of users that share the same permissions.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Use Case:</strong></p>
+                        <p class="text-xs text-gray-300">Create "Developers" group with S3 read access, "Admins" group with full access</p>
+                    </div>
+                    <div class="text-xs text-purple-300">
+                        <strong>Best Practice:</strong> Assign permissions to groups, not individual users
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-purple-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-user-tag text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Roles</h3>
+                    <p class="text-gray-300 text-sm mb-4">Temporary permissions that can be assumed by users, applications, or services.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Use Case:</strong></p>
+                        <p class="text-xs text-gray-300">Allow EC2 instances to access S3 buckets without storing credentials</p>
+                    </div>
+                    <div class="text-xs text-purple-300">
+                        <strong>Best Practice:</strong> Use roles instead of access keys for applications
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-purple-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-file-contract text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Policies</h3>
+                    <p class="text-gray-300 text-sm mb-4">JSON documents that define permissions (what actions are allowed or denied).</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Use Case:</strong></p>
+                        <p class="text-xs text-gray-300">Allow read access to specific S3 bucket but deny delete operations</p>
+                    </div>
+                    <div class="text-xs text-purple-300">
+                        <strong>Best Practice:</strong> Use AWS managed policies when possible
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-purple-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-shield-alt text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Multi-Factor Authentication</h3>
+                    <p class="text-gray-300 text-sm mb-4">Additional security layer requiring a second form of authentication.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Use Case:</strong></p>
+                        <p class="text-xs text-gray-300">Protect admin accounts with Google Authenticator or hardware tokens</p>
+                    </div>
+                    <div class="text-xs text-purple-300">
+                        <strong>Best Practice:</strong> Mandatory for root account and privileged users
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-purple-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-key text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Access Keys</h3>
+                    <p class="text-gray-300 text-sm mb-4">Programmatic access credentials for API calls and CLI usage.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Use Case:</strong></p>
+                        <p class="text-xs text-gray-300">Allow applications to upload files to S3 or send emails via SES</p>
+                    </div>
+                    <div class="text-xs text-purple-300">
+                        <strong>Best Practice:</strong> Rotate keys regularly and use least privilege
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Advanced Features -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Advanced IAM Features</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <div class="feature-card rounded-xl p-6">
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Cross-Account Access</h3>
+                    <p class="text-gray-300 text-sm mb-4">Allow users from one AWS account to access resources in another account.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Real-World Example:</strong></p>
+                        <p class="text-xs text-gray-300">Development team accesses production S3 buckets for troubleshooting</p>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Identity Federation</h3>
+                    <p class="text-gray-300 text-sm mb-4">Allow users to sign in using external identity providers (Google, Microsoft, etc.).</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Real-World Example:</strong></p>
+                        <p class="text-xs text-gray-300">Employees use company Active Directory to access AWS console</p>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Permission Boundaries</h3>
+                    <p class="text-gray-300 text-sm mb-4">Set maximum permissions that a user or role can have.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Real-World Example:</strong></p>
+                        <p class="text-xs text-gray-300">Prevent developers from creating expensive resources like large EC2 instances</p>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Access Analyzer</h3>
+                    <p class="text-gray-300 text-sm mb-4">Identify resources shared with external entities and unused access.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Real-World Example:</strong></p>
+                        <p class="text-xs text-gray-300">Find S3 buckets accidentally made public or unused IAM roles</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Common Use Cases -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Common IAM Use Cases</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">Web Application Security</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300">Create IAM role for EC2 instances to access RDS database</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300">Use IAM policies to restrict S3 bucket access to specific IP ranges</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300">Enable MFA for admin users managing production resources</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">Team Management</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300">Create groups for different teams (Developers, QA, DevOps)</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300">Assign environment-specific permissions (dev, staging, prod)</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300">Use temporary credentials for contractors and external users</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="flex justify-between mt-8 pt-6 border-t border-gray-600">
+            <a href="IAM-Monitoring-Auditing.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Previous: Monitoring & Auditing
+            </a>
+            <a href="IAM-Service-Limitations.html" class="inline-flex items-center bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                Next: Service Limitations <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+        
+        <!-- Back to Topics -->
+        <div class="text-center mt-6">
+            <a href="index.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors mr-4">
+                <i class="fas fa-list mr-2"></i> Back to Topics
+            </a>
+            <a href="../index.html" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <i class="fas fa-home mr-2"></i> Back to Home
+            </a>
+        </div>
+
+    </div>
+</body>
+</html>

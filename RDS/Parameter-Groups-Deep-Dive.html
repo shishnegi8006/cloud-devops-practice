@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RDS Parameter Groups - AWS Study Guide</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="../styles.css" rel="stylesheet">
+</head>
+<body class="text-white">
+    <div class="w-full min-h-screen p-4 sm:p-6 lg:p-8">
+        <div class="mb-6">
+            <a href="index.html" class="inline-flex items-center text-aws-orange hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Back to RDS
+            </a>
+        </div>
+        
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-8">
+                <div class="bg-purple-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-cogs text-white text-2xl"></i>
+                </div>
+                <h1 class="text-4xl font-montserrat font-bold mb-4">RDS Parameter Groups</h1>
+                <p class="text-xl text-gray-300">Database Engine Configuration & Tuning</p>
+            </div>
+
+            <!-- Overview -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h2 class="text-2xl font-bold mb-4 aws-orange">What are Parameter Groups?</h2>
+                <p class="text-gray-300 mb-4">Parameter groups act as containers for engine configuration values that are applied to one or more DB instances. They provide a way to manage database engine settings and optimize performance for specific workloads.</p>
+                <div class="bg-purple-900 bg-opacity-30 border border-purple-500 rounded p-4">
+                    <p class="text-purple-200"><strong>Key Concepts:</strong> Engine-specific parameters, default and custom groups, static vs dynamic parameters, and parameter inheritance.</p>
+                </div>
+            </div>
+
+            <!-- Parameter Group Types -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 aws-orange">Parameter Group Types</h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-blue-400">DB Parameter Groups</h4>
+                        <div class="space-y-4">
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-blue-300">For RDS Instances</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Single instance:</strong> Applied to individual RDS instances</li>
+                                    <li>• <strong>Engine-specific:</strong> Different parameters per database engine</li>
+                                    <li>• <strong>Version-specific:</strong> Parameters vary by engine version</li>
+                                    <li>• <strong>Default groups:</strong> AWS-provided default configurations</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-blue-300">Supported Engines</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>MySQL:</strong> my.cnf configuration parameters</li>
+                                    <li>• <strong>PostgreSQL:</strong> postgresql.conf parameters</li>
+                                    <li>• <strong>Oracle:</strong> Oracle initialization parameters</li>
+                                    <li>• <strong>SQL Server:</strong> SQL Server configuration options</li>
+                                    <li>• <strong>MariaDB:</strong> MariaDB-specific parameters</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-green-400">DB Cluster Parameter Groups</h4>
+                        <div class="space-y-4">
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-green-300">For Aurora Clusters</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Cluster-wide:</strong> Applied to entire Aurora cluster</li>
+                                    <li>• <strong>All instances:</strong> Affects all cluster members</li>
+                                    <li>• <strong>Aurora-specific:</strong> Aurora-optimized parameters</li>
+                                    <li>• <strong>Global settings:</strong> Cluster-level configuration</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-green-300">Aurora Engines</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Aurora MySQL:</strong> MySQL-compatible parameters</li>
+                                    <li>• <strong>Aurora PostgreSQL:</strong> PostgreSQL-compatible parameters</li>
+                                    <li>• <strong>Enhanced features:</strong> Aurora-specific optimizations</li>
+                                    <li>• <strong>Performance tuning:</strong> Cloud-native optimizations</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parameter Types -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 aws-orange">Parameter Types & Behavior</h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold mb-3 text-yellow-400">Static Parameters</h4>
+                        <ul class="text-sm text-gray-300 space-y-2">
+                            <li>• <strong>Restart required:</strong> Changes need DB instance restart</li>
+                            <li>• <strong>Persistent:</strong> Values persist across restarts</li>
+                            <li>• <strong>System-level:</strong> Affect core database behavior</li>
+                            <li>• <strong>Examples:</strong> innodb_buffer_pool_size, shared_preload_libraries</li>
+                            <li>• <strong>Planning:</strong> Schedule maintenance windows for changes</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold mb-3 text-cyan-400">Dynamic Parameters</h4>
+                        <ul class="text-sm text-gray-300 space-y-2">
+                            <li>• <strong>Immediate effect:</strong> Applied without restart</li>
+                            <li>• <strong>Runtime changes:</strong> Modify during operation</li>
+                            <li>• <strong>Session-level:</strong> Can affect individual sessions</li>
+                            <li>• <strong>Examples:</strong> max_connections, query_cache_size</li>
+                            <li>• <strong>Flexibility:</strong> Real-time performance tuning</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold mb-3 text-red-400">System Parameters</h4>
+                        <ul class="text-sm text-gray-300 space-y-2">
+                            <li>• <strong>Read-only:</strong> Cannot be modified by users</li>
+                            <li>• <strong>AWS-managed:</strong> Controlled by AWS infrastructure</li>
+                            <li>• <strong>Instance-specific:</strong> Based on instance class</li>
+                            <li>• <strong>Examples:</strong> innodb_buffer_pool_instances</li>
+                            <li>• <strong>Optimization:</strong> AWS-optimized for performance</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Common Parameters by Engine -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 aws-orange">Common Parameters by Engine</h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-blue-400">MySQL Parameters</h4>
+                        <div class="space-y-4">
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-blue-300">Performance Parameters</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>innodb_buffer_pool_size:</strong> InnoDB buffer pool memory</li>
+                                    <li>• <strong>max_connections:</strong> Maximum concurrent connections</li>
+                                    <li>• <strong>query_cache_size:</strong> Query result cache size</li>
+                                    <li>• <strong>innodb_log_file_size:</strong> Transaction log file size</li>
+                                    <li>• <strong>tmp_table_size:</strong> Temporary table memory limit</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-blue-300">Security Parameters</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>ssl_ca:</strong> SSL certificate authority</li>
+                                    <li>• <strong>require_secure_transport:</strong> Force SSL connections</li>
+                                    <li>• <strong>log_bin_trust_function_creators:</strong> Binary logging security</li>
+                                    <li>• <strong>local_infile:</strong> Local file loading permissions</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-green-400">PostgreSQL Parameters</h4>
+                        <div class="space-y-4">
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-green-300">Memory Parameters</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>shared_buffers:</strong> Shared memory buffer size</li>
+                                    <li>• <strong>work_mem:</strong> Memory for query operations</li>
+                                    <li>• <strong>maintenance_work_mem:</strong> Memory for maintenance operations</li>
+                                    <li>• <strong>effective_cache_size:</strong> OS cache size estimate</li>
+                                    <li>• <strong>max_connections:</strong> Maximum concurrent connections</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-green-300">Logging Parameters</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>log_statement:</strong> SQL statement logging level</li>
+                                    <li>• <strong>log_min_duration_statement:</strong> Slow query threshold</li>
+                                    <li>• <strong>shared_preload_libraries:</strong> Preloaded extensions</li>
+                                    <li>• <strong>log_checkpoints:</strong> Checkpoint logging</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Tuning Examples -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 aws-orange">Performance Tuning Examples</h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-red-400">MySQL Optimization</h4>
+                        <div class="space-y-4">
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-red-300">Memory Optimization</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>innodb_buffer_pool_size:</strong> 70-80% of available RAM</li>
+                                    <li>• <strong>query_cache_size:</strong> 32MB-256MB for read-heavy workloads</li>
+                                    <li>• <strong>tmp_table_size:</strong> 64MB-512MB based on temp table usage</li>
+                                    <li>• <strong>sort_buffer_size:</strong> 2MB-16MB for sorting operations</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-red-300">Connection Tuning</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>max_connections:</strong> Based on application concurrency</li>
+                                    <li>• <strong>connect_timeout:</strong> 10-30 seconds for connection timeout</li>
+                                    <li>• <strong>wait_timeout:</strong> 300-3600 seconds for idle connections</li>
+                                    <li>• <strong>interactive_timeout:</strong> Match application behavior</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-blue-400">PostgreSQL Optimization</h4>
+                        <div class="space-y-4">
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-blue-300">Memory Configuration</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>shared_buffers:</strong> 25% of RAM for dedicated DB server</li>
+                                    <li>• <strong>work_mem:</strong> 4MB-64MB per query operation</li>
+                                    <li>• <strong>maintenance_work_mem:</strong> 256MB-2GB for maintenance</li>
+                                    <li>• <strong>effective_cache_size:</strong> 75% of total system memory</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-blue-300">Query Optimization</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>random_page_cost:</strong> 1.1-2.0 for SSD storage</li>
+                                    <li>• <strong>seq_page_cost:</strong> 1.0 baseline for sequential reads</li>
+                                    <li>• <strong>default_statistics_target:</strong> 100-1000 for query planning</li>
+                                    <li>• <strong>checkpoint_completion_target:</strong> 0.7-0.9 for smooth I/O</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exam Tips -->
+            <div class="bg-gradient-to-r from-purple-900 to-indigo-900 bg-opacity-50 rounded-lg p-6 border border-purple-500">
+                <h3 class="text-xl font-bold mb-4 text-purple-300">SAA-C03 Exam Key Points</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <ul class="text-sm text-purple-100 space-y-2">
+                            <li>• <strong>Parameter Types:</strong> Static (restart required) vs Dynamic (immediate effect)</li>
+                            <li>• <strong>Custom Groups:</strong> Cannot modify default parameter groups, must create custom</li>
+                            <li>• <strong>Engine Specific:</strong> Parameter groups are engine and version specific</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul class="text-sm text-purple-100 space-y-2">
+                            <li>• <strong>Performance Tuning:</strong> Buffer pool size, connections, memory allocation</li>
+                            <li>• <strong>Security:</strong> SSL enforcement, logging, access control parameters</li>
+                            <li>• <strong>Monitoring:</strong> Use CloudWatch and Performance Insights to track impact</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

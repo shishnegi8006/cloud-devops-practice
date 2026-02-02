@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudFront Fundamentals - CDN Basics</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, #232F3E 0%, #1a252f 100%);
+            min-height: 100vh;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(249, 115, 22, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(249, 115, 22, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        .slide-container {
+            background: rgba(17, 24, 39, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(249, 115, 22, 0.2);
+            min-height: calc(100vh - 2rem);
+        }
+        .content-card {
+            background: rgba(31, 41, 55, 0.6);
+            border-left: 4px solid #FF9900;
+            backdrop-filter: blur(5px);
+        }
+        .feature-list li {
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        .feature-list li::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            color: #F97316;
+            font-size: 0.8rem;
+        }
+        .exam-tip {
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(249, 115, 22, 0.05) 100%);
+            border: 1px solid rgba(249, 115, 22, 0.3);
+        }
+        .aws-orange { color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+    </style>
+</head>
+<body class="text-white">
+    <div class="slide-container rounded-lg mx-4 my-4 p-6 sm:p-8 lg:p-12">
+        <!-- Navigation -->
+        <div class="mb-6">
+            <a href="index.html" class="inline-flex items-center text-aws-orange hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Back to CloudFront Topics
+            </a>
+        </div>
+
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div class="bg-orange-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-globe text-white text-2xl"></i>
+            </div>
+            <h1 class="text-3xl sm:text-4xl font-montserrat font-bold mb-2">CloudFront Fundamentals</h1>
+            <p class="text-gray-400">Content Delivery Network Basics</p>
+            <div class="w-24 h-1 bg-aws-orange mx-auto mt-4"></div>
+        </div>
+
+        <!-- Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+            
+            <!-- CDN Concepts -->
+            <div class="content-card rounded-lg p-6">
+                <h2 class="text-2xl font-montserrat font-bold mb-4 text-orange-400">
+                    <i class="fas fa-network-wired mr-2"></i>CDN Concepts
+                </h2>
+                <ul class="feature-list space-y-3 text-gray-300">
+                    <li>Content Delivery Network distributes content globally</li>
+                    <li>Reduces latency by serving content from nearest edge location</li>
+                    <li>Caches static and dynamic content at edge locations</li>
+                    <li>Improves website performance and user experience</li>
+                    <li>Reduces load on origin servers</li>
+                    <li>Provides DDoS protection and security features</li>
+                </ul>
+            </div>
+
+            <!-- Edge Locations -->
+            <div class="content-card rounded-lg p-6">
+                <h2 class="text-2xl font-montserrat font-bold mb-4 text-blue-400">
+                    <i class="fas fa-map-marker-alt mr-2"></i>Edge Locations
+                </h2>
+                <ul class="feature-list space-y-3 text-gray-300">
+                    <li>400+ edge locations worldwide</li>
+                    <li>Located in major cities and regions</li>
+                    <li>Cache content closer to end users</li>
+                    <li>Regional Edge Caches for less popular content</li>
+                    <li>Automatic failover between edge locations</li>
+                    <li>Real-time metrics and monitoring</li>
+                </ul>
+            </div>
+
+            <!-- Distribution Types -->
+            <div class="content-card rounded-lg p-6">
+                <h2 class="text-2xl font-montserrat font-bold mb-4 text-green-400">
+                    <i class="fas fa-share-alt mr-2"></i>Distribution Types
+                </h2>
+                <ul class="feature-list space-y-3 text-gray-300">
+                    <li><strong>Web Distribution:</strong> Static and dynamic web content</li>
+                    <li><strong>RTMP Distribution:</strong> Media streaming (deprecated)</li>
+                    <li>Supports HTTP/HTTPS protocols</li>
+                    <li>Multiple origins per distribution</li>
+                    <li>Custom error pages and redirects</li>
+                    <li>Geographic restrictions and access control</li>
+                </ul>
+            </div>
+
+            <!-- Origins -->
+            <div class="content-card rounded-lg p-6">
+                <h2 class="text-2xl font-montserrat font-bold mb-4 text-purple-400">
+                    <i class="fas fa-server mr-2"></i>Origin Types
+                </h2>
+                <ul class="feature-list space-y-3 text-gray-300">
+                    <li><strong>S3 Bucket:</strong> Static website hosting and files</li>
+                    <li><strong>Custom Origin:</strong> EC2, ELB, on-premises servers</li>
+                    <li><strong>MediaStore:</strong> Video streaming content</li>
+                    <li><strong>MediaPackage:</strong> Live and on-demand video</li>
+                    <li>Origin failover and redundancy</li>
+                    <li>Custom headers and authentication</li>
+                </ul>
+            </div>
+
+            <!-- CloudFront Features -->
+            <div class="content-card rounded-lg p-6">
+                <h2 class="text-2xl font-montserrat font-bold mb-4 text-yellow-400">
+                    <i class="fas fa-star mr-2"></i>Key Features
+                </h2>
+                <ul class="feature-list space-y-3 text-gray-300">
+                    <li>Global content delivery with low latency</li>
+                    <li>SSL/TLS encryption and custom certificates</li>
+                    <li>Real-time logs and detailed analytics</li>
+                    <li>Integration with AWS WAF for security</li>
+                    <li>Lambda@Edge for edge computing</li>
+                    <li>HTTP/2 and IPv6 support</li>
+                </ul>
+            </div>
+
+            <!-- Pricing Model -->
+            <div class="content-card rounded-lg p-6">
+                <h2 class="text-2xl font-montserrat font-bold mb-4 text-red-400">
+                    <i class="fas fa-dollar-sign mr-2"></i>Pricing Model
+                </h2>
+                <ul class="feature-list space-y-3 text-gray-300">
+                    <li>Pay for data transfer out from edge locations</li>
+                    <li>HTTP/HTTPS requests pricing</li>
+                    <li>Regional pricing variations</li>
+                    <li>Free tier: 50 GB data transfer, 2M requests</li>
+                    <li>Price classes for cost optimization</li>
+                    <li>No upfront costs or minimum commitments</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- Exam Tips -->
+        <div class="exam-tip rounded-lg p-6 mt-8 max-w-4xl mx-auto">
+            <h3 class="text-xl font-montserrat font-bold mb-4 text-orange-400">
+                <i class="fas fa-lightbulb mr-2"></i>Exam Tips for CloudFront Fundamentals
+            </h3>
+            <ul class="feature-list space-y-2 text-gray-300">
+                <li>CloudFront is a global CDN service with 400+ edge locations</li>
+                <li>Edge locations cache content to reduce latency and improve performance</li>
+                <li>Supports both S3 and custom origins (EC2, ELB, on-premises)</li>
+                <li>Web distributions handle HTTP/HTTPS traffic for websites and APIs</li>
+                <li>Regional Edge Caches provide additional caching layer for less popular content</li>
+                <li>Integrates with other AWS services like WAF, Lambda@Edge, and Route 53</li>
+            </ul>
+        </div>
+
+        <!-- Page Number -->
+        <div class="text-center mt-8 text-gray-400">
+            <span class="text-sm">Page 1 of 7</span>
+        </div>
+        
+        <!-- Navigation -->
+        <div class="flex justify-between mt-8 pt-6 border-t border-gray-700">
+            <div></div>
+            <a href="caching-performance.html" class="inline-flex items-center bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                Next: Caching & Performance <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+        
+        <!-- Back to Topics -->
+        <div class="text-center mt-6">
+            <a href="index.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors mr-4">
+                <i class="fas fa-list mr-2"></i> Back to Topics
+            </a>
+            <a href="../index.html" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <i class="fas fa-home mr-2"></i> Back to Home
+            </a>
+        </div>
+    </div>
+</body>
+</html>

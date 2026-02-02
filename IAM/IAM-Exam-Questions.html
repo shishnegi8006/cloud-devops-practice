@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>IAM Exam Questions</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #232F3E;
+            width: 100vw;
+            overflow-x: hidden;
+        }
+        .slide-container {
+            width: 100vw;
+            min-height: 100vh;
+            background-color: #232F3E;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            color: #ffffff;
+        }
+        .aws-orange { color: #FF9900; }
+        .bg-aws-orange { background-color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+        
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            z-index: 10;
+            min-height: 100vh;
+        }
+        @media (min-width: 640px) {
+            .content-wrapper {
+                padding: 2rem;
+            }
+        }
+        @media (min-width: 1024px) {
+            .content-wrapper {
+                padding: 3rem;
+            }
+        }
+
+        .question-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #FF9900;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .answer-box {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid #22c55e;
+            border-radius: 6px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .option {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 0.5rem;
+            margin: 0.25rem 0;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .option:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .correct-answer {
+            background: rgba(34, 197, 94, 0.2);
+            border-left: 3px solid #22c55e;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="absolute top-0 left-0 w-full h-2 bg-aws-orange z-20"></div>
+        
+        <div class="content-wrapper">
+            <!-- Navigation -->
+            <div class="mb-3 sm:mb-4">
+                <a href="index.html" class="inline-flex items-center text-aws-orange hover:text-white transition-colors text-sm sm:text-base">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to IAM Topics
+                </a>
+            </div>
+
+            <!-- Header -->
+            <div class="flex flex-col sm:flex-row items-start sm:items-center mb-4 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4">
+                <div class="bg-aws-orange p-2 rounded mr-0 sm:mr-4 mb-3 sm:mb-0">
+                    <i class="fas fa-question-circle text-white text-lg sm:text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-montserrat font-bold text-white">IAM Exam Questions</h2>
+                    <p class="text-gray-400 font-montserrat text-sm sm:text-base lg:text-lg">Practice Questions with Detailed Answers</p>
+                </div>
+            </div>
+
+            <!-- Questions Section -->
+            <div class="max-w-4xl mx-auto w-full">
+                
+                <!-- Question 1 -->
+                <div class="question-card">
+                    <h3 class="font-bold text-lg mb-3 text-aws-orange">Question 1</h3>
+                    <p class="mb-4">Which IAM feature allows you to set the maximum permissions that an IAM entity can have?</p>
+                    <div class="space-y-2">
+                        <div class="option">A) IAM Policies</div>
+                        <div class="option correct-answer">B) Permission Boundaries</div>
+                        <div class="option">C) Service Control Policies (SCPs)</div>
+                        <div class="option">D) Access Control Lists (ACLs)</div>
+                    </div>
+                    <div class="answer-box">
+                        <p class="font-bold text-green-400 mb-2">Answer: B) Permission Boundaries</p>
+                        <p class="text-sm text-gray-300">Permission boundaries define the maximum permissions that an IAM entity (user or role) can have. They don't grant permissions but act as a filter to limit what permissions can be granted through identity-based policies.</p>
+                    </div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="question-card">
+                    <h3 class="font-bold text-lg mb-3 text-aws-orange">Question 2</h3>
+                    <p class="mb-4">What is the recommended way to provide AWS credentials to an application running on EC2?</p>
+                    <div class="space-y-2">
+                        <div class="option">A) Hard-code access keys in the application</div>
+                        <div class="option correct-answer">B) Use IAM roles attached to the EC2 instance</div>
+                        <div class="option">C) Store access keys in environment variables</div>
+                        <div class="option">D) Use IAM user credentials</div>
+                    </div>
+                    <div class="answer-box">
+                        <p class="font-bold text-green-400 mb-2">Answer: B) Use IAM roles attached to the EC2 instance</p>
+                        <p class="text-sm text-gray-300">IAM roles provide temporary credentials that are automatically rotated. This is the most secure method as it eliminates the need to manage long-term access keys and follows AWS security best practices.</p>
+                    </div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="question-card">
+                    <h3 class="font-bold text-lg mb-3 text-aws-orange">Question 3</h3>
+                    <p class="mb-4">Which service should you use to track all API calls made in your AWS account?</p>
+                    <div class="space-y-2">
+                        <div class="option correct-answer">A) AWS CloudTrail</div>
+                        <div class="option">B) AWS Config</div>
+                        <div class="option">C) AWS CloudWatch</div>
+                        <div class="option">D) AWS X-Ray</div>
+                    </div>
+                    <div class="answer-box">
+                        <p class="font-bold text-green-400 mb-2">Answer: A) AWS CloudTrail</p>
+                        <p class="text-sm text-gray-300">CloudTrail logs all API calls made to AWS services, including who made the call, when it was made, and what resources were accessed. This is essential for security auditing and compliance.</p>
+                    </div>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="question-card">
+                    <h3 class="font-bold text-lg mb-3 text-aws-orange">Question 4</h3>
+                    <p class="mb-4">What is the difference between IAM policies and resource-based policies?</p>
+                    <div class="space-y-2">
+                        <div class="option">A) There is no difference</div>
+                        <div class="option correct-answer">B) IAM policies are attached to identities, resource-based policies are attached to resources</div>
+                        <div class="option">C) IAM policies are for users, resource-based policies are for groups</div>
+                        <div class="option">D) Resource-based policies are deprecated</div>
+                    </div>
+                    <div class="answer-box">
+                        <p class="font-bold text-green-400 mb-2">Answer: B) IAM policies are attached to identities, resource-based policies are attached to resources</p>
+                        <p class="text-sm text-gray-300">IAM policies are attached to users, groups, or roles (identities) and define what actions they can perform. Resource-based policies are attached to resources (like S3 buckets) and define who can access the resource and what actions they can perform on it.</p>
+                    </div>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="question-card">
+                    <h3 class="font-bold text-lg mb-3 text-aws-orange">Question 5</h3>
+                    <p class="mb-4">Which MFA device provides the highest level of security for AWS root account access?</p>
+                    <div class="space-y-2">
+                        <div class="option">A) Virtual MFA device (smartphone app)</div>
+                        <div class="option correct-answer">B) Hardware MFA device (YubiKey)</div>
+                        <div class="option">C) SMS text message</div>
+                        <div class="option">D) Email verification</div>
+                    </div>
+                    <div class="answer-box">
+                        <p class="font-bold text-green-400 mb-2">Answer: B) Hardware MFA device (YubiKey)</p>
+                        <p class="text-sm text-gray-300">Hardware MFA devices like YubiKey provide the highest security as they are physical devices that cannot be compromised through software attacks. They support FIDO U2F standard and are recommended for root account protection.</p>
+                    </div>
+                </div>
+
+                <!-- Question 6 -->
+                <div class="question-card">
+                    <h3 class="font-bold text-lg mb-3 text-aws-orange">Question 6</h3>
+                    <p class="mb-4">What is the purpose of AWS STS (Security Token Service)?</p>
+                    <div class="space-y-2">
+                        <div class="option">A) To create permanent access keys</div>
+                        <div class="option correct-answer">B) To provide temporary security credentials</div>
+                        <div class="option">C) To manage IAM users</div>
+                        <div class="option">D) To encrypt data at rest</div>
+                    </div>
+                    <div class="answer-box">
+                        <p class="font-bold text-green-400 mb-2">Answer: B) To provide temporary security credentials</p>
+                        <p class="text-sm text-gray-300">AWS STS provides temporary, limited-privilege credentials for IAM users or federated users. These credentials consist of an access key ID, secret access key, and security token, and they automatically expire after a specified duration.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Page Number -->
+            <div class="text-right mt-4 text-gray-500 text-xs">
+                IAM Practice Questions
+            </div>
+            
+            <!-- Navigation -->
+            <div class="flex justify-between mt-8 pt-6 border-t border-gray-700">
+                <a href="IAM-Architecture-Questions.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                    <i class="fas fa-arrow-left mr-2"></i> Previous: Architecture Questions
+                </a>
+                <a href="IAM-Security-Diagram.html" class="inline-flex items-center bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                    Next: Security Diagram <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+            
+            <!-- Back to Topics -->
+            <div class="text-center mt-6">
+                <a href="index.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors mr-4">
+                    <i class="fas fa-list mr-2"></i> Back to Topics
+                </a>
+                <a href="../index.html" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                    <i class="fas fa-home mr-2"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

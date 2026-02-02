@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Monitoring & Performance - AWS Study Guide</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="../styles.css" rel="stylesheet">
+</head>
+<body class="text-white">
+    <div class="w-full min-h-screen p-4 sm:p-6 lg:p-8">
+        <div class="mb-6">
+            <a href="index.html" class="inline-flex items-center text-aws-orange hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Back to RDS
+            </a>
+        </div>
+        
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-8">
+                <div class="bg-green-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-chart-line text-white text-2xl"></i>
+                </div>
+                <h1 class="text-4xl font-montserrat font-bold mb-4">Database Monitoring & Performance</h1>
+                <p class="text-xl text-gray-300">Optimization & Performance Tuning Strategies</p>
+            </div>
+
+            <!-- Overview -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h2 class="text-2xl font-bold mb-4 aws-orange">Performance Monitoring Overview</h2>
+                <p class="text-gray-300 mb-4">AWS provides comprehensive monitoring and performance optimization tools for RDS and Aurora databases. Effective monitoring helps identify bottlenecks, optimize queries, and ensure optimal database performance.</p>
+                <div class="bg-green-900 bg-opacity-30 border border-green-500 rounded p-4">
+                    <p class="text-green-200"><strong>Key Monitoring Areas:</strong> CPU utilization, memory usage, I/O operations, connection counts, query performance, and storage metrics.</p>
+                </div>
+            </div>
+
+            <!-- CloudWatch Monitoring -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 aws-orange">Amazon CloudWatch Integration</h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-blue-400">Standard Metrics</h4>
+                        <div class="space-y-4">
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2">CPU & Memory</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>CPUUtilization:</strong> Percentage of CPU used</li>
+                                    <li>• <strong>FreeableMemory:</strong> Available RAM</li>
+                                    <li>• <strong>SwapUsage:</strong> Swap file utilization</li>
+                                    <li>• <strong>CPUCreditBalance:</strong> For burstable instances</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2">Storage & I/O</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>FreeStorageSpace:</strong> Available disk space</li>
+                                    <li>• <strong>ReadIOPS/WriteIOPS:</strong> I/O operations per second</li>
+                                    <li>• <strong>ReadLatency/WriteLatency:</strong> I/O response times</li>
+                                    <li>• <strong>ReadThroughput/WriteThroughput:</strong> Data transfer rates</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-green-400">Database Metrics</h4>
+                        <div class="space-y-4">
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2">Connections & Sessions</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>DatabaseConnections:</strong> Active connections</li>
+                                    <li>• <strong>ConnectionCount:</strong> Total connection count</li>
+                                    <li>• <strong>LoginFailures:</strong> Failed authentication attempts</li>
+                                    <li>• <strong>AbortedConnections:</strong> Terminated connections</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2">Query Performance</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Queries:</strong> Queries per second</li>
+                                    <li>• <strong>SlowQueries:</strong> Long-running queries</li>
+                                    <li>• <strong>SelectLatency:</strong> SELECT query response time</li>
+                                    <li>• <strong>DMLLatency:</strong> INSERT/UPDATE/DELETE latency</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Insights -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 aws-orange">RDS Performance Insights</h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2">
+                        <h4 class="text-xl font-semibold mb-4 text-purple-400">Advanced Database Monitoring</h4>
+                        <div class="space-y-4">
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2">Database Load Analysis</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Average Active Sessions (AAS):</strong> Database load metric</li>
+                                    <li>• <strong>Wait Events:</strong> Resource contention identification</li>
+                                    <li>• <strong>SQL Statements:</strong> Top resource-consuming queries</li>
+                                    <li>• <strong>Database Users:</strong> User activity analysis</li>
+                                    <li>• <strong>Host Analysis:</strong> Application server performance</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2">Wait Event Categories</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>CPU:</strong> Query processing and computation</li>
+                                    <li>• <strong>I/O:</strong> Disk read/write operations</li>
+                                    <li>• <strong>Lock:</strong> Row and table locking contention</li>
+                                    <li>• <strong>Buffer:</strong> Memory buffer management</li>
+                                    <li>• <strong>Network:</strong> Client communication delays</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-yellow-400">Key Features</h4>
+                        <div class="space-y-3">
+                            <div class="bg-gray-700 p-3 rounded">
+                                <h5 class="font-semibold text-yellow-300">Real-time Monitoring</h5>
+                                <p class="text-xs text-gray-300">Live database performance dashboard</p>
+                            </div>
+                            <div class="bg-gray-700 p-3 rounded">
+                                <h5 class="font-semibold text-yellow-300">Historical Analysis</h5>
+                                <p class="text-xs text-gray-300">Up to 2 years of performance data</p>
+                            </div>
+                            <div class="bg-gray-700 p-3 rounded">
+                                <h5 class="font-semibold text-yellow-300">Query Drill-down</h5>
+                                <p class="text-xs text-gray-300">Detailed SQL statement analysis</p>
+                            </div>
+                            <div class="bg-gray-700 p-3 rounded">
+                                <h5 class="font-semibold text-yellow-300">Anomaly Detection</h5>
+                                <p class="text-xs text-gray-300">Machine learning-based insights</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Monitoring -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 aws-orange">Enhanced Monitoring</h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-cyan-400">Operating System Metrics</h4>
+                        <div class="space-y-4">
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2">System Resources</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>CPU utilization:</strong> Per-core usage statistics</li>
+                                    <li>• <strong>Memory usage:</strong> Detailed memory breakdown</li>
+                                    <li>• <strong>Disk I/O:</strong> Device-level I/O metrics</li>
+                                    <li>• <strong>Network traffic:</strong> Bytes in/out per interface</li>
+                                    <li>• <strong>Process list:</strong> Running processes and resource usage</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibent mb-2">File System</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Disk space usage:</strong> Per-mount point utilization</li>
+                                    <li>• <strong>Inode usage:</strong> File system metadata consumption</li>
+                                    <li>• <strong>I/O statistics:</strong> Read/write operations per device</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-orange-400">Configuration & Setup</h4>
+                        <div class="space-y-4">
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2">Enabling Enhanced Monitoring</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• Enable during instance creation or modification</li>
+                                    <li>• Choose monitoring interval (1-60 seconds)</li>
+                                    <li>• IAM role for CloudWatch Logs access</li>
+                                    <li>• Additional charges apply</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2">Supported Engines</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• Amazon Aurora (MySQL and PostgreSQL)</li>
+                                    <li>• MySQL</li>
+                                    <li>• PostgreSQL</li>
+                                    <li>• MariaDB</li>
+                                    <li>• Oracle (some versions)</li>
+                                    <li>• SQL Server</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Optimization -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 aws-orange">Performance Optimization Strategies</h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold mb-3 text-red-400">Query Optimization</h4>
+                        <ul class="text-sm text-gray-300 space-y-2">
+                            <li>• <strong>Index optimization:</strong> Create appropriate indexes</li>
+                            <li>• <strong>Query analysis:</strong> Use EXPLAIN plans</li>
+                            <li>• <strong>Query rewriting:</strong> Optimize SQL statements</li>
+                            <li>• <strong>Parameterization:</strong> Use prepared statements</li>
+                            <li>• <strong>Statistics update:</strong> Keep table statistics current</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold mb-3 text-blue-400">Instance Optimization</h4>
+                        <ul class="text-sm text-gray-300 space-y-2">
+                            <li>• <strong>Instance sizing:</strong> Right-size compute resources</li>
+                            <li>• <strong>Storage type:</strong> Choose appropriate storage (gp2, gp3, io1)</li>
+                            <li>• <strong>Parameter tuning:</strong> Optimize database parameters</li>
+                            <li>• <strong>Connection pooling:</strong> Manage connection overhead</li>
+                            <li>• <strong>Read replicas:</strong> Scale read workloads</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold mb-3 text-green-400">Application Optimization</h4>
+                        <ul class="text-sm text-gray-300 space-y-2">
+                            <li>• <strong>Caching strategies:</strong> Implement application-level caching</li>
+                            <li>• <strong>Batch operations:</strong> Reduce round-trip overhead</li>
+                            <li>• <strong>Asynchronous processing:</strong> Offload heavy operations</li>
+                            <li>• <strong>Data partitioning:</strong> Distribute data effectively</li>
+                            <li>• <strong>Connection management:</strong> Optimize connection usage</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alerting & Automation -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 aws-orange">Alerting & Automation</h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-red-400">CloudWatch Alarms</h4>
+                        <div class="space-y-4">
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2">Critical Alerts</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>High CPU:</strong> > 80% for sustained periods</li>
+                                    <li>• <strong>Low memory:</strong> < 100MB available</li>
+                                    <li>• <strong>Storage full:</strong> < 10% free space</li>
+                                    <li>• <strong>Connection limit:</strong> > 80% of max connections</li>
+                                    <li>• <strong>High latency:</strong> Query response time thresholds</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2">Notification Actions</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• SNS topic notifications</li>
+                                    <li>• Email and SMS alerts</li>
+                                    <li>• Lambda function triggers</li>
+                                    <li>• Auto Scaling actions</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-purple-400">Automated Responses</h4>
+                        <div class="space-y-4">
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2">Auto Scaling</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Aurora Serverless:</strong> Automatic capacity scaling</li>
+                                    <li>• <strong>Read replica scaling:</strong> Add/remove replicas</li>
+                                    <li>• <strong>Storage scaling:</strong> Automatic storage growth</li>
+                                    <li>• <strong>Instance modification:</strong> Scheduled scaling events</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2">Remediation Actions</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• Automatic failover to standby</li>
+                                    <li>• Query termination for long-running queries</li>
+                                    <li>• Connection throttling</li>
+                                    <li>• Maintenance window scheduling</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exam Tips -->
+            <div class="bg-gradient-to-r from-green-900 to-teal-900 bg-opacity-50 rounded-lg p-6 border border-green-500">
+                <h3 class="text-xl font-bold mb-4 text-green-300">SAA-C03 Exam Key Points</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <ul class="text-sm text-green-100 space-y-2">
+                            <li>• <strong>Performance Insights:</strong> Advanced monitoring with AAS metric and wait events</li>
+                            <li>• <strong>Enhanced Monitoring:</strong> OS-level metrics with 1-60 second granularity</li>
+                            <li>• <strong>CloudWatch:</strong> Standard database metrics with 1-minute resolution</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul class="text-sm text-green-100 space-y-2">
+                            <li>• <strong>Optimization:</strong> Right-sizing, indexing, parameter tuning, read replicas</li>
+                            <li>• <strong>Alerting:</strong> CloudWatch alarms with SNS notifications and automated actions</li>
+                            <li>• <strong>Scaling:</strong> Aurora Serverless, read replicas, and storage auto-scaling</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

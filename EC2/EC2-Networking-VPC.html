@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EC2 Networking & VPC Integration</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            font-family: 'Open Sans', sans-serif;
+            width: 100vw;
+            overflow-x: hidden;
+        }
+        .slide-container {
+            width: 100vw;
+            min-height: 100vh;
+            background-color: #232F3E;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            color: #ffffff;
+        }
+        .aws-orange { color: #FF9900; }
+        .bg-aws-orange { background-color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+        .font-mono { font-family: 'Roboto Mono', monospace; }
+        
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            z-index: 10;
+            min-height: 100vh;
+        }
+        @media (min-width: 640px) {
+            .content-wrapper { padding: 2rem; }
+        }
+        @media (min-width: 1024px) {
+            .content-wrapper { padding: 3rem; }
+        }
+
+        .section-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 24px;
+            border-left: 4px solid #FF9900;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 153, 0, 0.15);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            flex-shrink: 0;
+        }
+
+        .network-diagram {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+            border: 1px solid rgba(255, 153, 0, 0.3);
+        }
+
+        .feature-list li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            font-size: 0.9rem;
+        }
+        .feature-list li::before {
+            content: "•";
+            color: #FF9900;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            font-size: 1.2em;
+        }
+
+        .code-block {
+            background-color: #161b22;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: #e6edf3;
+            border: 1px solid #30363d;
+            margin-top: 10px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+        .comparison-table th,
+        .comparison-table td {
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.85rem;
+        }
+        .comparison-table th {
+            background: rgba(255, 153, 0, 0.1);
+            color: #FF9900;
+            font-weight: bold;
+        }
+        .comparison-table td {
+            color: #e5e7eb;
+        }
+
+        .network-flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(59, 130, 246, 0.1);
+            padding: 12px;
+            border-radius: 6px;
+            margin: 8px 0;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .flow-step {
+            text-align: center;
+            flex: 1;
+            color: #93C5FD;
+            font-size: 0.8rem;
+        }
+
+        .flow-arrow {
+            color: #FF9900;
+            margin: 0 8px;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container">
+    <div class="absolute top-0 left-0 w-full h-2 bg-aws-orange z-20"></div>
+    <div class="content-wrapper">
+        <!-- Navigation -->
+        <div class="mb-3 sm:mb-4">
+            <a href="index.html" class="inline-flex items-center text-aws-orange hover:text-white transition-colors text-sm sm:text-base">
+                <i class="fas fa-arrow-left mr-2"></i> Back to EC2 Topics
+            </a>
+        </div>
+
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center mb-4 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4">
+            <div class="bg-aws-orange p-2 rounded mr-4">
+                <i class="fas fa-network-wired text-white text-xl"></i>
+            </div>
+            <div>
+                <h2 class="text-4xl font-montserrat font-bold text-white">EC2 Networking & VPC</h2>
+                <p class="text-gray-400 font-montserrat text-lg">Advanced Networking Features & Integration</p>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 lg:gap-8 flex-1">
+            
+            <!-- VPC Integration -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-cloud aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">VPC Integration</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">EC2 instances are launched within a Virtual Private Cloud (VPC) providing network isolation and control.</p>
+                
+                <div class="network-diagram">
+                    <div class="text-center text-aws-orange font-bold mb-3">VPC Architecture</div>
+                    <div class="network-flow">
+                        <div class="flow-step">
+                            <i class="fas fa-globe text-blue-400 text-lg mb-1"></i>
+                            <div>Internet Gateway</div>
+                        </div>
+                        <i class="fas fa-arrow-right flow-arrow"></i>
+                        <div class="flow-step">
+                            <i class="fas fa-route text-green-400 text-lg mb-1"></i>
+                            <div>Route Table</div>
+                        </div>
+                        <i class="fas fa-arrow-right flow-arrow"></i>
+                        <div class="flow-step">
+                            <i class="fas fa-network-wired text-purple-400 text-lg mb-1"></i>
+                            <div>Subnet</div>
+                        </div>
+                        <i class="fas fa-arrow-right flow-arrow"></i>
+                        <div class="flow-step">
+                            <i class="fas fa-server text-aws-orange text-lg mb-1"></i>
+                            <div>EC2 Instance</div>
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="feature-list text-gray-200">
+                    <li><strong class="text-white">Public Subnets:</strong> Instances have direct internet access via Internet Gateway</li>
+                    <li><strong class="text-white">Private Subnets:</strong> Instances access internet through NAT Gateway/Instance</li>
+                    <li><strong class="text-white">Multi-AZ:</strong> Deploy across multiple Availability Zones for high availability</li>
+                    <li><strong class="text-white">CIDR Blocks:</strong> Define IP address ranges for your VPC and subnets</li>
+                </ul>
+            </div>
+
+            <!-- Security Groups vs NACLs -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-shield-alt aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Security Groups vs NACLs</h3>
+                </div>
+                
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Security Groups</th>
+                            <th>NACLs</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Level</strong></td>
+                            <td>Instance (ENI)</td>
+                            <td>Subnet</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Rules</strong></td>
+                            <td>Allow only</td>
+                            <td>Allow & Deny</td>
+                        </tr>
+                        <tr>
+                            <td><strong>State</strong></td>
+                            <td>Stateful</td>
+                            <td>Stateless</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Rule Evaluation</strong></td>
+                            <td>All rules</td>
+                            <td>Numbered order</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Default</strong></td>
+                            <td>Deny all inbound</td>
+                            <td>Allow all</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="mt-4 p-3 bg-yellow-900 bg-opacity-30 rounded border-l-4 border-yellow-400">
+                    <h4 class="text-yellow-200 font-bold text-sm mb-2">Best Practice</h4>
+                    <p class="text-gray-300 text-xs">Use Security Groups as primary firewall, NACLs as additional subnet-level protection</p>
+                </div>
+            </div>
+
+            <!-- Elastic Network Interfaces -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-ethernet aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Elastic Network Interfaces</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">Virtual network cards that can be attached to EC2 instances for flexible networking.</p>
+                
+                <ul class="feature-list text-gray-200 mb-4">
+                    <li><strong class="text-white">Primary ENI:</strong> Cannot be detached, created with instance</li>
+                    <li><strong class="text-white">Secondary ENI:</strong> Can be attached/detached, moved between instances</li>
+                    <li><strong class="text-white">Attributes:</strong> Private IP, Elastic IP, MAC address, Security Groups</li>
+                    <li><strong class="text-white">Use Cases:</strong> Dual-homed instances, network appliances, licensing</li>
+                </ul>
+
+                <div class="code-block font-mono">
+                    <span class="text-gray-500"># Create and attach ENI</span><br/>
+                    aws ec2 create-network-interface \<br/>
+                    &nbsp;&nbsp;--subnet-id subnet-12345678 \<br/>
+                    &nbsp;&nbsp;--groups sg-12345678<br/><br/>
+                    aws ec2 attach-network-interface \<br/>
+                    &nbsp;&nbsp;--network-interface-id eni-12345678 \<br/>
+                    &nbsp;&nbsp;--instance-id i-12345678 \<br/>
+                    &nbsp;&nbsp;--device-index 1
+                </div>
+            </div>
+
+            <!-- Enhanced Networking -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-bolt aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Enhanced Networking</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">High-performance networking features for demanding applications.</p>
+                
+                <div class="space-y-4">
+                    <div class="bg-blue-900 bg-opacity-30 p-3 rounded border-l-4 border-blue-400">
+                        <h4 class="text-blue-200 font-bold text-sm mb-2"><i class="fas fa-tachometer-alt mr-2"></i>SR-IOV</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Single Root I/O Virtualization</li>
+                            <li>• Higher bandwidth, lower latency</li>
+                            <li>• Higher packet per second (PPS) performance</li>
+                            <li>• Available on most current generation instances</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-green-900 bg-opacity-30 p-3 rounded border-l-4 border-green-400">
+                        <h4 class="text-green-200 font-bold text-sm mb-2"><i class="fas fa-layer-group mr-2"></i>Elastic Fabric Adapter (EFA)</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• High Performance Computing (HPC) workloads</li>
+                            <li>• Bypass kernel for ultra-low latency</li>
+                            <li>• MPI (Message Passing Interface) support</li>
+                            <li>• Available on C5n, M5dn, M5n, R5dn, R5n instances</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-4 grid grid-cols-2 gap-4">
+                    <div class="text-center p-3 bg-purple-900 bg-opacity-30 rounded">
+                        <div class="text-lg font-bold text-purple-200">25 Gbps</div>
+                        <div class="text-xs text-gray-400">Network Performance</div>
+                    </div>
+                    <div class="text-center p-3 bg-purple-900 bg-opacity-30 rounded">
+                        <div class="text-lg font-bold text-purple-200">14M PPS</div>
+                        <div class="text-xs text-gray-400">Packets Per Second</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Placement Groups -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-object-group aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Placement Groups</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">Control instance placement to meet specific requirements for performance or availability.</p>
+                
+                <div class="space-y-4">
+                    <div class="bg-red-900 bg-opacity-30 p-3 rounded border-l-4 border-red-400">
+                        <h4 class="text-red-200 font-bold text-sm mb-2"><i class="fas fa-compress-arrows-alt mr-2"></i>Cluster</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Low latency, high network throughput</li>
+                            <li>• Same Availability Zone, close physical proximity</li>
+                            <li>• HPC applications, distributed databases</li>
+                            <li>• Risk: Single point of failure</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-yellow-900 bg-opacity-30 p-3 rounded border-l-4 border-yellow-400">
+                        <h4 class="text-yellow-200 font-bold text-sm mb-2"><i class="fas fa-expand-arrows-alt mr-2"></i>Spread</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Instances on distinct hardware</li>
+                            <li>• Maximum 7 instances per AZ</li>
+                            <li>• Critical applications requiring isolation</li>
+                            <li>• Reduces risk of simultaneous failures</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-cyan-900 bg-opacity-30 p-3 rounded border-l-4 border-cyan-400">
+                        <h4 class="text-cyan-200 font-bold text-sm mb-2"><i class="fas fa-th-large mr-2"></i>Partition</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Groups of instances in separate partitions</li>
+                            <li>• Up to 7 partitions per AZ</li>
+                            <li>• Large distributed systems (Hadoop, Cassandra)</li>
+                            <li>• Balance between performance and availability</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- IP Addressing -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-map-marker-alt aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">IP Addressing</h3>
+                </div>
+                
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="text-white font-bold text-sm mb-2"><i class="fas fa-home mr-2 text-aws-orange"></i>Private IP Addresses</h4>
+                        <ul class="feature-list text-gray-200 text-xs">
+                            <li>Assigned from subnet CIDR block</li>
+                            <li>Remains with instance during stop/start</li>
+                            <li>Used for internal VPC communication</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-white font-bold text-sm mb-2"><i class="fas fa-globe mr-2 text-aws-orange"></i>Public IP Addresses</h4>
+                        <ul class="feature-list text-gray-200 text-xs">
+                            <li>Dynamic, changes on stop/start</li>
+                            <li>Only for instances in public subnets</li>
+                            <li>Free when instance is running</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-white font-bold text-sm mb-2"><i class="fas fa-anchor mr-2 text-aws-orange"></i>Elastic IP Addresses</h4>
+                        <ul class="feature-list text-gray-200 text-xs">
+                            <li>Static public IP address</li>
+                            <li>Can be moved between instances</li>
+                            <li>Charged when not associated</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-4 p-3 bg-orange-900 bg-opacity-30 rounded border-l-4 border-orange-400">
+                    <h4 class="text-orange-200 font-bold text-sm mb-2">IPv6 Support</h4>
+                    <p class="text-gray-300 text-xs">VPC supports dual-stack (IPv4 and IPv6). IPv6 addresses are globally unique and public by default.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page Number -->
+        <div class="text-right mt-4 text-gray-500 text-xs">
+            EC2 Networking & VPC Integration
+        </div>
+        
+        <!-- Navigation -->
+        <div class="flex justify-between mt-8 pt-6 border-t border-gray-700">
+            <a href="EC2-Storage-Deep-Dive.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Previous: Storage Deep Dive
+            </a>
+            <a href="EC2-Pricing-and-Flexibility.html" class="inline-flex items-center bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                Next: Pricing & Flexibility <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+        
+        <!-- Back to Topics -->
+        <div class="text-center mt-6">
+            <a href="index.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors mr-4">
+                <i class="fas fa-list mr-2"></i> Back to Topics
+            </a>
+            <a href="../index.html" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <i class="fas fa-home mr-2"></i> Back to Home
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

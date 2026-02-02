@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HA & Scalability Architecture Diagrams</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, #232F3E 0%, #1a252f 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .aws-orange { color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+        .diagram-box {
+            background: rgba(55, 65, 81, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        .arrow {
+            border-left: 2px solid #14B8A6;
+            border-bottom: 2px solid #14B8A6;
+            transform: rotate(-45deg);
+            width: 20px;
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-8">
+        <!-- Navigation -->
+        <div class="mb-8">
+            <a href="index.html" class="inline-flex items-center text-teal-400 hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Back to HA & Scalability Topics
+            </a>
+        </div>
+
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <div class="bg-purple-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-sitemap text-white text-3xl"></i>
+            </div>
+            <h1 class="text-5xl font-montserrat font-bold mb-4">HA & Scalability Architecture</h1>
+            <p class="text-xl text-gray-300">Visual guide to high availability and scalable architecture patterns</p>
+        </div>
+
+        <!-- Multi-AZ Web Application Architecture -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center aws-orange">Multi-AZ Web Application Architecture</h2>
+            <div class="bg-gray-800 bg-opacity-50 rounded-xl p-8 border border-gray-600">
+                <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 items-center">
+                    
+                    <!-- Users -->
+                    <div class="text-center">
+                        <div class="diagram-box rounded-lg p-4 mb-4">
+                            <i class="fas fa-users text-4xl text-blue-400 mb-3"></i>
+                            <h3 class="text-lg font-semibold">Users</h3>
+                            <p class="text-sm text-gray-300">Global Traffic</p>
+                        </div>
+                        <div class="flex justify-center mb-4">
+                            <div class="arrow"></div>
+                        </div>
+                    </div>
+
+                    <!-- CloudFront -->
+                    <div class="text-center">
+                        <div class="diagram-box rounded-lg p-4 mb-4">
+                            <i class="fas fa-globe text-4xl text-green-400 mb-3"></i>
+                            <h3 class="text-lg font-semibold">CloudFront</h3>
+                            <p class="text-sm text-gray-300">CDN</p>
+                        </div>
+                        <div class="flex justify-center mb-4">
+                            <div class="arrow"></div>
+                        </div>
+                    </div>
+
+                    <!-- Application Load Balancer -->
+                    <div class="text-center">
+                        <div class="diagram-box rounded-lg p-4 mb-4">
+                            <i class="fas fa-balance-scale text-4xl text-teal-400 mb-3"></i>
+                            <h3 class="text-lg font-semibold">Application Load Balancer</h3>
+                            <p class="text-sm text-gray-300">Multi-AZ</p>
+                        </div>
+                        <div class="flex justify-center mb-4">
+                            <div class="arrow"></div>
+                        </div>
+                    </div>
+
+                    <!-- Auto Scaling Group -->
+                    <div class="text-center">
+                        <div class="diagram-box rounded-lg p-4 mb-4">
+                            <i class="fas fa-expand-arrows-alt text-4xl text-purple-400 mb-3"></i>
+                            <h3 class="text-lg font-semibold">Auto Scaling Group</h3>
+                            <p class="text-sm text-gray-300">EC2 Instances</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 text-xs">
+                            <div class="bg-purple-900 text-purple-200 px-2 py-1 rounded">AZ-1a</div>
+                            <div class="bg-purple-900 text-purple-200 px-2 py-1 rounded">AZ-1b</div>
+                        </div>
+                        <div class="flex justify-center mb-4 mt-2">
+                            <div class="arrow"></div>
+                        </div>
+                    </div>
+
+                    <!-- Database -->
+                    <div class="text-center">
+                        <div class="diagram-box rounded-lg p-4 mb-4">
+                            <i class="fas fa-database text-4xl text-orange-400 mb-3"></i>
+                            <h3 class="text-lg font-semibold">RDS Multi-AZ</h3>
+                            <p class="text-sm text-gray-300">Primary + Standby</p>
+                        </div>
+                        <div class="grid grid-cols-1 gap-2 text-xs">
+                            <div class="bg-orange-900 text-orange-200 px-2 py-1 rounded">Auto Failover</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Auto Scaling Architecture -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center aws-orange">Auto Scaling Architecture Pattern</h2>
+            <div class="bg-gray-800 bg-opacity-50 rounded-xl p-8 border border-gray-600">
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 items-center">
+                    
+                    <!-- CloudWatch Metrics -->
+                    <div class="text-center">
+                        <h3 class="text-lg font-semibold mb-4 text-blue-400">Monitoring</h3>
+                        <div class="space-y-3">
+                            <div class="diagram-box rounded-lg p-3">
+                                <i class="fas fa-chart-line text-2xl text-blue-400 mb-2"></i>
+                                <p class="text-sm">CloudWatch</p>
+                                <p class="text-xs text-gray-300">CPU, Memory</p>
+                            </div>
+                            <div class="diagram-box rounded-lg p-3">
+                                <i class="fas fa-heartbeat text-2xl text-green-400 mb-2"></i>
+                                <p class="text-sm">Health Checks</p>
+                                <p class="text-xs text-gray-300">ELB + EC2</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Auto Scaling Policies -->
+                    <div class="text-center">
+                        <h3 class="text-lg font-semibold mb-4 text-green-400">Scaling Policies</h3>
+                        <div class="space-y-3">
+                            <div class="diagram-box rounded-lg p-3">
+                                <p class="text-sm font-semibold">Target Tracking</p>
+                                <p class="text-xs text-gray-300">CPU > 70%</p>
+                            </div>
+                            <div class="diagram-box rounded-lg p-3">
+                                <p class="text-sm font-semibold">Step Scaling</p>
+                                <p class="text-xs text-gray-300">Custom Metrics</p>
+                            </div>
+                            <div class="diagram-box rounded-lg p-3">
+                                <p class="text-sm font-semibold">Scheduled</p>
+                                <p class="text-xs text-gray-300">Predictable Load</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Auto Scaling Group -->
+                    <div class="text-center">
+                        <h3 class="text-lg font-semibold mb-4 text-purple-400">Auto Scaling Group</h3>
+                        <div class="space-y-3">
+                            <div class="diagram-box rounded-lg p-3">
+                                <i class="fas fa-server text-2xl text-purple-400 mb-2"></i>
+                                <p class="text-sm">Min: 2</p>
+                                <p class="text-xs text-gray-300">Desired: 4</p>
+                                <p class="text-xs text-gray-300">Max: 10</p>
+                            </div>
+                            <div class="grid grid-cols-2 gap-1 text-xs">
+                                <div class="bg-purple-900 text-purple-200 px-1 py-1 rounded">AZ-1a</div>
+                                <div class="bg-purple-900 text-purple-200 px-1 py-1 rounded">AZ-1b</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Load Balancer -->
+                    <div class="text-center">
+                        <h3 class="text-lg font-semibold mb-4 text-teal-400">Load Balancer</h3>
+                        <div class="space-y-3">
+                            <div class="diagram-box rounded-lg p-3">
+                                <i class="fas fa-balance-scale text-2xl text-teal-400 mb-2"></i>
+                                <p class="text-sm">ALB</p>
+                                <p class="text-xs text-gray-300">Health Checks</p>
+                            </div>
+                            <div class="diagram-box rounded-lg p-3">
+                                <p class="text-sm">Auto Registration</p>
+                                <p class="text-xs text-gray-300">New Instances</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Load Balancer Types Comparison -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center aws-orange">Load Balancer Types Comparison</h2>
+            <div class="bg-gray-800 bg-opacity-50 rounded-xl p-8 border border-gray-600">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    
+                    <div class="diagram-box rounded-lg p-6 text-center">
+                        <i class="fas fa-layer-group text-4xl text-blue-400 mb-4"></i>
+                        <h3 class="text-lg font-semibold mb-3">Application Load Balancer</h3>
+                        <div class="space-y-2 text-sm text-gray-300">
+                            <p><strong>Layer:</strong> 7 (HTTP/HTTPS)</p>
+                            <p><strong>Routing:</strong> Path, Host, Header</p>
+                            <p><strong>Targets:</strong> EC2, IP, Lambda</p>
+                            <p><strong>Use Case:</strong> Web Applications</p>
+                        </div>
+                    </div>
+
+                    <div class="diagram-box rounded-lg p-6 text-center">
+                        <i class="fas fa-network-wired text-4xl text-green-400 mb-4"></i>
+                        <h3 class="text-lg font-semibold mb-3">Network Load Balancer</h3>
+                        <div class="space-y-2 text-sm text-gray-300">
+                            <p><strong>Layer:</strong> 4 (TCP/UDP)</p>
+                            <p><strong>Performance:</strong> Ultra-high</p>
+                            <p><strong>IP:</strong> Static IP support</p>
+                            <p><strong>Use Case:</strong> Gaming, IoT</p>
+                        </div>
+                    </div>
+
+                    <div class="diagram-box rounded-lg p-6 text-center">
+                        <i class="fas fa-shield-alt text-4xl text-purple-400 mb-4"></i>
+                        <h3 class="text-lg font-semibold mb-3">Gateway Load Balancer</h3>
+                        <div class="space-y-2 text-sm text-gray-300">
+                            <p><strong>Layer:</strong> 3 (Network)</p>
+                            <p><strong>Protocol:</strong> GENEVE</p>
+                            <p><strong>Targets:</strong> Appliances</p>
+                            <p><strong>Use Case:</strong> Firewalls, IDS</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Disaster Recovery Architecture -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center aws-orange">Disaster Recovery Architecture</h2>
+            <div class="bg-gray-800 bg-opacity-50 rounded-xl p-8 border border-gray-600">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    
+                    <!-- Primary Region -->
+                    <div class="text-center">
+                        <h3 class="text-xl font-semibold mb-4 text-blue-400">Primary Region (us-east-1)</h3>
+                        <div class="space-y-4">
+                            <div class="diagram-box rounded-lg p-4">
+                                <i class="fas fa-balance-scale text-3xl text-teal-400 mb-3"></i>
+                                <p class="font-semibold">Application Load Balancer</p>
+                                <p class="text-sm text-gray-300">Active Traffic</p>
+                            </div>
+                            <div class="diagram-box rounded-lg p-4">
+                                <i class="fas fa-expand-arrows-alt text-3xl text-purple-400 mb-3"></i>
+                                <p class="font-semibold">Auto Scaling Group</p>
+                                <p class="text-sm text-gray-300">Multi-AZ Deployment</p>
+                            </div>
+                            <div class="diagram-box rounded-lg p-4">
+                                <i class="fas fa-database text-3xl text-orange-400 mb-3"></i>
+                                <p class="font-semibold">RDS Primary</p>
+                                <p class="text-sm text-gray-300">Read/Write</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Secondary Region -->
+                    <div class="text-center">
+                        <h3 class="text-xl font-semibold mb-4 text-red-400">Secondary Region (us-west-2)</h3>
+                        <div class="space-y-4">
+                            <div class="diagram-box rounded-lg p-4 opacity-60">
+                                <i class="fas fa-balance-scale text-3xl text-teal-400 mb-3"></i>
+                                <p class="font-semibold">Application Load Balancer</p>
+                                <p class="text-sm text-gray-300">Standby</p>
+                            </div>
+                            <div class="diagram-box rounded-lg p-4 opacity-60">
+                                <i class="fas fa-expand-arrows-alt text-3xl text-purple-400 mb-3"></i>
+                                <p class="font-semibold">Auto Scaling Group</p>
+                                <p class="text-sm text-gray-300">Minimal Capacity</p>
+                            </div>
+                            <div class="diagram-box rounded-lg p-4">
+                                <i class="fas fa-database text-3xl text-green-400 mb-3"></i>
+                                <p class="font-semibold">RDS Read Replica</p>
+                                <p class="text-sm text-gray-300">Cross-Region</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                
+                <div class="text-center mt-6">
+                    <div class="bg-red-900 bg-opacity-50 rounded-lg p-4 inline-block">
+                        <i class="fas fa-exclamation-triangle text-red-400 mr-2"></i>
+                        <span class="text-red-300">Route 53 Health Checks + DNS Failover</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Best Practices Summary -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center aws-orange">Architecture Best Practices</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 text-green-400">High Availability</h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-3"></i>Deploy across multiple AZs</li>
+                        <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-3"></i>Use health checks and auto-recovery</li>
+                        <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-3"></i>Implement graceful degradation</li>
+                        <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-3"></i>Plan for disaster recovery</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 text-blue-400">Scalability</h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li class="flex items-start"><i class="fas fa-check text-blue-400 mt-1 mr-3"></i>Use Auto Scaling Groups</li>
+                        <li class="flex items-start"><i class="fas fa-check text-blue-400 mt-1 mr-3"></i>Implement proper monitoring</li>
+                        <li class="flex items-start"><i class="fas fa-check text-blue-400 mt-1 mr-3"></i>Design stateless applications</li>
+                        <li class="flex items-start"><i class="fas fa-check text-blue-400 mt-1 mr-3"></i>Use appropriate scaling policies</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

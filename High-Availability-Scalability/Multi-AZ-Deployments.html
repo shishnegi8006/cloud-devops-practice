@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-AZ Deployments</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Open Sans', sans-serif; background: linear-gradient(135deg, #232F3E 0%, #1a252f 50%, #0f1419 100%); min-height: 100vh; color: white; }
+        .feature-card { background: rgba(55, 65, 81, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.3s ease; backdrop-filter: blur(10px); }
+        .feature-card:hover { background: rgba(75, 85, 99, 0.8); border-color: rgba(59, 130, 246, 0.3); transform: translateY(-2px); }
+        .aws-orange { color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-8">
+        <div class="mb-8">
+            <a href="index.html" class="inline-flex items-center text-blue-400 hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Back to HA & Scalability Topics
+            </a>
+        </div>
+        <div class="text-center mb-12">
+            <div class="bg-gradient-to-r from-blue-600 to-blue-800 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-globe text-white text-3xl"></i>
+            </div>
+            <h1 class="text-5xl font-montserrat font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">Multi-AZ Deployments</h1>
+            <p class="text-xl text-gray-300">High availability across Availability Zones</p>
+        </div>
+
+        <!-- Multi-AZ Overview -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Multi-AZ Architecture Overview</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">What are Availability Zones?</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-building text-blue-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Physical Separation:</strong> Distinct data centers within a region</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-network-wired text-blue-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Low Latency:</strong> High-speed, low-latency network connections</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-shield-alt text-blue-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Fault Isolation:</strong> Independent power, cooling, and networking</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">Multi-AZ Benefits</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-heart text-blue-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>High Availability:</strong> 99.99% uptime SLA achievable</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-sync-alt text-blue-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Automatic Failover:</strong> Seamless failover mechanisms</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-chart-line text-blue-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Load Distribution:</strong> Traffic spread across zones</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RDS Multi-AZ -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">RDS Multi-AZ Deployments</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-blue-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-database text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Synchronous Replication</h3>
+                    <p class="text-gray-300 text-sm mb-4">Primary database synchronously replicates to standby in different AZ.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Features:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Zero data loss (RPO = 0)</li>
+                            <li>• Automatic failover</li>
+                            <li>• No read access to standby</li>
+                            <li>• Same region deployment</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-blue-300">
+                        <strong>RTO:</strong> 1-2 minutes for automatic failover
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-blue-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-sync-alt text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Automatic Failover</h3>
+                    <p class="text-gray-300 text-sm mb-4">AWS automatically handles failover without manual intervention.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Triggers:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Primary DB instance failure</li>
+                            <li>• AZ outage</li>
+                            <li>• DB instance server type change</li>
+                            <li>• OS patching</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-blue-300">
+                        <strong>Process:</strong> DNS record updated to standby
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-blue-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-tools text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Maintenance Benefits</h3>
+                    <p class="text-gray-300 text-sm mb-4">Zero-downtime maintenance and patching operations.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Operations:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• OS patching on standby first</li>
+                            <li>• Failover to patched standby</li>
+                            <li>• Patch original primary</li>
+                            <li>• Minimal downtime</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-blue-300">
+                        <strong>Benefit:</strong> Maintenance without service interruption
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-blue-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-copy text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Multi-AZ DB Clusters</h3>
+                    <p class="text-gray-300 text-sm mb-4">Enhanced Multi-AZ with readable standby replicas.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Features:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Up to 2 readable standbys</li>
+                            <li>• Read traffic distribution</li>
+                            <li>• Faster failover (< 35 seconds)</li>
+                            <li>• MySQL and PostgreSQL</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-blue-300">
+                        <strong>Advantage:</strong> Read scaling + high availability
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-blue-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-dollar-sign text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Cost Considerations</h3>
+                    <p class="text-gray-300 text-sm mb-4">Understanding the cost implications of Multi-AZ deployments.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Costs:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• ~2x instance cost</li>
+                            <li>• No additional storage cost</li>
+                            <li>• No data transfer charges</li>
+                            <li>• Backup from standby (free)</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-blue-300">
+                        <strong>ROI:</strong> Cost justified by availability gains
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-blue-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-chart-bar text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Performance Impact</h3>
+                    <p class="text-gray-300 text-sm mb-4">Minimal performance impact with synchronous replication.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Impact:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Slight write latency increase</li>
+                            <li>• No read performance impact</li>
+                            <li>• Network bandwidth usage</li>
+                            <li>• CPU overhead minimal</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-blue-300">
+                        <strong>Typical:</strong> 5-10% write latency increase
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EC2 Multi-AZ Patterns -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">EC2 Multi-AZ Deployment Patterns</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-green-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-balance-scale text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Load Balancer Distribution</h3>
+                    <p class="text-gray-300 text-sm mb-4">Distribute EC2 instances across multiple AZs with load balancing.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Configuration:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• ALB/NLB across multiple AZs</li>
+                            <li>• EC2 instances in each AZ</li>
+                            <li>• Health checks enabled</li>
+                            <li>• Cross-zone load balancing</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-green-300">
+                        <strong>Benefit:</strong> Automatic traffic rerouting on AZ failure
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-green-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-expand-arrows-alt text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Auto Scaling Groups</h3>
+                    <p class="text-gray-300 text-sm mb-4">ASG automatically maintains capacity across multiple AZs.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Features:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Even distribution across AZs</li>
+                            <li>• Automatic replacement</li>
+                            <li>• AZ rebalancing</li>
+                            <li>• Health check integration</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-green-300">
+                        <strong>Resilience:</strong> Survives single AZ failure
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-green-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-hdd text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">EBS Multi-AZ Strategy</h3>
+                    <p class="text-gray-300 text-sm mb-4">EBS volumes are AZ-specific, requiring backup and restore strategies.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Strategies:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Regular EBS snapshots</li>
+                            <li>• Cross-AZ snapshot copying</li>
+                            <li>• Automated backup policies</li>
+                            <li>• Fast Snapshot Restore</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-green-300">
+                        <strong>RTO:</strong> Depends on volume size and FSR
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Other AWS Services Multi-AZ -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Multi-AZ Support Across AWS Services</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="feature-card rounded-xl p-6">
+                    <h3 class="text-lg font-semibold mb-3 aws-orange">ElastiCache</h3>
+                    <p class="text-gray-300 text-sm mb-4">Redis Multi-AZ with automatic failover.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Features:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Primary/replica setup</li>
+                            <li>• Automatic failover</li>
+                            <li>• Read replicas</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <h3 class="text-lg font-semibold mb-3 aws-orange">EFS</h3>
+                    <p class="text-gray-300 text-sm mb-4">Elastic File System spans multiple AZs by default.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Features:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Regional service</li>
+                            <li>• Mount targets per AZ</li>
+                            <li>• Automatic replication</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <h3 class="text-lg font-semibold mb-3 aws-orange">S3</h3>
+                    <p class="text-gray-300 text-sm mb-4">S3 automatically replicates across AZs within a region.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Features:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• 11 9's durability</li>
+                            <li>• Automatic replication</li>
+                            <li>• Cross-region replication</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <h3 class="text-lg font-semibold mb-3 aws-orange">Lambda</h3>
+                    <p class="text-gray-300 text-sm mb-4">Lambda functions automatically run across multiple AZs.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Features:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Automatic AZ distribution</li>
+                            <li>• Built-in fault tolerance</li>
+                            <li>• No configuration needed</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Disaster Recovery Strategies -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Disaster Recovery Strategies</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">RTO vs RPO</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-clock text-blue-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>RTO (Recovery Time Objective):</strong> Maximum acceptable downtime</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-database text-blue-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>RPO (Recovery Point Objective):</strong> Maximum acceptable data loss</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-balance-scale text-blue-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Trade-off:</strong> Lower RTO/RPO = higher cost</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">DR Patterns</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-archive text-blue-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Backup & Restore:</strong> Lowest cost, highest RTO</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-lightbulb text-blue-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Pilot Light:</strong> Core systems ready, scale on demand</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-fire text-blue-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Warm Standby:</strong> Scaled-down version running</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-sync text-blue-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Multi-Site Active/Active:</strong> Lowest RTO, highest cost</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Best Practices -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Multi-AZ Best Practices</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">Design Principles</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Assume failure:</strong> Design for component and AZ failures</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Loose coupling:</strong> Minimize dependencies between AZs</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Stateless design:</strong> Store state externally when possible</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">Implementation Best Practices</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-heartbeat text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Health checks:</strong> Implement comprehensive health monitoring</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-vial text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Chaos testing:</strong> Regularly test failure scenarios</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-chart-line text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Monitoring:</strong> Track availability and performance metrics</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

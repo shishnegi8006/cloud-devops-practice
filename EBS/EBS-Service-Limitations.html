@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EBS Service Limitations - Elastic Block Store</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, #232F3E 0%, #1a252f 100%);
+            min-height: 100vh;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(147, 51, 234, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(147, 51, 234, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        .slide-container {
+            background: rgba(17, 24, 39, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(147, 51, 234, 0.2);
+            min-height: calc(100vh - 2rem);
+        }
+        .content-card {
+            background: rgba(31, 41, 55, 0.6);
+            border-left: 4px solid #FF9900;
+            backdrop-filter: blur(5px);
+        }
+        .feature-list li {
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        .feature-list li::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            color: #A855F7;
+            font-size: 0.8rem;
+        }
+        .exam-tip {
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.1) 0%, rgba(147, 51, 234, 0.05) 100%);
+            border: 1px solid rgba(147, 51, 234, 0.3);
+        }
+        .aws-orange { color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+    </style>
+</head>
+<body class="text-white">
+    <div class="slide-container rounded-lg mx-4 my-4 p-6 sm:p-8 lg:p-12">
+        <!-- Navigation -->
+        <div class="mb-6">
+            <a href="index.html" class="inline-flex items-center text-aws-orange hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Back to EBS Topics
+            </a>
+        </div>
+
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div class="bg-red-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-exclamation-triangle text-white text-2xl"></i>
+            </div>
+            <h1 class="text-3xl sm:text-4xl font-montserrat font-bold mb-2">EBS Service Limitations</h1>
+            <p class="text-gray-400">Elastic Block Store Quotas and Constraints</p>
+            <div class="w-24 h-1 bg-aws-orange mx-auto mt-4"></div>
+        </div>
+
+        <!-- Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+            
+            <!-- Volume Limits -->
+            <div class="content-card rounded-lg p-6">
+                <h2 class="text-2xl font-montserrat font-bold mb-4 text-purple-400">
+                    <i class="fas fa-hdd mr-2"></i>Volume Limits
+                </h2>
+                <ul class="feature-list space-y-3 text-gray-300">
+                    <li><strong>EBS volumes per Region:</strong> 5,000 (default)</li>
+                    <li><strong>EBS volumes per instance:</strong> No limit (depends on instance type)</li>
+                    <li><strong>Total EBS storage per Region:</strong> 300 TiB (default)</li>
+                    <li><strong>EBS snapshots per Region:</strong> 100,000</li>
+                    <li><strong>Concurrent snapshot copies per destination Region:</strong> 20</li>
+                    <li><strong>EBS Multi-Attach volumes per Region:</strong> 5 (default)</li>
+                    <li><strong>Instances per Multi-Attach volume:</strong> 16</li>
+                    <li><strong>Fast Snapshot Restore per snapshot:</strong> 50 AZs</li>
+                </ul>
+            </div>
+
+            <!-- Volume Size Limits -->
+            <div class="content-card rounded-lg p-6">
+                <h2 class="text-2xl font-montserrat font-bold mb-4 text-green-400">
+                    <i class="fas fa-expand-arrows-alt mr-2"></i>Volume Size Limits
+                </h2>
+                <ul class="feature-list space-y-3 text-gray-300">
+                    <li><strong>gp3 volumes:</strong> 1 GiB - 16 TiB</li>
+                    <li><strong>gp2 volumes:</strong> 1 GiB - 16 TiB</li>
+                    <li><strong>io2 Block Express:</strong> 4 GiB - 64 TiB</li>
+                    <li><strong>io2 volumes:</strong> 4 GiB - 16 TiB</li>
+                    <li><strong>io1 volumes:</strong> 4 GiB - 16 TiB</li>
+                    <li><strong>st1 volumes:</strong> 125 GiB - 16 TiB</li>
+                    <li><strong>sc1 volumes:</strong> 125 GiB - 16 TiB</li>
+                    <li><strong>Root volume size:</strong> 1 GiB - 16 TiB (varies by AMI)</li>
+                </ul>
+            </div>
+
+            <!-- Performance Limits -->
+            <div class="content-card rounded-lg p-6">
+                <h2 class="text-2xl font-montserrat font-bold mb-4 text-blue-400">
+                    <i class="fas fa-tachometer-alt mr-2"></i>Performance Limits
+                </h2>
+                <ul class="feature-list space-y-3 text-gray-300">
+                    <li><strong>gp3 max IOPS:</strong> 16,000 IOPS</li>
+                    <li><strong>gp3 max throughput:</strong> 1,000 MiB/s</li>
+                    <li><strong>gp2 max IOPS:</strong> 16,000 IOPS</li>
+                    <li><strong>io2 Block Express max IOPS:</strong> 256,000 IOPS</li>
+                    <li><strong>io2 max IOPS:</strong> 64,000 IOPS</li>
+                    <li><strong>io1 max IOPS:</strong> 64,000 IOPS</li>
+                    <li><strong>st1 max throughput:</strong> 500 MiB/s</li>
+                    <li><strong>sc1 max throughput:</strong> 250 MiB/s</li>
+                </ul>
+            </div>
+
+            <!-- Instance Attachment Limits -->
+            <div class="content-card rounded-lg p-6">
+                <h2 class="text-2xl font-montserrat font-bold mb-4 text-yellow-400">
+                    <i class="fas fa-plug mr-2"></i>Instance Attachment Limits
+                </h2>
+                <ul class="feature-list space-y-3 text-gray-300">
+                    <li><strong>Nitro instances:</strong> 28 EBS volumes (including root)</li>
+                    <li><strong>Non-Nitro instances:</strong> 40 EBS volumes (including root)</li>
+                    <li><strong>EBS bandwidth per instance:</strong> Up to 80 Gbps (varies by type)</li>
+                    <li><strong>EBS-optimized bandwidth:</strong> Dedicated EBS bandwidth</li>
+                    <li><strong>Boot volume attachment:</strong> 1 per instance</li>
+                    <li><strong>Multi-Attach supported instances:</strong> Nitro-based only</li>
+                    <li><strong>Multi-Attach supported volume types:</strong> io1, io2 only</li>
+                    <li><strong>Multi-Attach same AZ requirement:</strong> Yes</li>
+                </ul>
+            </div>
+
+            <!-- Snapshot Limits -->
+            <div class="content-card rounded-lg p-6">
+                <h2 class="text-2xl font-montserrat font-bold mb-4 text-cyan-400">
+                    <i class="fas fa-camera mr-2"></i>Snapshot Limits
+                </h2>
+                <ul class="feature-list space-y-3 text-gray-300">
+                    <li><strong>Snapshots per Region:</strong> 100,000</li>
+                    <li><strong>Concurrent snapshots per volume:</strong> 1</li>
+                    <li><strong>Snapshot copy requests per destination Region:</strong> 20</li>
+                    <li><strong>Fast Snapshot Restore per snapshot:</strong> 50 AZs</li>
+                    <li><strong>Snapshot sharing:</strong> Up to 1,000 AWS accounts</li>
+                    <li><strong>Public snapshot sharing:</strong> Supported</li>
+                    <li><strong>Cross-region snapshot copy:</strong> Supported</li>
+                    <li><strong>Incremental snapshot storage:</strong> Only changed blocks</li>
+                </ul>
+            </div>
+
+            <!-- Encryption and Security -->
+            <div class="content-card rounded-lg p-6">
+                <h2 class="text-2xl font-montserrat font-bold mb-4 text-red-400">
+                    <i class="fas fa-lock mr-2"></i>Encryption & Security Limits
+                </h2>
+                <ul class="feature-list space-y-3 text-gray-300">
+                    <li><strong>KMS keys per Region:</strong> 10,000 customer managed keys</li>
+                    <li><strong>Encryption by default:</strong> Per Region setting</li>
+                    <li><strong>Cross-region encrypted snapshot copy:</strong> Supported</li>
+                    <li><strong>Encryption key change:</strong> Not supported after creation</li>
+                    <li><strong>Unencrypted to encrypted conversion:</strong> Via snapshot copy</li>
+                    <li><strong>In-transit encryption:</strong> Between instance and EBS</li>
+                    <li><strong>Performance impact of encryption:</strong> Minimal</li>
+                    <li><strong>Boot volume encryption:</strong> Supported</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- Exam Tips -->
+        <div class="exam-tip rounded-lg p-6 mt-8 max-w-4xl mx-auto">
+            <h3 class="text-xl font-montserrat font-bold mb-4 text-purple-400">
+                <i class="fas fa-lightbulb mr-2"></i>Exam Tips for EBS Service Limitations
+            </h3>
+            <ul class="feature-list space-y-2 text-gray-300">
+                <li>Most EBS limits are soft limits that can be increased via AWS Support</li>
+                <li>Multi-Attach is only supported on io1 and io2 volumes with Nitro instances</li>
+                <li>gp3 offers independent IOPS and throughput scaling up to 16,000 IOPS and 1,000 MiB/s</li>
+                <li>io2 Block Express provides the highest performance with up to 256,000 IOPS</li>
+                <li>EBS-optimized instances provide dedicated bandwidth for EBS traffic</li>
+                <li>Fast Snapshot Restore eliminates initialization latency but has cost implications</li>
+                <li>Encryption cannot be removed once enabled, but can be added via snapshot copy</li>
+            </ul>
+        </div>
+
+        <!-- Page Number -->
+        <div class="text-center mt-8 text-gray-400">
+            <span class="text-sm">Page 7 of 7</span>
+        </div>
+    </div>
+</body>
+</html>

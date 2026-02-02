@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EBS Use Cases</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Open Sans', sans-serif; background: linear-gradient(135deg, #232F3E 0%, #1a252f 50%, #0f1419 100%); min-height: 100vh; color: white; }
+        .feature-card { background: rgba(55, 65, 81, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.3s ease; backdrop-filter: blur(10px); }
+        .feature-card:hover { background: rgba(75, 85, 99, 0.8); border-color: rgba(245, 158, 11, 0.3); transform: translateY(-2px); }
+        .aws-orange { color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-8">
+        <div class="mb-8">
+            <a href="index.html" class="inline-flex items-center text-yellow-400 hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Back to EBS Topics
+            </a>
+        </div>
+        <div class="text-center mb-12">
+            <div class="bg-gradient-to-r from-yellow-600 to-yellow-800 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-lightbulb text-white text-3xl"></i>
+            </div>
+            <h1 class="text-5xl font-montserrat font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">EBS Use Cases</h1>
+            <p class="text-xl text-gray-300">Real-world applications and implementation patterns</p>
+        </div>
+
+        <!-- Database Storage -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Database Storage</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-yellow-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-database text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">OLTP Databases</h3>
+                    <p class="text-gray-300 text-sm mb-4">Online Transaction Processing databases requiring high IOPS.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Recommended:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• io2 for mission-critical</li>
+                            <li>• io1 for high performance</li>
+                            <li>• gp3 for moderate workloads</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Examples:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• MySQL, PostgreSQL</li>
+                            <li>• Oracle Database</li>
+                            <li>• SQL Server</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-yellow-300">
+                        <strong>Key Requirement:</strong> Consistent low latency
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-yellow-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-chart-bar text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Data Warehouses</h3>
+                    <p class="text-gray-300 text-sm mb-4">Analytics databases optimized for sequential read operations.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Recommended:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• st1 for large sequential scans</li>
+                            <li>• gp3 for mixed workloads</li>
+                            <li>• sc1 for archival data</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Examples:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Amazon Redshift</li>
+                            <li>• Apache Spark</li>
+                            <li>• Hadoop HDFS</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-yellow-300">
+                        <strong>Key Requirement:</strong> High throughput
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-yellow-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-layer-group text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">NoSQL Databases</h3>
+                    <p class="text-gray-300 text-sm mb-4">Document and key-value stores with varying performance needs.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Recommended:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• gp3 for general purpose</li>
+                            <li>• io2 for high-performance</li>
+                            <li>• st1 for analytics workloads</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Examples:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• MongoDB</li>
+                            <li>• Cassandra</li>
+                            <li>• Elasticsearch</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-yellow-300">
+                        <strong>Key Requirement:</strong> Scalable performance
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- File Systems -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">File System Storage</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-blue-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-folder text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">General Purpose File Systems</h3>
+                    <p class="text-gray-300 text-sm mb-4">Standard file systems for application data and user files.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Recommended:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• gp3 for balanced performance</li>
+                            <li>• gp2 for cost-sensitive workloads</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>File Systems:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• ext4, xfs (Linux)</li>
+                            <li>• NTFS (Windows)</li>
+                            <li>• APFS (macOS)</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-blue-300">
+                        <strong>Use Case:</strong> Web servers, application storage
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-blue-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-video text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Media & Content Storage</h3>
+                    <p class="text-gray-300 text-sm mb-4">Storage for media files, content management, and streaming.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Recommended:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• st1 for large media files</li>
+                            <li>• gp3 for mixed access patterns</li>
+                            <li>• sc1 for archival content</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Applications:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Video editing workflows</li>
+                            <li>• Content delivery systems</li>
+                            <li>• Digital asset management</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-blue-300">
+                        <strong>Key Requirement:</strong> High throughput for large files
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-blue-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-share-alt text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Shared File Systems</h3>
+                    <p class="text-gray-300 text-sm mb-4">Cluster file systems for multi-instance access.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Recommended:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• io2 with Multi-Attach</li>
+                            <li>• io1 for legacy systems</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>File Systems:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• OCFS2 (Oracle)</li>
+                            <li>• GFS2 (Red Hat)</li>
+                            <li>• Lustre (HPC)</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-blue-300">
+                        <strong>Use Case:</strong> HPC, clustered applications
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Boot Volumes -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Boot Volume Scenarios</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-green-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-power-off text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Standard Boot Volumes</h3>
+                    <p class="text-gray-300 text-sm mb-4">Root volumes for general-purpose EC2 instances.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Recommended:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• gp3 for balanced performance</li>
+                            <li>• gp2 for cost optimization</li>
+                            <li>• 8-20 GB typical size</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Features:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Delete on termination</li>
+                            <li>• Encryption by default</li>
+                            <li>• Snapshot for AMI creation</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-green-300">
+                        <strong>Best For:</strong> Web servers, development instances
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-green-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-rocket text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">High-Performance Boot</h3>
+                    <p class="text-gray-300 text-sm mb-4">Fast boot volumes for performance-critical applications.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Recommended:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• io2 for fastest boot times</li>
+                            <li>• gp3 with higher IOPS</li>
+                            <li>• Larger volumes for caching</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Use Cases:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Database servers</li>
+                            <li>• Application servers</li>
+                            <li>• Container hosts</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-green-300">
+                        <strong>Benefit:</strong> Reduced startup time
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-green-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-shield-alt text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Secure Boot Volumes</h3>
+                    <p class="text-gray-300 text-sm mb-4">Encrypted boot volumes for compliance and security.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Features:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• KMS encryption enabled</li>
+                            <li>• Customer managed keys</li>
+                            <li>• Encrypted snapshots</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Compliance:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• HIPAA requirements</li>
+                            <li>• PCI DSS compliance</li>
+                            <li>• Government workloads</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-green-300">
+                        <strong>Requirement:</strong> Data protection at rest
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enterprise Applications -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Enterprise Applications</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-purple-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-building text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">ERP Systems</h3>
+                    <p class="text-gray-300 text-sm mb-4">Enterprise Resource Planning systems with mixed workload patterns.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Recommended Configuration:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Database: io2 for transaction logs</li>
+                            <li>• Application: gp3 for application files</li>
+                            <li>• Archive: st1 for historical data</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Examples:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• SAP systems</li>
+                            <li>• Oracle E-Business Suite</li>
+                            <li>• Microsoft Dynamics</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-purple-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-chart-line text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Business Intelligence</h3>
+                    <p class="text-gray-300 text-sm mb-4">BI and analytics platforms requiring high throughput for data processing.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Recommended Configuration:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Data warehouse: st1 for large scans</li>
+                            <li>• OLAP cubes: gp3 for random access</li>
+                            <li>• ETL staging: st1 for bulk operations</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Platforms:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Tableau Server</li>
+                            <li>• Microsoft Power BI</li>
+                            <li>• Apache Superset</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Development & Testing -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Development & Testing</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-indigo-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-code text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Development Environments</h3>
+                    <p class="text-gray-300 text-sm mb-4">Cost-effective storage for development and testing workloads.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Recommended:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• gp2 for cost optimization</li>
+                            <li>• gp3 for better performance</li>
+                            <li>• Smaller volume sizes</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-indigo-300">
+                        <strong>Focus:</strong> Cost over performance
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-indigo-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-vial text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Performance Testing</h3>
+                    <p class="text-gray-300 text-sm mb-4">High-performance storage for load testing and benchmarking.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Recommended:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• io2 for maximum IOPS</li>
+                            <li>• gp3 with provisioned performance</li>
+                            <li>• Multiple volumes for scaling</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-indigo-300">
+                        <strong>Goal:</strong> Simulate production performance
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-indigo-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-copy text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Data Staging</h3>
+                    <p class="text-gray-300 text-sm mb-4">Temporary storage for data processing and ETL operations.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Recommended:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• st1 for large data sets</li>
+                            <li>• gp3 for mixed operations</li>
+                            <li>• sc1 for infrequent access</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-indigo-300">
+                        <strong>Pattern:</strong> High throughput, temporary storage
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Volume Selection Guide -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Volume Selection Guide</h2>
+            <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600 overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-gray-600">
+                            <th class="text-left py-3 px-4 text-aws-orange">Use Case</th>
+                            <th class="text-left py-3 px-4 text-aws-orange">Primary Choice</th>
+                            <th class="text-left py-3 px-4 text-aws-orange">Alternative</th>
+                            <th class="text-left py-3 px-4 text-aws-orange">Key Consideration</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-300">
+                        <tr class="border-b border-gray-700">
+                            <td class="py-3 px-4 font-semibold">OLTP Database</td>
+                            <td class="py-3 px-4">io2</td>
+                            <td class="py-3 px-4">gp3</td>
+                            <td class="py-3 px-4">Consistent low latency</td>
+                        </tr>
+                        <tr class="border-b border-gray-700">
+                            <td class="py-3 px-4 font-semibold">Data Warehouse</td>
+                            <td class="py-3 px-4">st1</td>
+                            <td class="py-3 px-4">gp3</td>
+                            <td class="py-3 px-4">Sequential throughput</td>
+                        </tr>
+                        <tr class="border-b border-gray-700">
+                            <td class="py-3 px-4 font-semibold">Web Server</td>
+                            <td class="py-3 px-4">gp3</td>
+                            <td class="py-3 px-4">gp2</td>
+                            <td class="py-3 px-4">Balanced performance/cost</td>
+                        </tr>
+                        <tr class="border-b border-gray-700">
+                            <td class="py-3 px-4 font-semibold">Boot Volume</td>
+                            <td class="py-3 px-4">gp3</td>
+                            <td class="py-3 px-4">gp2</td>
+                            <td class="py-3 px-4">Fast boot times</td>
+                        </tr>
+                        <tr class="border-b border-gray-700">
+                            <td class="py-3 px-4 font-semibold">Big Data Analytics</td>
+                            <td class="py-3 px-4">st1</td>
+                            <td class="py-3 px-4">gp3</td>
+                            <td class="py-3 px-4">Large file processing</td>
+                        </tr>
+                        <tr class="border-b border-gray-700">
+                            <td class="py-3 px-4 font-semibold">Archive Storage</td>
+                            <td class="py-3 px-4">sc1</td>
+                            <td class="py-3 px-4">st1</td>
+                            <td class="py-3 px-4">Lowest cost per GB</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4 font-semibold">Shared Cluster Storage</td>
+                            <td class="py-3 px-4">io2 Multi-Attach</td>
+                            <td class="py-3 px-4">io1 Multi-Attach</td>
+                            <td class="py-3 px-4">Concurrent access</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Best Practices -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Implementation Best Practices</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">Performance Optimization</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Right-size volumes:</strong> Match volume type to workload pattern</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Monitor metrics:</strong> Use CloudWatch to track performance</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Pre-warm volumes:</strong> Initialize from snapshots when possible</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">Cost Management</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-dollar-sign text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Start small:</strong> Begin with gp3 and scale as needed</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-chart-line text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Regular review:</strong> Analyze usage patterns quarterly</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-tags text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Tag resources:</strong> Enable cost allocation and tracking</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

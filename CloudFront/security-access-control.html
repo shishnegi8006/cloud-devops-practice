@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security & Access Control - CloudFront</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Open Sans', sans-serif; background: linear-gradient(135deg, #232F3E 0%, #1a252f 100%); min-height: 100vh; position: relative; }
+        body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: radial-gradient(circle at 25% 25%, rgba(249, 115, 22, 0.1) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(249, 115, 22, 0.05) 0%, transparent 50%); pointer-events: none; z-index: -1; }
+        .slide-container { background: rgba(17, 24, 39, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(249, 115, 22, 0.2); min-height: calc(100vh - 2rem); }
+        .content-card { background: rgba(31, 41, 55, 0.6); border-left: 4px solid #FF9900; backdrop-filter: blur(5px); }
+        .feature-list li { position: relative; padding-left: 1.5rem; }
+        .feature-list li::before { content: '▶'; position: absolute; left: 0; color: #F97316; font-size: 0.8rem; }
+        .exam-tip { background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(249, 115, 22, 0.05) 100%); border: 1px solid rgba(249, 115, 22, 0.3); }
+        .aws-orange { color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+    </style>
+</head>
+<body class="text-white">
+    <div class="slide-container rounded-lg mx-4 my-4 p-6 sm:p-8 lg:p-12">
+        <div class="mb-6">
+            <a href="index.html" class="inline-flex items-center text-aws-orange hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Back to CloudFront Topics
+            </a>
+        </div>
+        <div class="text-center mb-8">
+            <div class="bg-red-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-shield-alt text-white text-2xl"></i>
+            </div>
+            <h1 class="text-3xl sm:text-4xl font-montserrat font-bold mb-2">Security & Access Control</h1>
+            <p class="text-gray-400">Protection Mechanisms</p>
+            <div class="w-24 h-1 bg-aws-orange mx-auto mt-4"></div>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+            <div class="content-card rounded-lg p-6">
+                <h2 class="text-2xl font-montserrat font-bold mb-4 text-red-400">
+                    <i class="fas fa-key mr-2"></i>Origin Access Identity (OAI)
+                </h2>
+                <ul class="feature-list space-y-3 text-gray-300">
+                    <li>Restricts direct access to S3 bucket content</li>
+                    <li>Forces users to access content through CloudFront</li>
+                    <li>Special CloudFront user for S3 bucket access</li>
+                    <li>Prevents bypassing CloudFront security features</li>
+                    <li>Works only with S3 origins, not custom origins</li>
+                </ul>
+            </div>
+            <div class="content-card rounded-lg p-6">
+                <h2 class="text-2xl font-montserrat font-bold mb-4 text-yellow-400">
+                    <i class="fas fa-signature mr-2"></i>Signed URLs & Cookies
+                </h2>
+                <ul class="feature-list space-y-3 text-gray-300">
+                    <li>Control access to premium or private content</li>
+                    <li>Time-based access with expiration dates</li>
+                    <li>IP address restrictions for additional security</li>
+                    <li>Signed URLs for individual files</li>
+                    <li>Signed cookies for multiple files or streaming</li>
+                </ul>
+            </div>
+        </div>
+        <div class="exam-tip rounded-lg p-6 mt-8 max-w-4xl mx-auto">
+            <h3 class="text-xl font-montserrat font-bold mb-4 text-red-400">
+                <i class="fas fa-lightbulb mr-2"></i>Exam Tips for Security & Access Control
+            </h3>
+            <ul class="feature-list space-y-2 text-gray-300">
+                <li>OAI prevents direct S3 access, forcing traffic through CloudFront</li>
+                <li>Signed URLs/cookies provide time-limited access to private content</li>
+                <li>WAF integration protects against common web attacks</li>
+                <li>SSL/TLS encryption secures data in transit</li>
+            </ul>
+        </div>
+        <div class="text-center mt-8 text-gray-400">
+            <span class="text-sm">Page 3 of 7</span>
+        </div>
+        
+        <!-- Navigation -->
+        <div class="flex justify-between mt-8 pt-6 border-t border-gray-700">
+            <a href="caching-performance.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Previous: Caching & Performance
+            </a>
+            <a href="global-accelerator.html" class="inline-flex items-center bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                Next: Global Accelerator <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+        
+        <!-- Back to Topics -->
+        <div class="text-center mt-6">
+            <a href="index.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors mr-4">
+                <i class="fas fa-list mr-2"></i> Back to Topics
+            </a>
+            <a href="../index.html" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <i class="fas fa-home mr-2"></i> Back to Home
+            </a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>EC2 Exam Questions</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #232F3E;
+            width: 100vw;
+            overflow-x: hidden;
+        }
+        .slide-container {
+            width: 100vw;
+            min-height: 100vh;
+            background-color: #232F3E;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            color: #ffffff;
+        }
+        .aws-orange { color: #FF9900; }
+        .bg-aws-orange { background-color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+        
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            z-index: 10;
+            min-height: 100vh;
+        }
+        @media (min-width: 640px) {
+            .content-wrapper {
+                padding: 2rem;
+            }
+        }
+        @media (min-width: 1024px) {
+            .content-wrapper {
+                padding: 3rem;
+            }
+        }
+
+        .question-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #FF9900;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .answer-box {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid #22c55e;
+            border-radius: 6px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .option {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 0.5rem;
+            margin: 0.25rem 0;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .option:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .correct-answer {
+            background: rgba(34, 197, 94, 0.2);
+            border-left: 3px solid #22c55e;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="absolute top-0 left-0 w-full h-2 bg-aws-orange z-20"></div>
+        
+        <div class="content-wrapper">
+            <!-- Navigation -->
+            <div class="mb-3 sm:mb-4">
+                <a href="index.html" class="inline-flex items-center text-aws-orange hover:text-white transition-colors text-sm sm:text-base">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to EC2 Topics
+                </a>
+            </div>
+
+            <!-- Header -->
+            <div class="flex flex-col sm:flex-row items-start sm:items-center mb-4 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4">
+                <div class="bg-aws-orange p-2 rounded mr-0 sm:mr-4 mb-3 sm:mb-0">
+                    <i class="fas fa-question-circle text-white text-lg sm:text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-montserrat font-bold text-white">EC2 Exam Questions</h2>
+                    <p class="text-gray-400 font-montserrat text-sm sm:text-base lg:text-lg">Practice Questions with Detailed Answers</p>
+                </div>
+            </div>
+
+            <!-- Questions Section -->
+            <div class="max-w-4xl mx-auto w-full">
+                
+                <!-- Question 1 -->
+                <div class="question-card">
+                    <h3 class="font-bold text-lg mb-3 text-aws-orange">Question 1</h3>
+                    <p class="mb-4">Which EC2 instance type is best suited for high-performance databases and in-memory analytics?</p>
+                    <div class="space-y-2">
+                        <div class="option">A) T3 (General Purpose)</div>
+                        <div class="option">B) C5 (Compute Optimized)</div>
+                        <div class="option correct-answer">C) R5 (Memory Optimized)</div>
+                        <div class="option">D) I3 (Storage Optimized)</div>
+                    </div>
+                    <div class="answer-box">
+                        <p class="font-bold text-green-400 mb-2">Answer: C) R5 (Memory Optimized)</p>
+                        <p class="text-sm text-gray-300">R5 instances are memory optimized and provide high memory-to-vCPU ratios, making them ideal for memory-intensive applications like high-performance databases, in-memory analytics, and real-time big data analytics.</p>
+                    </div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="question-card">
+                    <h3 class="font-bold text-lg mb-3 text-aws-orange">Question 2</h3>
+                    <p class="mb-4">What happens to data stored on instance store volumes when an EC2 instance is stopped?</p>
+                    <div class="space-y-2">
+                        <div class="option">A) Data is preserved and available when the instance restarts</div>
+                        <div class="option correct-answer">B) Data is permanently lost</div>
+                        <div class="option">C) Data is automatically backed up to S3</div>
+                        <div class="option">D) Data is moved to EBS volumes</div>
+                    </div>
+                    <div class="answer-box">
+                        <p class="font-bold text-green-400 mb-2">Answer: B) Data is permanently lost</p>
+                        <p class="text-sm text-gray-300">Instance store volumes provide temporary block-level storage. Data is lost when the instance stops, terminates, or fails. This is why instance store is called "ephemeral storage" and should only be used for temporary data, caches, or data that can be recreated.</p>
+                    </div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="question-card">
+                    <h3 class="font-bold text-lg mb-3 text-aws-orange">Question 3</h3>
+                    <p class="mb-4">Which placement group type provides the lowest network latency between instances?</p>
+                    <div class="space-y-2">
+                        <div class="option correct-answer">A) Cluster placement group</div>
+                        <div class="option">B) Spread placement group</div>
+                        <div class="option">C) Partition placement group</div>
+                        <div class="option">D) Default placement</div>
+                    </div>
+                    <div class="answer-box">
+                        <p class="font-bold text-green-400 mb-2">Answer: A) Cluster placement group</p>
+                        <p class="text-sm text-gray-300">Cluster placement groups pack instances close together in a single Availability Zone, providing the lowest latency and highest network throughput. This is ideal for HPC applications that require tight coupling between instances.</p>
+                    </div>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="question-card">
+                    <h3 class="font-bold text-lg mb-3 text-aws-orange">Question 4</h3>
+                    <p class="mb-4">What is the maximum number of instances you can have in a spread placement group per Availability Zone?</p>
+                    <div class="space-y-2">
+                        <div class="option">A) 5 instances</div>
+                        <div class="option correct-answer">B) 7 instances</div>
+                        <div class="option">C) 10 instances</div>
+                        <div class="option">D) 20 instances</div>
+                    </div>
+                    <div class="answer-box">
+                        <p class="font-bold text-green-400 mb-2">Answer: B) 7 instances</p>
+                        <p class="text-sm text-gray-300">Spread placement groups can have a maximum of 7 running instances per Availability Zone. This limitation ensures that each instance runs on distinct underlying hardware, providing maximum isolation for critical applications.</p>
+                    </div>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="question-card">
+                    <h3 class="font-bold text-lg mb-3 text-aws-orange">Question 5</h3>
+                    <p class="mb-4">Which Auto Scaling policy type automatically adjusts capacity to maintain a target metric value?</p>
+                    <div class="space-y-2">
+                        <div class="option">A) Simple Scaling</div>
+                        <div class="option">B) Step Scaling</div>
+                        <div class="option correct-answer">C) Target Tracking Scaling</div>
+                        <div class="option">D) Scheduled Scaling</div>
+                    </div>
+                    <div class="answer-box">
+                        <p class="font-bold text-green-400 mb-2">Answer: C) Target Tracking Scaling</p>
+                        <p class="text-sm text-gray-300">Target Tracking Scaling automatically adjusts the number of instances to maintain a specified target value for a metric (like CPU utilization at 70%). It's the easiest scaling policy to set up and works like a thermostat.</p>
+                    </div>
+                </div>
+
+                <!-- Question 6 -->
+                <div class="question-card">
+                    <h3 class="font-bold text-lg mb-3 text-aws-orange">Question 6</h3>
+                    <p class="mb-4">What is the recommended approach for providing credentials to applications running on EC2 instances?</p>
+                    <div class="space-y-2">
+                        <div class="option">A) Hard-code AWS access keys in the application</div>
+                        <div class="option">B) Store credentials in environment variables</div>
+                        <div class="option correct-answer">C) Use IAM roles attached to EC2 instances</div>
+                        <div class="option">D) Store credentials in a configuration file</div>
+                    </div>
+                    <div class="answer-box">
+                        <p class="font-bold text-green-400 mb-2">Answer: C) Use IAM roles attached to EC2 instances</p>
+                        <p class="text-sm text-gray-300">IAM roles provide temporary, automatically rotating credentials to EC2 instances. This is the most secure method as it eliminates the need to manage long-term access keys and follows AWS security best practices.</p>
+                    </div>
+                </div>
+
+                <!-- Question 7 -->
+                <div class="question-card">
+                    <h3 class="font-bold text-lg mb-3 text-aws-orange">Question 7</h3>
+                    <p class="mb-4">Which EC2 pricing model offers the highest discount but can be interrupted with a 2-minute warning?</p>
+                    <div class="space-y-2">
+                        <div class="option">A) On-Demand Instances</div>
+                        <div class="option">B) Reserved Instances</div>
+                        <div class="option correct-answer">C) Spot Instances</div>
+                        <div class="option">D) Dedicated Hosts</div>
+                    </div>
+                    <div class="answer-box">
+                        <p class="font-bold text-green-400 mb-2">Answer: C) Spot Instances</p>
+                        <p class="text-sm text-gray-300">Spot Instances can provide up to 90% discount compared to On-Demand prices but can be interrupted by AWS with a 2-minute warning when capacity is needed. They're ideal for fault-tolerant, flexible workloads like batch processing, data analysis, and stateless applications.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Page Number -->
+            <div class="text-right mt-4 text-gray-500 text-xs">
+                EC2 Practice Questions
+            </div>
+        </div>
+    </div>
+</body>
+</html>

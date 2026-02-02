@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>IAM Service Limitations</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #232F3E;
+            width: 100vw;
+            overflow-x: hidden;
+        }
+        .slide-container {
+            width: 100vw;
+            min-height: 100vh;
+            background-color: #232F3E;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            color: #ffffff;
+        }
+        .aws-orange { color: #FF9900; }
+        .bg-aws-orange { background-color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+        
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            z-index: 10;
+            min-height: 100vh;
+        }
+        @media (min-width: 640px) {
+            .content-wrapper {
+                padding: 2rem;
+            }
+        }
+        @media (min-width: 1024px) {
+            .content-wrapper {
+                padding: 3rem;
+            }
+        }
+
+        .limitation-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #ef4444;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .limit-item {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #ef4444;
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+        }
+
+        .quota-table {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .quota-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            padding: 0.75rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .quota-row:last-child {
+            border-bottom: none;
+        }
+
+        .quota-header {
+            background: rgba(239, 68, 68, 0.2);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="absolute top-0 left-0 w-full h-2 bg-aws-orange z-20"></div>
+        
+        <div class="content-wrapper">
+            <!-- Navigation -->
+            <div class="mb-3 sm:mb-4">
+                <a href="index.html" class="inline-flex items-center text-aws-orange hover:text-white transition-colors text-sm sm:text-base">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to IAM Topics
+                </a>
+            </div>
+
+            <!-- Header -->
+            <div class="flex flex-col sm:flex-row items-start sm:items-center mb-4 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4">
+                <div class="bg-aws-orange p-2 rounded mr-0 sm:mr-4 mb-3 sm:mb-0">
+                    <i class="fas fa-exclamation-triangle text-white text-lg sm:text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-montserrat font-bold text-white">IAM Service Limitations</h2>
+                    <p class="text-gray-400 font-montserrat text-sm sm:text-base lg:text-lg">Quotas, Limits, and Constraints</p>
+                </div>
+            </div>
+
+            <!-- Service Limits -->
+            <div class="max-w-5xl mx-auto w-full">
+                
+                <!-- Entity Limits -->
+                <div class="limitation-card">
+                    <h3 class="font-bold text-xl mb-4 text-red-400 flex items-center">
+                        <i class="fas fa-users mr-3"></i>IAM Entity Limits
+                    </h3>
+                    
+                    <div class="quota-table">
+                        <div class="quota-row quota-header">
+                            <div>Resource</div>
+                            <div>Default Limit</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">Users per AWS account</div>
+                            <div class="text-sm font-bold text-red-300">5,000</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">Groups per AWS account</div>
+                            <div class="text-sm font-bold text-red-300">300</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">Roles per AWS account</div>
+                            <div class="text-sm font-bold text-red-300">1,000</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">Groups per user</div>
+                            <div class="text-sm font-bold text-red-300">10</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">Managed policies per user/group/role</div>
+                            <div class="text-sm font-bold text-red-300">20</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Policy Limits -->
+                <div class="limitation-card">
+                    <h3 class="font-bold text-xl mb-4 text-red-400 flex items-center">
+                        <i class="fas fa-file-contract mr-3"></i>Policy Limitations
+                    </h3>
+                    
+                    <div class="quota-table">
+                        <div class="quota-row quota-header">
+                            <div>Policy Constraint</div>
+                            <div>Limit</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">Customer managed policies per account</div>
+                            <div class="text-sm font-bold text-red-300">1,500</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">Policy size (characters)</div>
+                            <div class="text-sm font-bold text-red-300">6,144</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">Policy versions per managed policy</div>
+                            <div class="text-sm font-bold text-red-300">5</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">Inline policy size per user/group/role</div>
+                            <div class="text-sm font-bold text-red-300">2,048 chars</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Access Key Limits -->
+                <div class="limitation-card">
+                    <h3 class="font-bold text-xl mb-4 text-red-400 flex items-center">
+                        <i class="fas fa-key mr-3"></i>Access Key & Authentication Limits
+                    </h3>
+                    
+                    <div class="limit-item">
+                        <h4 class="font-bold text-sm mb-2 text-red-300">Access Keys per User</h4>
+                        <p class="text-sm text-gray-300">Maximum of <strong>2 access keys</strong> per IAM user. Cannot create more than 2 active access keys simultaneously.</p>
+                    </div>
+                    
+                    <div class="limit-item">
+                        <h4 class="font-bold text-sm mb-2 text-red-300">MFA Devices per User</h4>
+                        <p class="text-sm text-gray-300">Maximum of <strong>8 MFA devices</strong> per IAM user (including virtual, hardware, and U2F devices).</p>
+                    </div>
+                    
+                    <div class="limit-item">
+                        <h4 class="font-bold text-sm mb-2 text-red-300">Assume Role Session Duration</h4>
+                        <p class="text-sm text-gray-300">Minimum: <strong>15 minutes</strong>, Maximum: <strong>12 hours</strong> (can be configured per role).</p>
+                    </div>
+                </div>
+
+                <!-- Regional & Global Constraints -->
+                <div class="limitation-card">
+                    <h3 class="font-bold text-xl mb-4 text-red-400 flex items-center">
+                        <i class="fas fa-globe mr-3"></i>Regional & Global Constraints
+                    </h3>
+                    
+                    <div class="limit-item">
+                        <h4 class="font-bold text-sm mb-2 text-red-300">Global Service</h4>
+                        <p class="text-sm text-gray-300">IAM is a <strong>global service</strong> - users, groups, roles, and policies are available across all regions but managed from a single global namespace.</p>
+                    </div>
+                    
+                    <div class="limit-item">
+                        <h4 class="font-bold text-sm mb-2 text-red-300">Cross-Account Limitations</h4>
+                        <p class="text-sm text-gray-300">Cannot directly share IAM users across accounts. Must use <strong>cross-account roles</strong> or <strong>federated access</strong>.</p>
+                    </div>
+                    
+                    <div class="limit-item">
+                        <h4 class="font-bold text-sm mb-2 text-red-300">Root User Restrictions</h4>
+                        <p class="text-sm text-gray-300">Root user cannot be deleted, cannot have policies attached directly, and has unrestricted access that cannot be limited by SCPs.</p>
+                    </div>
+                </div>
+
+                <!-- API & Performance Limits -->
+                <div class="limitation-card">
+                    <h3 class="font-bold text-xl mb-4 text-red-400 flex items-center">
+                        <i class="fas fa-tachometer-alt mr-3"></i>API & Performance Limits
+                    </h3>
+                    
+                    <div class="quota-table">
+                        <div class="quota-row quota-header">
+                            <div>API Operation</div>
+                            <div>Rate Limit</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">GetSessionToken</div>
+                            <div class="text-sm font-bold text-red-300">500/sec</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">AssumeRole</div>
+                            <div class="text-sm font-bold text-red-300">2,000/sec</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">Other IAM APIs</div>
+                            <div class="text-sm font-bold text-red-300">100/sec</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Important Notes -->
+                <div class="limitation-card">
+                    <h3 class="font-bold text-xl mb-4 text-yellow-400 flex items-center">
+                        <i class="fas fa-lightbulb mr-3"></i>Important Considerations
+                    </h3>
+                    
+                    <div class="space-y-3">
+                        <div class="bg-yellow-900 bg-opacity-20 border border-yellow-600 rounded p-3">
+                            <p class="text-sm text-gray-300"><strong class="text-yellow-300">Soft Limits:</strong> Many IAM limits can be increased by contacting AWS Support, but some are hard limits.</p>
+                        </div>
+                        <div class="bg-yellow-900 bg-opacity-20 border border-yellow-600 rounded p-3">
+                            <p class="text-sm text-gray-300"><strong class="text-yellow-300">Policy Evaluation:</strong> Complex policies with many conditions can impact performance. Keep policies simple and specific.</p>
+                        </div>
+                        <div class="bg-yellow-900 bg-opacity-20 border border-yellow-600 rounded p-3">
+                            <p class="text-sm text-gray-300"><strong class="text-yellow-300">Eventually Consistent:</strong> IAM changes are eventually consistent. Allow time for propagation across all regions.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Page Number -->
+            <div class="text-right mt-4 text-gray-500 text-xs">
+                IAM Service Limitations
+            </div>
+            
+            <!-- Navigation -->
+            <div class="flex justify-between mt-8 pt-6 border-t border-gray-700">
+                <a href="IAM-Service-Guide.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                    <i class="fas fa-arrow-left mr-2"></i> Previous: Service Guide
+                </a>
+                <div></div>
+            </div>
+            
+            <!-- Back to Topics -->
+            <div class="text-center mt-6">
+                <a href="index.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors mr-4">
+                    <i class="fas fa-list mr-2"></i> Back to Topics
+                </a>
+                <a href="../index.html" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                    <i class="fas fa-home mr-2"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

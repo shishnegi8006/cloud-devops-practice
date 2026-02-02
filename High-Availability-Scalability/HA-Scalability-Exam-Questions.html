@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HA & Scalability Exam Questions</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, #232F3E 0%, #1a252f 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .aws-orange { color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+        .question-card {
+            background: rgba(55, 65, 81, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        .option {
+            background: rgba(75, 85, 99, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .option:hover {
+            background: rgba(75, 85, 99, 0.6);
+            border-color: rgba(255, 153, 0, 0.3);
+        }
+        .correct {
+            background: rgba(34, 197, 94, 0.2);
+            border-color: rgba(34, 197, 94, 0.5);
+        }
+        .incorrect {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.5);
+        }
+        .explanation {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid #3B82F6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-8">
+        <!-- Navigation -->
+        <div class="mb-8">
+            <a href="index.html" class="inline-flex items-center text-teal-400 hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Back to HA & Scalability Topics
+            </a>
+        </div>
+
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <div class="bg-yellow-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-question-circle text-white text-3xl"></i>
+            </div>
+            <h1 class="text-5xl font-montserrat font-bold mb-4">HA & Scalability Exam Questions</h1>
+            <p class="text-xl text-gray-300">Practice questions for SAA-C03 exam preparation</p>
+        </div>
+
+        <!-- Question 1 -->
+        <div class="question-card rounded-xl p-8 mb-8 border border-gray-600">
+            <div class="flex items-center mb-4">
+                <div class="bg-yellow-600 w-8 h-8 rounded-full flex items-center justify-center mr-3">
+                    <span class="text-white font-bold text-sm">1</span>
+                </div>
+                <h3 class="text-xl font-semibold">Load Balancer Selection</h3>
+            </div>
+            
+            <p class="text-gray-300 mb-6">A gaming company needs to load balance TCP traffic for their multiplayer game servers. They require ultra-low latency, static IP addresses, and the ability to preserve the source IP of clients. Which load balancer should they choose?</p>
+            
+            <div class="space-y-3 mb-6">
+                <div class="option rounded-lg p-4" onclick="selectOption(this, false)">
+                    <span class="font-semibold">A)</span> Application Load Balancer (ALB)
+                </div>
+                <div class="option rounded-lg p-4" onclick="selectOption(this, true)">
+                    <span class="font-semibold">B)</span> Network Load Balancer (NLB)
+                </div>
+                <div class="option rounded-lg p-4" onclick="selectOption(this, false)">
+                    <span class="font-semibold">C)</span> Gateway Load Balancer (GWLB)
+                </div>
+                <div class="option rounded-lg p-4" onclick="selectOption(this, false)">
+                    <span class="font-semibold">D)</span> Classic Load Balancer (CLB)
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <button onclick="showAnswer(this)" class="bg-aws-orange hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                    Show Answer
+                </button>
+            </div>
+            
+            <div class="explanation rounded-lg p-4 hidden">
+                <h4 class="font-semibold mb-2 text-blue-400">Explanation:</h4>
+                <p class="text-gray-300 text-sm"><strong>Correct Answer: B</strong><br>
+Network Load Balancer (NLB) operates at Layer 4 (TCP/UDP) and provides ultra-low latency, static IP addresses, and preserves the source IP of clients. It's specifically designed for high-performance applications like gaming servers that require these features. ALB operates at Layer 7 and adds latency, GWLB is for network appliances, and CLB is legacy.</p>
+            </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="question-card rounded-xl p-8 mb-8 border border-gray-600">
+            <div class="flex items-center mb-4">
+                <div class="bg-yellow-600 w-8 h-8 rounded-full flex items-center justify-center mr-3">
+                    <span class="text-white font-bold text-sm">2</span>
+                </div>
+                <h3 class="text-xl font-semibold">Auto Scaling Policy</h3>
+            </div>
+            
+            <p class="text-gray-300 mb-6">An e-commerce application experiences predictable traffic patterns with high load during business hours (9 AM - 6 PM) and low load at night. The application also needs to handle unexpected traffic spikes. What's the best Auto Scaling strategy?</p>
+            
+            <div class="space-y-3 mb-6">
+                <div class="option rounded-lg p-4" onclick="selectOption(this, false)">
+                    <span class="font-semibold">A)</span> Use only dynamic scaling with target tracking policy
+                </div>
+                <div class="option rounded-lg p-4" onclick="selectOption(this, true)">
+                    <span class="font-semibold">B)</span> Combine scheduled scaling for predictable patterns with target tracking for unexpected spikes
+                </div>
+                <div class="option rounded-lg p-4" onclick="selectOption(this, false)">
+                    <span class="font-semibold">C)</span> Use only scheduled scaling actions
+                </div>
+                <div class="option rounded-lg p-4" onclick="selectOption(this, false)">
+                    <span class="font-semibold">D)</span> Use simple scaling policies only
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <button onclick="showAnswer(this)" class="bg-aws-orange hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                    Show Answer
+                </button>
+            </div>
+            
+            <div class="explanation rounded-lg p-4 hidden">
+                <h4 class="font-semibold mb-2 text-blue-400">Explanation:</h4>
+                <p class="text-gray-300 text-sm"><strong>Correct Answer: B</strong><br>
+The best approach combines scheduled scaling (proactive scaling for known patterns like business hours) with target tracking scaling (reactive scaling for unexpected spikes). Scheduled scaling ensures capacity is ready before the predictable load, while target tracking handles unexpected traffic variations. This provides both cost optimization and performance assurance.</p>
+            </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="question-card rounded-xl p-8 mb-8 border border-gray-600">
+            <div class="flex items-center mb-4">
+                <div class="bg-yellow-600 w-8 h-8 rounded-full flex items-center justify-center mr-3">
+                    <span class="text-white font-bold text-sm">3</span>
+                </div>
+                <h3 class="text-xl font-semibold">Multi-AZ High Availability</h3>
+            </div>
+            
+            <p class="text-gray-300 mb-6">A company wants to ensure their web application can survive the failure of an entire Availability Zone. They're using ALB, Auto Scaling Groups, and RDS. What configuration ensures the highest availability?</p>
+            
+            <div class="space-y-3 mb-6">
+                <div class="option rounded-lg p-4" onclick="selectOption(this, false)">
+                    <span class="font-semibold">A)</span> Deploy everything in a single AZ with multiple instances
+                </div>
+                <div class="option rounded-lg p-4" onclick="selectOption(this, true)">
+                    <span class="font-semibold">B)</span> Deploy ALB across multiple AZs, ASG with instances in multiple AZs, and RDS Multi-AZ
+                </div>
+                <div class="option rounded-lg p-4" onclick="selectOption(this, false)">
+                    <span class="font-semibold">C)</span> Deploy ALB in one AZ, ASG across multiple AZs, RDS in single AZ
+                </div>
+                <div class="option rounded-lg p-4" onclick="selectOption(this, false)">
+                    <span class="font-semibold">D)</span> Use multiple regions instead of multiple AZs
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <button onclick="showAnswer(this)" class="bg-aws-orange hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                    Show Answer
+                </button>
+            </div>
+            
+            <div class="explanation rounded-lg p-4 hidden">
+                <h4 class="font-semibold mb-2 text-blue-400">Explanation:</h4>
+                <p class="text-gray-300 text-sm"><strong>Correct Answer: B</strong><br>
+For AZ-level fault tolerance, all components must be deployed across multiple AZs: ALB automatically distributes across AZs in the region, ASG should have instances in multiple AZs with appropriate subnet configuration, and RDS Multi-AZ provides automatic failover to a standby in another AZ. This ensures the application continues operating even if an entire AZ fails.</p>
+            </div>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="question-card rounded-xl p-8 mb-8 border border-gray-600">
+            <div class="flex items-center mb-4">
+                <div class="bg-yellow-600 w-8 h-8 rounded-full flex items-center justify-center mr-3">
+                    <span class="text-white font-bold text-sm">4</span>
+                </div>
+                <h3 class="text-xl font-semibold">Health Check Configuration</h3>
+            </div>
+            
+            <p class="text-gray-300 mb-6">An Auto Scaling Group is configured with both ELB health checks and EC2 health checks. An instance fails the ELB health check but passes the EC2 health check. What happens to the instance?</p>
+            
+            <div class="space-y-3 mb-6">
+                <div class="option rounded-lg p-4" onclick="selectOption(this, false)">
+                    <span class="font-semibold">A)</span> The instance remains healthy since EC2 health check passed
+                </div>
+                <div class="option rounded-lg p-4" onclick="selectOption(this, true)">
+                    <span class="font-semibold">B)</span> The instance is marked unhealthy and will be terminated and replaced
+                </div>
+                <div class="option rounded-lg p-4" onclick="selectOption(this, false)">
+                    <span class="font-semibold">C)</span> The instance is temporarily removed from the load balancer but not terminated
+                </div>
+                <div class="option rounded-lg p-4" onclick="selectOption(this, false)">
+                    <span class="font-semibold">D)</span> Only the ELB stops sending traffic, ASG takes no action
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <button onclick="showAnswer(this)" class="bg-aws-orange hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                    Show Answer
+                </button>
+            </div>
+            
+            <div class="explanation rounded-lg p-4 hidden">
+                <h4 class="font-semibold mb-2 text-blue-400">Explanation:</h4>
+                <p class="text-gray-300 text-sm"><strong>Correct Answer: B</strong><br>
+When both ELB and EC2 health checks are enabled, ASG considers an instance unhealthy if it fails either health check. If an instance fails the ELB health check (even if EC2 health check passes), ASG will mark it as unhealthy, terminate it, and launch a replacement. This ensures that only instances capable of serving traffic remain in the ASG.</p>
+            </div>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="question-card rounded-xl p-8 mb-8 border border-gray-600">
+            <div class="flex items-center mb-4">
+                <div class="bg-yellow-600 w-8 h-8 rounded-full flex items-center justify-center mr-3">
+                    <span class="text-white font-bold text-sm">5</span>
+                </div>
+                <h3 class="text-xl font-semibold">Disaster Recovery Strategy</h3>
+            </div>
+            
+            <p class="text-gray-300 mb-6">A financial services company needs a disaster recovery solution with RTO (Recovery Time Objective) of 1 hour and RPO (Recovery Point Objective) of 15 minutes. They want to minimize costs while meeting these requirements. What's the best DR strategy?</p>
+            
+            <div class="space-y-3 mb-6">
+                <div class="option rounded-lg p-4" onclick="selectOption(this, false)">
+                    <span class="font-semibold">A)</span> Hot standby with full capacity in secondary region
+                </div>
+                <div class="option rounded-lg p-4" onclick="selectOption(this, true)">
+                    <span class="font-semibold">B)</span> Warm standby with minimal capacity and RDS Cross-Region Read Replicas
+                </div>
+                <div class="option rounded-lg p-4" onclick="selectOption(this, false)">
+                    <span class="font-semibold">C)</span> Cold standby with automated infrastructure deployment
+                </div>
+                <div class="option rounded-lg p-4" onclick="selectOption(this, false)">
+                    <span class="font-semibold">D)</span> Backup and restore from S3
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <button onclick="showAnswer(this)" class="bg-aws-orange hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                    Show Answer
+                </button>
+            </div>
+            
+            <div class="explanation rounded-lg p-4 hidden">
+                <h4 class="font-semibold mb-2 text-blue-400">Explanation:</h4>
+                <p class="text-gray-300 text-sm"><strong>Correct Answer: B</strong><br>
+Warm standby provides the right balance for 1-hour RTO and 15-minute RPO requirements while minimizing costs. It maintains minimal infrastructure in the secondary region (reducing costs compared to hot standby) but can scale up quickly. RDS Cross-Region Read Replicas provide near real-time data replication (meeting 15-minute RPO) and can be promoted to primary within the 1-hour RTO requirement.</p>
+            </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="bg-gray-800 bg-opacity-50 rounded-xl p-8 border border-gray-600">
+            <h2 class="text-2xl font-montserrat font-bold mb-6 aws-orange">Exam Tips for HA & Scalability</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-lg font-semibold mb-3 text-blue-400">Key Topics to Master</h3>
+                    <ul class="space-y-2 text-gray-300 text-sm">
+                        <li>• Load balancer types and use cases</li>
+                        <li>• Auto Scaling policies and strategies</li>
+                        <li>• Multi-AZ deployment patterns</li>
+                        <li>• Health check configurations</li>
+                        <li>• Disaster recovery strategies</li>
+                        <li>• Performance optimization techniques</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-3 text-green-400">Common Exam Scenarios</h3>
+                    <ul class="space-y-2 text-gray-300 text-sm">
+                        <li>• Choosing appropriate load balancer type</li>
+                        <li>• Designing fault-tolerant architectures</li>
+                        <li>• Optimizing scaling policies for cost and performance</li>
+                        <li>• Implementing disaster recovery solutions</li>
+                        <li>• Troubleshooting health check issues</li>
+                        <li>• Multi-region deployment strategies</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function selectOption(element, isCorrect) {
+            // Remove previous selections
+            const parent = element.parentElement;
+            const options = parent.querySelectorAll('.option');
+            options.forEach(opt => {
+                opt.classList.remove('correct', 'incorrect');
+            });
+            
+            // Mark selected option
+            if (isCorrect) {
+                element.classList.add('correct');
+            } else {
+                element.classList.add('incorrect');
+                // Also highlight the correct answer
+                options.forEach(opt => {
+                    if (opt.onclick.toString().includes('true')) {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+            
+            // Show explanation
+            const explanation = parent.nextElementSibling.nextElementSibling;
+            explanation.classList.remove('hidden');
+        }
+        
+        function showAnswer(button) {
+            // Find the correct option and highlight it
+            const questionCard = button.closest('.question-card');
+            const options = questionCard.querySelectorAll('.option');
+            options.forEach(opt => {
+                if (opt.onclick.toString().includes('true')) {
+                    opt.classList.add('correct');
+                }
+            });
+            
+            // Show explanation
+            const explanation = button.parentElement.nextElementSibling;
+            explanation.classList.remove('hidden');
+            
+            // Hide the button
+            button.style.display = 'none';
+        }
+    </script>
+</body>
+</html>

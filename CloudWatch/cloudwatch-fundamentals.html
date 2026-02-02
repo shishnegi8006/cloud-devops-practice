@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudWatch Fundamentals - AWS Solution Architect</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="../styles.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Navigation -->
+        <nav class="mb-8">
+            <a href="index.html" class="text-aws-orange hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i>Back to CloudWatch
+            </a>
+        </nav>
+
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <div class="bg-orange-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-chart-line text-white text-3xl"></i>
+            </div>
+            <h1 class="text-4xl font-montserrat font-bold mb-4">CloudWatch Fundamentals</h1>
+            <p class="text-xl text-gray-300">Core Concepts and Monitoring Basics</p>
+        </header>
+
+        <!-- Content -->
+        <div class="max-w-4xl mx-auto">
+            
+            <!-- What is CloudWatch -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">What is Amazon CloudWatch?</h2>
+                <div class="bg-gray-800 rounded-lg p-6 mb-6">
+                    <p class="text-gray-300 mb-4">
+                        Amazon CloudWatch is a monitoring and observability service built for DevOps engineers, developers, site reliability engineers (SREs), and IT managers. CloudWatch provides data and actionable insights to monitor applications, respond to system-wide performance changes, optimize resource utilization, and get a unified view of operational health.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-semibold text-orange-400 mb-2">Key Benefits</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Real-time monitoring</li>
+                                <li>• Automated actions</li>
+                                <li>• Unified operational view</li>
+                                <li>• Cost optimization</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-semibold text-orange-400 mb-2">Use Cases</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Application monitoring</li>
+                                <li>• Infrastructure monitoring</li>
+                                <li>• Log analysis</li>
+                                <li>• Performance optimization</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Core Components -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Core Components</h2>
+                
+                <div class="space-y-6">
+                    <!-- Metrics -->
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-blue-400">
+                            <i class="fas fa-tachometer-alt mr-2"></i>Metrics
+                        </h3>
+                        <p class="text-gray-300 mb-4">
+                            Metrics are data about the performance of your systems. CloudWatch receives metrics from AWS services automatically and can also receive custom metrics from your applications.
+                        </p>
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-semibold text-blue-300 mb-2">Key Characteristics:</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Time-ordered set of data points</li>
+                                <li>• Published to CloudWatch with timestamp</li>
+                                <li>• Organized by namespace and dimensions</li>
+                                <li>• Retained for different periods based on age</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Namespaces -->
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-green-400">
+                            <i class="fas fa-folder mr-2"></i>Namespaces
+                        </h3>
+                        <p class="text-gray-300 mb-4">
+                            Namespaces are containers for CloudWatch metrics. Metrics in different namespaces are isolated from each other.
+                        </p>
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-semibold text-green-300 mb-2">Common AWS Namespaces:</h4>
+                            <div class="grid grid-cols-2 gap-2 text-sm text-gray-300">
+                                <div>• AWS/EC2</div>
+                                <div>• AWS/RDS</div>
+                                <div>• AWS/S3</div>
+                                <div>• AWS/Lambda</div>
+                                <div>• AWS/ELB</div>
+                                <div>• AWS/DynamoDB</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dimensions -->
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-purple-400">
+                            <i class="fas fa-tags mr-2"></i>Dimensions
+                        </h3>
+                        <p class="text-gray-300 mb-4">
+                            Dimensions are name/value pairs that uniquely identify a metric. You can assign up to 10 dimensions to a metric.
+                        </p>
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-semibold text-purple-300 mb-2">Example Dimensions:</h4>
+                            <div class="text-sm text-gray-300 space-y-2">
+                                <div><strong>EC2:</strong> InstanceId, InstanceType, ImageId</div>
+                                <div><strong>RDS:</strong> DBInstanceIdentifier, DatabaseClass</div>
+                                <div><strong>S3:</strong> BucketName, StorageType</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Metric Types -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Metric Types</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold mb-4 text-yellow-400">Default Metrics</h3>
+                        <p class="text-gray-300 mb-4">Automatically provided by AWS services at no additional charge.</p>
+                        <ul class="text-sm text-gray-300 space-y-2">
+                            <li>• <strong>EC2:</strong> CPU, Network, Disk (5-minute intervals)</li>
+                            <li>• <strong>RDS:</strong> CPU, Connections, IOPS</li>
+                            <li>• <strong>S3:</strong> Bucket size, Number of objects</li>
+                            <li>• <strong>Lambda:</strong> Invocations, Duration, Errors</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold mb-4 text-yellow-400">Custom Metrics</h3>
+                        <p class="text-gray-300 mb-4">Application-specific metrics you publish to CloudWatch.</p>
+                        <ul class="text-sm text-gray-300 space-y-2">
+                            <li>• Business metrics (orders, revenue)</li>
+                            <li>• Application performance metrics</li>
+                            <li>• Custom system metrics</li>
+                            <li>• High-resolution metrics (1-second intervals)</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Data Retention -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Data Retention Periods</h2>
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b border-gray-600">
+                                    <th class="text-left py-2 text-orange-400">Data Point Period</th>
+                                    <th class="text-left py-2 text-orange-400">Retention Period</th>
+                                    <th class="text-left py-2 text-orange-400">Description</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-300">
+                                <tr class="border-b border-gray-700">
+                                    <td class="py-2">Less than 60 seconds</td>
+                                    <td class="py-2">3 hours</td>
+                                    <td class="py-2">High-resolution custom metrics</td>
+                                </tr>
+                                <tr class="border-b border-gray-700">
+                                    <td class="py-2">60 seconds (1 minute)</td>
+                                    <td class="py-2">15 days</td>
+                                    <td class="py-2">Standard resolution metrics</td>
+                                </tr>
+                                <tr class="border-b border-gray-700">
+                                    <td class="py-2">300 seconds (5 minutes)</td>
+                                    <td class="py-2">63 days</td>
+                                    <td class="py-2">Default EC2 metrics</td>
+                                </tr>
+                                <tr class="border-b border-gray-700">
+                                    <td class="py-2">3600 seconds (1 hour)</td>
+                                    <td class="py-2">455 days</td>
+                                    <td class="py-2">Aggregated hourly data</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Statistics -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">CloudWatch Statistics</h2>
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <p class="text-gray-300 mb-6">
+                        Statistics are metric data aggregations over specified periods of time. CloudWatch provides several statistical functions:
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-semibold text-blue-400 mb-2">Minimum</h4>
+                            <p class="text-sm text-gray-300">Lowest value observed during the specified period</p>
+                        </div>
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-semibold text-blue-400 mb-2">Maximum</h4>
+                            <p class="text-sm text-gray-300">Highest value observed during the specified period</p>
+                        </div>
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-semibold text-blue-400 mb-2">Sum</h4>
+                            <p class="text-sm text-gray-300">All values submitted for the matching metric added together</p>
+                        </div>
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-semibold text-blue-400 mb-2">Average</h4>
+                            <p class="text-sm text-gray-300">Sum / SampleCount</p>
+                        </div>
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-semibold text-blue-400 mb-2">SampleCount</h4>
+                            <p class="text-sm text-gray-300">Number of data points used for the statistical calculation</p>
+                        </div>
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-semibold text-blue-400 mb-2">Percentiles</h4>
+                            <p class="text-sm text-gray-300">p99, p95, p90, etc. - Value below which a percentage of observations fall</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Best Practices -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Best Practices</h2>
+                <div class="space-y-4">
+                    <div class="bg-green-900 bg-opacity-50 border-l-4 border-green-500 p-4 rounded-lg">
+                        <h4 class="font-semibold text-green-400 mb-2">Metric Naming</h4>
+                        <p class="text-gray-300 text-sm">Use descriptive, consistent naming conventions for custom metrics. Include units in metric names when appropriate.</p>
+                    </div>
+                    
+                    <div class="bg-blue-900 bg-opacity-50 border-l-4 border-blue-500 p-4 rounded-lg">
+                        <h4 class="font-semibold text-blue-400 mb-2">Dimension Strategy</h4>
+                        <p class="text-gray-300 text-sm">Use dimensions wisely - they create unique metric streams. Too many dimensions can lead to high cardinality and increased costs.</p>
+                    </div>
+                    
+                    <div class="bg-purple-900 bg-opacity-50 border-l-4 border-purple-500 p-4 rounded-lg">
+                        <h4 class="font-semibold text-purple-400 mb-2">Cost Optimization</h4>
+                        <p class="text-gray-300 text-sm">Monitor custom metric usage and API calls. Use appropriate retention periods and consider metric aggregation for cost efficiency.</p>
+                    </div>
+                    
+                    <div class="bg-yellow-900 bg-opacity-50 border-l-4 border-yellow-500 p-4 rounded-lg">
+                        <h4 class="font-semibold text-yellow-400 mb-2">Monitoring Strategy</h4>
+                        <p class="text-gray-300 text-sm">Implement a comprehensive monitoring strategy covering infrastructure, application, and business metrics.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Key Takeaways -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Key Takeaways</h2>
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <ul class="space-y-3 text-gray-300">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>CloudWatch is the central monitoring service for AWS resources and applications</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>Metrics are organized by namespaces and identified by dimensions</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>Data retention varies based on metric resolution and age</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>Statistics provide aggregated views of metric data over time periods</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>Proper dimension strategy is crucial for effective monitoring and cost control</span>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+        </div>
+    </div>
+</body>
+</html>

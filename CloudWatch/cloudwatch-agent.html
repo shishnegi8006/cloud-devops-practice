@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudWatch Agent - AWS Solution Architect</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="../styles.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <nav class="mb-8">
+            <a href="index.html" class="text-aws-orange hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i>Back to CloudWatch
+            </a>
+        </nav>
+
+        <header class="text-center mb-12">
+            <div class="bg-teal-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-robot text-white text-3xl"></i>
+            </div>
+            <h1 class="text-4xl font-montserrat font-bold mb-4">CloudWatch Agent</h1>
+            <p class="text-xl text-gray-300">Enhanced System Monitoring</p>
+        </header>
+
+        <div class="max-w-4xl mx-auto">
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">CloudWatch Agent Overview</h2>
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <p class="text-gray-300 mb-4">
+                        The CloudWatch agent enables you to collect more system-level metrics from EC2 instances and on-premises servers. It can collect both system metrics and log files.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-semibold text-teal-400 mb-2">System Metrics</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Memory utilization</li>
+                                <li>• Disk space utilization</li>
+                                <li>• Swap utilization</li>
+                                <li>• Network metrics</li>
+                                <li>• Process metrics</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-semibold text-teal-400 mb-2">Log Collection</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Application logs</li>
+                                <li>• System logs</li>
+                                <li>• Custom log files</li>
+                                <li>• Windows event logs</li>
+                                <li>• IIS logs</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Installation & Configuration</h2>
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold mb-4 text-blue-400">Installation Methods</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="bg-gray-700 p-4 rounded-lg text-center">
+                            <i class="fas fa-download text-blue-400 text-2xl mb-2"></i>
+                            <h4 class="font-semibold">Package Manager</h4>
+                            <p class="text-sm text-gray-300">yum, apt, MSI</p>
+                        </div>
+                        <div class="bg-gray-700 p-4 rounded-lg text-center">
+                            <i class="fas fa-cogs text-green-400 text-2xl mb-2"></i>
+                            <h4 class="font-semibold">Systems Manager</h4>
+                            <p class="text-sm text-gray-300">Automated deployment</p>
+                        </div>
+                        <div class="bg-gray-700 p-4 rounded-lg text-center">
+                            <i class="fas fa-code text-purple-400 text-2xl mb-2"></i>
+                            <h4 class="font-semibold">Command Line</h4>
+                            <p class="text-sm text-gray-300">Manual installation</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                        <h4 class="font-semibold text-teal-300 mb-2">Configuration Example</h4>
+                        <pre class="text-green-400 text-sm overflow-x-auto"><code>{
+  "metrics": {
+    "namespace": "CWAgent",
+    "metrics_collected": {
+      "mem": {
+        "measurement": ["mem_used_percent"]
+      },
+      "disk": {
+        "measurement": ["used_percent"],
+        "resources": ["*"]
+      }
+    }
+  },
+  "logs": {
+    "logs_collected": {
+      "files": {
+        "collect_list": [
+          {
+            "file_path": "/var/log/messages",
+            "log_group_name": "/aws/ec2/var/log/messages"
+          }
+        ]
+      }
+    }
+  }
+}</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Key Benefits</h2>
+                <div class="space-y-4">
+                    <div class="bg-green-900 bg-opacity-50 border-l-4 border-green-500 p-4 rounded-lg">
+                        <h4 class="font-semibold text-green-400 mb-2">Enhanced Monitoring</h4>
+                        <p class="text-gray-300 text-sm">Collect system-level metrics not available by default, including memory and disk utilization.</p>
+                    </div>
+                    <div class="bg-blue-900 bg-opacity-50 border-l-4 border-blue-500 p-4 rounded-lg">
+                        <h4 class="font-semibold text-blue-400 mb-2">Centralized Logging</h4>
+                        <p class="text-gray-300 text-sm">Automatically send log files to CloudWatch Logs for centralized management and analysis.</p>
+                    </div>
+                    <div class="bg-purple-900 bg-opacity-50 border-l-4 border-purple-500 p-4 rounded-lg">
+                        <h4 class="font-semibold text-purple-400 mb-2">Cross-Platform Support</h4>
+                        <p class="text-gray-300 text-sm">Works on EC2 instances, on-premises servers, and supports both Linux and Windows.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Key Takeaways</h2>
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <ul class="space-y-3 text-gray-300">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>CloudWatch Agent provides enhanced system monitoring beyond default EC2 metrics</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>Collects memory, disk, and custom metrics not available by default</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>Supports both metric collection and log file forwarding to CloudWatch</span>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

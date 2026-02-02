@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudWatch Insights - AWS Solution Architect</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="../styles.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <nav class="mb-8">
+            <a href="index.html" class="text-aws-orange hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i>Back to CloudWatch
+            </a>
+        </nav>
+
+        <header class="text-center mb-12">
+            <div class="bg-indigo-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-search text-white text-3xl"></i>
+            </div>
+            <h1 class="text-4xl font-montserrat font-bold mb-4">CloudWatch Insights</h1>
+            <p class="text-xl text-gray-300">Log Analytics & Container Monitoring</p>
+        </header>
+
+        <div class="max-w-4xl mx-auto">
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">CloudWatch Insights Overview</h2>
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <p class="text-gray-300 mb-4">
+                        CloudWatch Insights includes Logs Insights for interactive log analytics and Container Insights for comprehensive container monitoring.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-semibold text-indigo-400 mb-2">Logs Insights</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Interactive log analysis</li>
+                                <li>• Purpose-built query language</li>
+                                <li>• Real-time search and filter</li>
+                                <li>• Visualization and statistics</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-semibold text-indigo-400 mb-2">Container Insights</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• ECS and EKS monitoring</li>
+                                <li>• Container performance metrics</li>
+                                <li>• Resource utilization tracking</li>
+                                <li>• Automated dashboards</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Logs Insights Query Language</h2>
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <div class="space-y-4">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-semibold text-indigo-300 mb-2">Basic Query Structure</h4>
+                            <pre class="text-green-400 text-sm overflow-x-auto"><code>fields @timestamp, @message
+| filter @message like /ERROR/
+| sort @timestamp desc
+| limit 20</code></pre>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-semibold text-indigo-300 mb-2">Statistical Analysis</h4>
+                            <pre class="text-green-400 text-sm overflow-x-auto"><code>fields @timestamp, @message
+| filter @message like /ERROR/
+| stats count() by bin(5m)
+| sort @timestamp desc</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Container Insights</h2>
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-semibold text-blue-400 mb-3">ECS Monitoring</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Task and service metrics</li>
+                                <li>• CPU and memory utilization</li>
+                                <li>• Network performance</li>
+                                <li>• Container lifecycle events</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-semibold text-green-400 mb-3">EKS Monitoring</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Pod and node metrics</li>
+                                <li>• Kubernetes events</li>
+                                <li>• Cluster performance</li>
+                                <li>• Application insights</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Key Takeaways</h2>
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <ul class="space-y-3 text-gray-300">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>Logs Insights provides powerful querying capabilities for log analysis</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>Container Insights offers comprehensive monitoring for ECS and EKS</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>Purpose-built query language enables complex log analysis and visualization</span>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

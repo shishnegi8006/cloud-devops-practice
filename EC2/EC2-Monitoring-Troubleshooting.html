@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EC2 Monitoring & Troubleshooting</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            font-family: 'Open Sans', sans-serif;
+            width: 100vw;
+            overflow-x: hidden;
+        }
+        .slide-container {
+            width: 100vw;
+            min-height: 100vh;
+            background-color: #232F3E;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            color: #ffffff;
+        }
+        .aws-orange { color: #FF9900; }
+        .bg-aws-orange { background-color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+        .font-mono { font-family: 'Roboto Mono', monospace; }
+        
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            z-index: 10;
+            min-height: 100vh;
+        }
+        @media (min-width: 640px) {
+            .content-wrapper { padding: 2rem; }
+        }
+        @media (min-width: 1024px) {
+            .content-wrapper { padding: 3rem; }
+        }
+
+        .section-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 24px;
+            border-left: 4px solid #FF9900;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 153, 0, 0.15);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            flex-shrink: 0;
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .metric-card {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            padding: 12px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #93C5FD;
+        }
+
+        .metric-label {
+            font-size: 0.7rem;
+            color: #9CA3AF;
+            margin-top: 4px;
+        }
+
+        .feature-list li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            font-size: 0.9rem;
+        }
+        .feature-list li::before {
+            content: "•";
+            color: #FF9900;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            font-size: 1.2em;
+        }
+
+        .code-block {
+            background-color: #161b22;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: #e6edf3;
+            border: 1px solid #30363d;
+            margin-top: 10px;
+        }
+
+        .alert-level {
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin: 8px 0;
+            font-size: 0.85rem;
+        }
+
+        .alert-critical {
+            background: rgba(239, 68, 68, 0.2);
+            border-left: 4px solid #EF4444;
+            color: #FCA5A5;
+        }
+
+        .alert-warning {
+            background: rgba(245, 158, 11, 0.2);
+            border-left: 4px solid #F59E0B;
+            color: #FCD34D;
+        }
+
+        .alert-info {
+            background: rgba(59, 130, 246, 0.2);
+            border-left: 4px solid #3B82F6;
+            color: #93C5FD;
+        }
+
+        .troubleshooting-step {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 12px;
+            border-radius: 6px;
+            margin: 8px 0;
+            border-left: 3px solid #FF9900;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-running { background-color: #10B981; }
+        .status-stopped { background-color: #EF4444; }
+        .status-pending { background-color: #F59E0B; }
+        .status-terminated { background-color: #6B7280; }
+    </style>
+</head>
+<body>
+<div class="slide-container">
+    <div class="absolute top-0 left-0 w-full h-2 bg-aws-orange z-20"></div>
+    <div class="content-wrapper">
+        <!-- Navigation -->
+        <div class="mb-3 sm:mb-4">
+            <a href="index.html" class="inline-flex items-center text-aws-orange hover:text-white transition-colors text-sm sm:text-base">
+                <i class="fas fa-arrow-left mr-2"></i> Back to EC2 Topics
+            </a>
+        </div>
+
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center mb-4 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4">
+            <div class="bg-aws-orange p-2 rounded mr-4">
+                <i class="fas fa-chart-line text-white text-xl"></i>
+            </div>
+            <div>
+                <h2 class="text-4xl font-montserrat font-bold text-white">EC2 Monitoring & Troubleshooting</h2>
+                <p class="text-gray-400 font-montserrat text-lg">CloudWatch, Logging, and Performance Analysis</p>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 lg:gap-8 flex-1">
+            
+            <!-- CloudWatch Metrics -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-chart-area aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">CloudWatch Metrics</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">AWS CloudWatch provides comprehensive monitoring for EC2 instances with both basic and detailed metrics.</p>
+                
+                <div class="space-y-4">
+                    <div class="bg-blue-900 bg-opacity-30 p-3 rounded border-l-4 border-blue-400">
+                        <h4 class="text-blue-200 font-bold text-sm mb-2"><i class="fas fa-clock mr-2"></i>Basic Monitoring (Free)</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• 5-minute intervals</li>
+                            <li>• 7 pre-selected metrics</li>
+                            <li>• Enabled by default</li>
+                            <li>• No additional cost</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-green-900 bg-opacity-30 p-3 rounded border-l-4 border-green-400">
+                        <h4 class="text-green-200 font-bold text-sm mb-2"><i class="fas fa-tachometer-alt mr-2"></i>Detailed Monitoring</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• 1-minute intervals</li>
+                            <li>• All available metrics</li>
+                            <li>• Additional cost per instance</li>
+                            <li>• Better for auto scaling</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="metric-grid">
+                    <div class="metric-card">
+                        <div class="metric-value">CPU</div>
+                        <div class="metric-label">Utilization</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">Network</div>
+                        <div class="metric-label">In/Out</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">Disk</div>
+                        <div class="metric-label">Read/Write</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">Status</div>
+                        <div class="metric-label">Check</div>
+                    </div>
+                </div>
+
+                <div class="code-block font-mono">
+                    <span class="text-gray-500"># Enable detailed monitoring</span><br/>
+                    aws ec2 monitor-instances \<br/>
+                    &nbsp;&nbsp;--instance-ids i-12345678<br/><br/>
+                    <span class="text-gray-500"># Get metric statistics</span><br/>
+                    aws cloudwatch get-metric-statistics \<br/>
+                    &nbsp;&nbsp;--namespace AWS/EC2 \<br/>
+                    &nbsp;&nbsp;--metric-name CPUUtilization \<br/>
+                    &nbsp;&nbsp;--dimensions Name=InstanceId,Value=i-12345678
+                </div>
+            </div>
+
+            <!-- Custom Metrics & CloudWatch Agent -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-cog aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">CloudWatch Agent</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">Enhanced monitoring with custom metrics and log collection from EC2 instances.</p>
+                
+                <ul class="feature-list text-gray-200 mb-4">
+                    <li><strong class="text-white">System Metrics:</strong> Memory, disk space, swap utilization</li>
+                    <li><strong class="text-white">Process Metrics:</strong> CPU and memory usage by process</li>
+                    <li><strong class="text-white">Log Collection:</strong> Application and system logs</li>
+                    <li><strong class="text-white">Custom Metrics:</strong> Application-specific metrics</li>
+                </ul>
+
+                <div class="space-y-3">
+                    <div class="bg-purple-900 bg-opacity-30 p-3 rounded border-l-4 border-purple-400">
+                        <h4 class="text-purple-200 font-bold text-sm mb-2"><i class="fas fa-memory mr-2"></i>Memory Metrics</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• MemoryUtilization</li>
+                            <li>• MemoryUsed</li>
+                            <li>• MemoryAvailable</li>
+                            <li>• SwapUtilization</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-orange-900 bg-opacity-30 p-3 rounded border-l-4 border-orange-400">
+                        <h4 class="text-orange-200 font-bold text-sm mb-2"><i class="fas fa-hdd mr-2"></i>Disk Metrics</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• DiskSpaceUtilization</li>
+                            <li>• DiskSpaceUsed</li>
+                            <li>• DiskSpaceAvailable</li>
+                            <li>• InodeUtilization</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-block font-mono">
+                    <span class="text-gray-500"># Install CloudWatch Agent</span><br/>
+                    wget https://s3.amazonaws.com/amazoncloudwatch-agent/amazon_linux/amd64/latest/amazon-cloudwatch-agent.rpm<br/>
+                    sudo rpm -U ./amazon-cloudwatch-agent.rpm<br/><br/>
+                    <span class="text-gray-500"># Configure and start</span><br/>
+                    sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-config-wizard<br/>
+                    sudo systemctl start amazon-cloudwatch-agent
+                </div>
+            </div>
+
+            <!-- Instance Status Checks -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-heartbeat aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Status Checks</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">Automated checks that monitor the health of your EC2 instances and underlying infrastructure.</p>
+                
+                <div class="space-y-4">
+                    <div class="bg-green-900 bg-opacity-30 p-3 rounded border-l-4 border-green-400">
+                        <h4 class="text-green-200 font-bold text-sm mb-2"><i class="fas fa-server mr-2"></i>System Status Checks</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• AWS infrastructure issues</li>
+                            <li>• Network connectivity problems</li>
+                            <li>• Host hardware/software issues</li>
+                            <li>• <strong>Resolution:</strong> Stop and start instance</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-blue-900 bg-opacity-30 p-3 rounded border-l-4 border-blue-400">
+                        <h4 class="text-blue-200 font-bold text-sm mb-2"><i class="fas fa-desktop mr-2"></i>Instance Status Checks</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Instance configuration issues</li>
+                            <li>• Kernel problems</li>
+                            <li>• Network configuration</li>
+                            <li>• <strong>Resolution:</strong> Reboot or fix configuration</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <h4 class="text-white font-bold text-sm mb-2">Status Check Results</h4>
+                    <div class="space-y-2">
+                        <div class="flex items-center text-sm">
+                            <span class="status-indicator status-running"></span>
+                            <span class="text-green-300">Passed - All checks successful</span>
+                        </div>
+                        <div class="flex items-center text-sm">
+                            <span class="status-indicator status-stopped"></span>
+                            <span class="text-red-300">Failed - Issues detected</span>
+                        </div>
+                        <div class="flex items-center text-sm">
+                            <span class="status-indicator status-pending"></span>
+                            <span class="text-yellow-300">Initializing - Checks in progress</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CloudWatch Alarms -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-bell aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">CloudWatch Alarms</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">Proactive monitoring with automated actions based on metric thresholds.</p>
+                
+                <div class="space-y-3">
+                    <div class="alert-critical">
+                        <strong><i class="fas fa-exclamation-triangle mr-2"></i>Critical Alarm</strong>
+                        <p class="text-xs mt-1">CPU > 90% for 2 consecutive periods</p>
+                    </div>
+                    
+                    <div class="alert-warning">
+                        <strong><i class="fas fa-exclamation-circle mr-2"></i>Warning Alarm</strong>
+                        <p class="text-xs mt-1">Memory > 80% for 5 minutes</p>
+                    </div>
+                    
+                    <div class="alert-info">
+                        <strong><i class="fas fa-info-circle mr-2"></i>Info Alarm</strong>
+                        <p class="text-xs mt-1">Network throughput anomaly detected</p>
+                    </div>
+                </div>
+
+                <div class="mt-4 space-y-3">
+                    <div class="bg-yellow-900 bg-opacity-30 p-3 rounded border-l-4 border-yellow-400">
+                        <h4 class="text-yellow-200 font-bold text-sm mb-2"><i class="fas fa-play mr-2"></i>Alarm Actions</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Send SNS notifications</li>
+                            <li>• Auto Scaling actions</li>
+                            <li>• EC2 actions (stop, terminate, reboot)</li>
+                            <li>• Systems Manager actions</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-block font-mono">
+                    <span class="text-gray-500"># Create CPU alarm</span><br/>
+                    aws cloudwatch put-metric-alarm \<br/>
+                    &nbsp;&nbsp;--alarm-name "High-CPU-Utilization" \<br/>
+                    &nbsp;&nbsp;--alarm-description "CPU > 80%" \<br/>
+                    &nbsp;&nbsp;--metric-name CPUUtilization \<br/>
+                    &nbsp;&nbsp;--namespace AWS/EC2 \<br/>
+                    &nbsp;&nbsp;--statistic Average \<br/>
+                    &nbsp;&nbsp;--period 300 \<br/>
+                    &nbsp;&nbsp;--threshold 80 \<br/>
+                    &nbsp;&nbsp;--comparison-operator GreaterThanThreshold
+                </div>
+            </div>
+
+            <!-- Logging -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-file-alt aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Logging</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">Centralized log management with CloudWatch Logs for troubleshooting and analysis.</p>
+                
+                <div class="space-y-4">
+                    <div class="bg-cyan-900 bg-opacity-30 p-3 rounded border-l-4 border-cyan-400">
+                        <h4 class="text-cyan-200 font-bold text-sm mb-2"><i class="fas fa-stream mr-2"></i>CloudWatch Logs</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Centralized log storage and analysis</li>
+                            <li>• Real-time log streaming</li>
+                            <li>• Log retention policies</li>
+                            <li>• Integration with other AWS services</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-purple-900 bg-opacity-30 p-3 rounded border-l-4 border-purple-400">
+                        <h4 class="text-purple-200 font-bold text-sm mb-2"><i class="fas fa-search mr-2"></i>Log Insights</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Interactive log analytics</li>
+                            <li>• Query and visualize log data</li>
+                            <li>• Pattern detection</li>
+                            <li>• Performance analysis</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <h4 class="text-white font-bold text-sm mb-2">Common Log Sources</h4>
+                    <ul class="feature-list text-gray-200 text-xs">
+                        <li>/var/log/messages (system logs)</li>
+                        <li>/var/log/secure (authentication logs)</li>
+                        <li>Application logs</li>
+                        <li>Web server logs (Apache, Nginx)</li>
+                    </ul>
+                </div>
+
+                <div class="code-block font-mono">
+                    <span class="text-gray-500"># CloudWatch Logs Insights query</span><br/>
+                    fields @timestamp, @message<br/>
+                    | filter @message like /ERROR/<br/>
+                    | sort @timestamp desc<br/>
+                    | limit 100
+                </div>
+            </div>
+
+            <!-- Troubleshooting Guide -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-tools aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Troubleshooting Guide</h3>
+                </div>
+                
+                <div class="space-y-3">
+                    <div class="troubleshooting-step">
+                        <h4 class="text-white font-bold text-sm mb-2"><i class="fas fa-plug mr-2 text-red-400"></i>Instance Won't Start</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Check instance limits and quotas</li>
+                            <li>• Verify AMI availability in region</li>
+                            <li>• Check security group rules</li>
+                            <li>• Review subnet configuration</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="troubleshooting-step">
+                        <h4 class="text-white font-bold text-sm mb-2"><i class="fas fa-wifi mr-2 text-yellow-400"></i>Connectivity Issues</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Verify security group inbound rules</li>
+                            <li>• Check NACL rules</li>
+                            <li>• Confirm route table configuration</li>
+                            <li>• Test with EC2 Instance Connect</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="troubleshooting-step">
+                        <h4 class="text-white font-bold text-sm mb-2"><i class="fas fa-tachometer-alt mr-2 text-blue-400"></i>Performance Issues</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Monitor CPU, memory, and disk metrics</li>
+                            <li>• Check for CPU credit balance (T instances)</li>
+                            <li>• Review EBS volume performance</li>
+                            <li>• Analyze network utilization</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="troubleshooting-step">
+                        <h4 class="text-white font-bold text-sm mb-2"><i class="fas fa-hdd mr-2 text-green-400"></i>Storage Issues</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Check disk space utilization</li>
+                            <li>• Monitor EBS volume metrics</li>
+                            <li>• Verify file system health</li>
+                            <li>• Review backup and snapshot status</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-4 p-3 bg-orange-900 bg-opacity-30 rounded border-l-4 border-orange-400">
+                    <h4 class="text-orange-200 font-bold text-sm mb-2">Best Practices</h4>
+                    <ul class="text-gray-300 text-xs space-y-1">
+                        <li>• Enable detailed monitoring for critical instances</li>
+                        <li>• Set up comprehensive alarms</li>
+                        <li>• Use Systems Manager for patch management</li>
+                        <li>• Implement proper tagging strategy</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page Number -->
+        <div class="text-right mt-4 text-gray-500 text-xs">
+            EC2 Monitoring & Troubleshooting
+        </div>
+        
+        <!-- Navigation -->
+        <div class="flex justify-between mt-8 pt-6 border-t border-gray-700">
+            <a href="EC2-Pricing-and-Flexibility.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Previous: Pricing & Flexibility
+            </a>
+            <a href="EC2-Service-Guide.html" class="inline-flex items-center bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                Next: Service Guide <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+        
+        <!-- Back to Topics -->
+        <div class="text-center mt-6">
+            <a href="index.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors mr-4">
+                <i class="fas fa-list mr-2"></i> Back to Topics
+            </a>
+            <a href="../index.html" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <i class="fas fa-home mr-2"></i> Back to Home
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

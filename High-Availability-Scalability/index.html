@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High Availability & Scalability</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, #232F3E 0%, #1a252f 100%);
+            min-height: 100vh;
+            width: 100vw;
+            overflow-x: hidden;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(255, 153, 0, 0.2);
+        }
+        .card-fixed-height {
+            height: 280px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(31, 41, 55, 0.9) 0%, rgba(17, 24, 39, 0.8) 50%, rgba(15, 20, 25, 0.9) 100%);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+        .card-fixed-height::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.1) 0%, rgba(6, 182, 212, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .card-fixed-height:hover::before {
+            opacity: 1;
+        }
+        .card-fixed-height:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(20, 184, 166, 0.3), 0 0 0 1px rgba(20, 184, 166, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border-color: rgba(20, 184, 166, 0.3);
+            background: linear-gradient(135deg, rgba(31, 41, 55, 0.95) 0%, rgba(17, 24, 39, 0.9) 50%, rgba(15, 20, 25, 0.95) 100%);
+        }
+        @media (min-width: 640px) {
+            .card-fixed-height {
+                height: 300px;
+            }
+        }
+        .card-fixed-height h3 {
+            font-size: 0.9rem;
+            line-height: 1.2;
+        }
+        .card-fixed-height p {
+            font-size: 0.8rem;
+            line-height: 1.3;
+            margin-bottom: 0.5rem;
+        }
+        .card-fixed-height .text-gray-400 {
+            font-size: 0.75rem;
+        }
+        .card-fixed-height span {
+            font-size: 0.7rem;
+        }
+        .aws-orange { color: #FF9900; }
+        .bg-aws-orange { background-color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+    </style>
+</head>
+<body class="text-white">
+    <div class="w-full min-h-screen p-4 sm:p-6 lg:p-8">
+        <!-- Navigation -->
+        <div class="mb-6">
+            <a href="../index.html" class="inline-flex items-center text-aws-orange hover:text-white transition-colors text-sm sm:text-base">
+                <i class="fas fa-arrow-left mr-2"></i> Back to Home
+            </a>
+        </div>
+
+        <!-- Header -->
+        <div class="text-center mb-8 sm:mb-12">
+            <div class="bg-teal-600 w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                <i class="fas fa-expand-arrows-alt text-white text-2xl sm:text-3xl"></i>
+            </div>
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-montserrat font-bold mb-2 sm:mb-4">High Availability & Scalability</h1>
+            <p class="text-lg sm:text-xl text-gray-300">AWS HA & Scalability Study Materials - 7 Topics</p>
+            <div class="w-16 sm:w-24 h-1 bg-aws-orange mx-auto mt-4 sm:mt-6"></div>
+        </div>
+
+        <!-- HA & Scalability Materials Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-7xl mx-auto">
+            
+            <!-- ELB Fundamentals -->
+            <a href="ELB-Fundamentals.html" class="block">
+                <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 sm:p-8 border border-gray-700 transition-all duration-300 card-hover card-fixed-height">
+                    <div class="flex items-center mb-4 sm:mb-6">
+                        <div class="bg-teal-600 w-12 h-12 sm:w-16 sm:h-16 rounded-lg flex items-center justify-center mr-4 sm:mr-6">
+                            <i class="fas fa-balance-scale text-white text-lg sm:text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl sm:text-2xl font-montserrat font-bold">ELB Fundamentals</h3>
+                            <p class="text-gray-400 text-sm sm:text-base">Load Balancing</p>
+                        </div>
+                    </div>
+                    <div class="flex-1 flex flex-col justify-between">
+                        <p class="text-gray-300 text-sm sm:text-base mb-4">Master Elastic Load Balancer types, configurations, and routing algorithms for distributing traffic across multiple targets.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-teal-900 text-teal-200 px-2 py-1 rounded text-xs">ALB</span>
+                            <span class="bg-teal-900 text-teal-200 px-2 py-1 rounded text-xs">NLB</span>
+                            <span class="bg-teal-900 text-teal-200 px-2 py-1 rounded text-xs">GWLB</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Auto Scaling Groups -->
+            <a href="Auto-Scaling-Groups.html" class="block">
+                <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 sm:p-8 border border-gray-700 transition-all duration-300 card-hover card-fixed-height">
+                    <div class="flex items-center mb-4 sm:mb-6">
+                        <div class="bg-green-600 w-12 h-12 sm:w-16 sm:h-16 rounded-lg flex items-center justify-center mr-4 sm:mr-6">
+                            <i class="fas fa-expand-arrows-alt text-white text-lg sm:text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl sm:text-2xl font-montserrat font-bold">Auto Scaling Groups</h3>
+                            <p class="text-gray-400 text-sm sm:text-base">Dynamic Scaling</p>
+                        </div>
+                    </div>
+                    <div class="flex-1 flex flex-col justify-between">
+                        <p class="text-gray-300 text-sm sm:text-base mb-4">Learn ASG configurations, scaling policies, and strategies for automatically adjusting capacity based on demand.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-green-900 text-green-200 px-2 py-1 rounded text-xs">Scaling Policies</span>
+                            <span class="bg-green-900 text-green-200 px-2 py-1 rounded text-xs">Launch Templates</span>
+                            <span class="bg-green-900 text-green-200 px-2 py-1 rounded text-xs">Health Checks</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Multi-AZ Deployments -->
+            <a href="Multi-AZ-Deployments.html" class="block">
+                <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 sm:p-8 border border-gray-700 transition-all duration-300 card-hover card-fixed-height">
+                    <div class="flex items-center mb-4 sm:mb-6">
+                        <div class="bg-blue-600 w-12 h-12 sm:w-16 sm:h-16 rounded-lg flex items-center justify-center mr-4 sm:mr-6">
+                            <i class="fas fa-globe text-white text-lg sm:text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl sm:text-2xl font-montserrat font-bold">Multi-AZ Deployments</h3>
+                            <p class="text-gray-400 text-sm sm:text-base">High Availability</p>
+                        </div>
+                    </div>
+                    <div class="flex-1 flex flex-col justify-between">
+                        <p class="text-gray-300 text-sm sm:text-base mb-4">Understand multi-AZ architectures, failover mechanisms, and disaster recovery strategies for maximum uptime.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-blue-900 text-blue-200 px-2 py-1 rounded text-xs">Availability Zones</span>
+                            <span class="bg-blue-900 text-blue-200 px-2 py-1 rounded text-xs">Failover</span>
+                            <span class="bg-blue-900 text-blue-200 px-2 py-1 rounded text-xs">DR Strategies</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- HA & Scalability Architecture -->
+            <a href="HA-Scalability-Architecture.html" class="block">
+                <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 sm:p-8 border border-gray-700 transition-all duration-300 card-hover card-fixed-height">
+                    <div class="flex items-center mb-4 sm:mb-6">
+                        <div class="bg-purple-600 w-12 h-12 sm:w-16 sm:h-16 rounded-lg flex items-center justify-center mr-4 sm:mr-6">
+                            <i class="fas fa-sitemap text-white text-lg sm:text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl sm:text-2xl font-montserrat font-bold">Architecture Diagrams</h3>
+                            <p class="text-gray-400 text-sm sm:text-base">Visual Patterns</p>
+                        </div>
+                    </div>
+                    <div class="flex-1 flex flex-col justify-between">
+                        <p class="text-gray-300 text-sm sm:text-base mb-4">Comprehensive architecture diagrams showing HA and scalable patterns with ELB, ASG, and multi-AZ deployments.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-purple-900 text-purple-200 px-2 py-1 rounded text-xs">Architecture</span>
+                            <span class="bg-purple-900 text-purple-200 px-2 py-1 rounded text-xs">Patterns</span>
+                            <span class="bg-purple-900 text-purple-200 px-2 py-1 rounded text-xs">Best Practices</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- HA & Scalability Exam Questions -->
+            <a href="HA-Scalability-Exam-Questions.html" class="block">
+                <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 sm:p-8 border border-gray-700 transition-all duration-300 card-hover card-fixed-height">
+                    <div class="flex items-center mb-4 sm:mb-6">
+                        <div class="bg-yellow-600 w-12 h-12 sm:w-16 sm:h-16 rounded-lg flex items-center justify-center mr-4 sm:mr-6">
+                            <i class="fas fa-question-circle text-white text-lg sm:text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl sm:text-2xl font-montserrat font-bold">Exam Questions</h3>
+                            <p class="text-gray-400 text-sm sm:text-base">Practice Tests</p>
+                        </div>
+                    </div>
+                    <div class="flex-1 flex flex-col justify-between">
+                        <p class="text-gray-300 text-sm sm:text-base mb-4">Practice exam questions covering ELB, ASG, and HA concepts, perfect for SAA-C03 exam preparation.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-yellow-900 text-yellow-200 px-2 py-1 rounded text-xs">MCQs</span>
+                            <span class="bg-yellow-900 text-yellow-200 px-2 py-1 rounded text-xs">Explanations</span>
+                            <span class="bg-yellow-900 text-yellow-200 px-2 py-1 rounded text-xs">Practice</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- HA & Scalability Service Limitations -->
+            <a href="HA-Scalability-Service-Limitations.html" class="block">
+                <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 sm:p-8 border border-gray-700 transition-all duration-300 card-hover card-fixed-height">
+                    <div class="flex items-center mb-4 sm:mb-6">
+                        <div class="bg-red-600 w-12 h-12 sm:w-16 sm:h-16 rounded-lg flex items-center justify-center mr-4 sm:mr-6">
+                            <i class="fas fa-exclamation-triangle text-white text-lg sm:text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl sm:text-2xl font-montserrat font-bold">Service Limitations</h3>
+                            <p class="text-gray-400 text-sm sm:text-base">Constraints</p>
+                        </div>
+                    </div>
+                    <div class="flex-1 flex flex-col justify-between">
+                        <p class="text-gray-300 text-sm sm:text-base mb-4">Understand ELB, ASG, and HA service limits, quotas, and constraints for proper architecture planning.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-red-900 text-red-200 px-2 py-1 rounded text-xs">Service Limits</span>
+                            <span class="bg-red-900 text-red-200 px-2 py-1 rounded text-xs">Quotas</span>
+                            <span class="bg-red-900 text-red-200 px-2 py-1 rounded text-xs">Best Practices</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- HA & Scalability Service Guide -->
+            <a href="HA-Scalability-Service-Guide.html" class="block">
+                <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 sm:p-8 border border-gray-700 transition-all duration-300 card-hover card-fixed-height">
+                    <div class="flex items-center mb-4 sm:mb-6">
+                        <div class="bg-orange-600 w-12 h-12 sm:w-16 sm:h-16 rounded-lg flex items-center justify-center mr-4 sm:mr-6">
+                            <i class="fas fa-book text-white text-lg sm:text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl sm:text-2xl font-montserrat font-bold">Service Guide</h3>
+                            <p class="text-gray-400 text-sm sm:text-base">Features & Use Cases</p>
+                        </div>
+                    </div>
+                    <div class="flex-1 flex flex-col justify-between">
+                        <p class="text-gray-300 text-sm sm:text-base mb-4">Complete reference guide explaining all HA and scalability features, options, and real-world use cases.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-orange-900 text-orange-200 px-2 py-1 rounded text-xs">ELB Types</span>
+                            <span class="bg-orange-900 text-orange-200 px-2 py-1 rounded text-xs">ASG Policies</span>
+                            <span class="bg-orange-900 text-orange-200 px-2 py-1 rounded text-xs">Use Cases</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center mt-12 sm:mt-16 pt-6 sm:pt-8 border-t border-gray-700">
+            <p class="text-gray-400 text-sm sm:text-base">
+                <i class="fas fa-expand-arrows-alt aws-orange mr-2"></i>
+                Master AWS High Availability & Scalability
+            </p>
+        </div>
+    </div>
+</body>
+</html>

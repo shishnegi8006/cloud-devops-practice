@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IAM Identity Federation</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            font-family: 'Open Sans', sans-serif;
+            width: 100vw;
+            overflow-x: hidden;
+        }
+        .slide-container {
+            width: 100vw;
+            min-height: 100vh;
+            background-color: #232F3E;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            color: #ffffff;
+        }
+        .aws-orange { color: #FF9900; }
+        .bg-aws-orange { background-color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+        .font-mono { font-family: 'Roboto Mono', monospace; }
+        
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            z-index: 10;
+            min-height: 100vh;
+        }
+        @media (min-width: 640px) {
+            .content-wrapper { padding: 2rem; }
+        }
+        @media (min-width: 1024px) {
+            .content-wrapper { padding: 3rem; }
+        }
+
+        .section-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 24px;
+            border-left: 4px solid #FF9900;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 153, 0, 0.15);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            flex-shrink: 0;
+        }
+
+        .federation-flow {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+            border: 1px solid rgba(255, 153, 0, 0.3);
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(59, 130, 246, 0.1);
+            padding: 12px;
+            border-radius: 6px;
+            margin: 8px 0;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .step-number {
+            background: #FF9900;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.8rem;
+            margin-right: 12px;
+        }
+
+        .feature-list li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            font-size: 0.9rem;
+        }
+        .feature-list li::before {
+            content: "•";
+            color: #FF9900;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            font-size: 1.2em;
+        }
+
+        .code-block {
+            background-color: #161b22;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: #e6edf3;
+            border: 1px solid #30363d;
+            margin-top: 10px;
+        }
+
+        .federation-type {
+            padding: 12px;
+            border-radius: 6px;
+            margin: 8px 0;
+            font-size: 0.85rem;
+        }
+
+        .saml-federation {
+            background: rgba(34, 197, 94, 0.2);
+            border-left: 4px solid #22C55E;
+            color: #86EFAC;
+        }
+
+        .oidc-federation {
+            background: rgba(59, 130, 246, 0.2);
+            border-left: 4px solid #3B82F6;
+            color: #93C5FD;
+        }
+
+        .web-identity {
+            background: rgba(245, 158, 11, 0.2);
+            border-left: 4px solid #F59E0B;
+            color: #FCD34D;
+        }
+
+        .cognito-federation {
+            background: rgba(139, 92, 246, 0.2);
+            border-left: 4px solid #8B5CF6;
+            color: #C4B5FD;
+        }
+
+        .provider-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .provider-card {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            padding: 12px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .provider-icon {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+        .comparison-table th,
+        .comparison-table td {
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.85rem;
+        }
+        .comparison-table th {
+            background: rgba(255, 153, 0, 0.1);
+            color: #FF9900;
+            font-weight: bold;
+        }
+        .comparison-table td {
+            color: #e5e7eb;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container">
+    <div class="absolute top-0 left-0 w-full h-2 bg-aws-orange z-20"></div>
+    <div class="content-wrapper">
+        <!-- Navigation -->
+        <div class="mb-3 sm:mb-4">
+            <a href="index.html" class="inline-flex items-center text-aws-orange hover:text-white transition-colors text-sm sm:text-base">
+                <i class="fas fa-arrow-left mr-2"></i> Back to IAM Topics
+            </a>
+        </div>
+
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center mb-4 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4">
+            <div class="bg-aws-orange p-2 rounded mr-4">
+                <i class="fas fa-handshake text-white text-xl"></i>
+            </div>
+            <div>
+                <h2 class="text-4xl font-montserrat font-bold text-white">IAM Identity Federation</h2>
+                <p class="text-gray-400 font-montserrat text-lg">SAML, OIDC, and External Identity Providers</p>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 lg:gap-8 flex-1">
+            
+            <!-- Federation Overview -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-handshake aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Federation Overview</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">Identity federation allows users to access AWS resources using credentials from external identity providers.</p>
+                
+                <div class="space-y-3">
+                    <div class="saml-federation">
+                        <h4 class="font-bold text-sm mb-2"><i class="fas fa-certificate mr-2"></i>SAML 2.0 Federation</h4>
+                        <ul class="text-xs space-y-1">
+                            <li>• Enterprise identity providers (AD FS, Okta)</li>
+                            <li>• XML-based authentication protocol</li>
+                            <li>• Single sign-on (SSO) capabilities</li>
+                            <li>• Supports both console and API access</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="oidc-federation">
+                        <h4 class="font-bold text-sm mb-2"><i class="fas fa-id-card mr-2"></i>OpenID Connect (OIDC)</h4>
+                        <ul class="text-xs space-y-1">
+                            <li>• Modern identity layer on OAuth 2.0</li>
+                            <li>• JSON Web Tokens (JWT)</li>
+                            <li>• Web and mobile applications</li>
+                            <li>• GitHub Actions, GitLab CI/CD</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="web-identity">
+                        <h4 class="font-bold text-sm mb-2"><i class="fas fa-mobile-alt mr-2"></i>Web Identity Federation</h4>
+                        <ul class="text-xs space-y-1">
+                            <li>• Social identity providers</li>
+                            <li>• Amazon, Facebook, Google, Apple</li>
+                            <li>• Mobile and web applications</li>
+                            <li>• Direct STS integration</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="cognito-federation">
+                        <h4 class="font-bold text-sm mb-2"><i class="fas fa-users-cog mr-2"></i>Amazon Cognito</h4>
+                        <ul class="text-xs space-y-1">
+                            <li>• Managed identity service</li>
+                            <li>• User pools and identity pools</li>
+                            <li>• Multiple identity providers</li>
+                            <li>• Simplified mobile/web integration</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SAML Federation -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-certificate aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">SAML 2.0 Federation</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">Security Assertion Markup Language (SAML) enables enterprise SSO integration with AWS.</p>
+                
+                <div class="federation-flow">
+                    <div class="text-center text-aws-orange font-bold mb-3">SAML Federation Flow</div>
+                    
+                    <div class="flow-step">
+                        <div class="flex items-center">
+                            <div class="step-number">1</div>
+                            <div>
+                                <div class="font-bold text-sm">User Authentication</div>
+                                <div class="text-xs text-gray-400">User authenticates with IdP</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flow-step">
+                        <div class="flex items-center">
+                            <div class="step-number">2</div>
+                            <div>
+                                <div class="font-bold text-sm">SAML Assertion</div>
+                                <div class="text-xs text-gray-400">IdP generates SAML response</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flow-step">
+                        <div class="flex items-center">
+                            <div class="step-number">3</div>
+                            <div>
+                                <div class="font-bold text-sm">AssumeRoleWithSAML</div>
+                                <div class="text-xs text-gray-400">STS validates and issues tokens</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flow-step">
+                        <div class="flex items-center">
+                            <div class="step-number">4</div>
+                            <div>
+                                <div class="font-bold text-sm">AWS Access</div>
+                                <div class="text-xs text-gray-400">User accesses AWS resources</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="bg-blue-900 bg-opacity-30 p-3 rounded border-l-4 border-blue-400">
+                        <h4 class="text-blue-200 font-bold text-sm mb-2"><i class="fas fa-cog mr-2"></i>Setup Requirements</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Create SAML identity provider in IAM</li>
+                            <li>• Upload IdP metadata document</li>
+                            <li>• Create IAM role for SAML users</li>
+                            <li>• Configure trust relationship</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-block font-mono">
+                    <span class="text-gray-500"># Create SAML provider</span><br/>
+                    aws iam create-saml-provider \<br/>
+                    &nbsp;&nbsp;--saml-metadata-document file://metadata.xml \<br/>
+                    &nbsp;&nbsp;--name MyCompanySAMLProvider
+                </div>
+            </div>
+
+            <!-- OIDC Federation -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-id-card aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">OpenID Connect (OIDC)</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">Modern identity protocol built on OAuth 2.0, ideal for CI/CD pipelines and web applications.</p>
+                
+                <ul class="feature-list text-gray-200 mb-4">
+                    <li><strong class="text-white">JWT Tokens:</strong> JSON Web Tokens for identity claims</li>
+                    <li><strong class="text-white">Thumbprint Validation:</strong> Certificate fingerprint verification</li>
+                    <li><strong class="text-white">Audience Restriction:</strong> Limit token usage to specific applications</li>
+                    <li><strong class="text-white">Short-lived Tokens:</strong> Enhanced security with token expiration</li>
+                </ul>
+
+                <div class="provider-grid">
+                    <div class="provider-card">
+                        <div class="provider-icon text-gray-300">
+                            <i class="fab fa-github"></i>
+                        </div>
+                        <div class="text-xs font-bold">GitHub Actions</div>
+                    </div>
+                    <div class="provider-card">
+                        <div class="provider-icon text-orange-400">
+                            <i class="fab fa-gitlab"></i>
+                        </div>
+                        <div class="text-xs font-bold">GitLab CI/CD</div>
+                    </div>
+                    <div class="provider-card">
+                        <div class="provider-icon text-blue-400">
+                            <i class="fab fa-google"></i>
+                        </div>
+                        <div class="text-xs font-bold">Google</div>
+                    </div>
+                    <div class="provider-card">
+                        <div class="provider-icon text-green-400">
+                            <i class="fas fa-key"></i>
+                        </div>
+                        <div class="text-xs font-bold">Custom OIDC</div>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="bg-green-900 bg-opacity-30 p-3 rounded border-l-4 border-green-400">
+                        <h4 class="text-green-200 font-bold text-sm mb-2"><i class="fas fa-robot mr-2"></i>CI/CD Use Cases</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• GitHub Actions deploying to AWS</li>
+                            <li>• GitLab pipelines accessing resources</li>
+                            <li>• No long-term credentials in code</li>
+                            <li>• Temporary access per workflow run</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-block font-mono">
+                    <span class="text-gray-500"># Create OIDC provider</span><br/>
+                    aws iam create-open-id-connect-provider \<br/>
+                    &nbsp;&nbsp;--url https://token.actions.githubusercontent.com \<br/>
+                    &nbsp;&nbsp;--client-id-list sts.amazonaws.com \<br/>
+                    &nbsp;&nbsp;--thumbprint-list 6938fd4d98bab03faadb97b34396831e3780aea1
+                </div>
+            </div>
+
+            <!-- Web Identity Federation -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-mobile-alt aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Web Identity Federation</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">Enable users to sign in with social identity providers and access AWS resources.</p>
+                
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Provider</th>
+                            <th>Use Case</th>
+                            <th>Token Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong class="text-blue-300">Amazon</strong></td>
+                            <td>Login with Amazon</td>
+                            <td>OAuth 2.0</td>
+                        </tr>
+                        <tr>
+                            <td><strong class="text-blue-300">Facebook</strong></td>
+                            <td>Social login</td>
+                            <td>OAuth 2.0</td>
+                        </tr>
+                        <tr>
+                            <td><strong class="text-blue-300">Google</strong></td>
+                            <td>Google Sign-In</td>
+                            <td>OAuth 2.0</td>
+                        </tr>
+                        <tr>
+                            <td><strong class="text-blue-300">Apple</strong></td>
+                            <td>Sign in with Apple</td>
+                            <td>OAuth 2.0</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="space-y-3 mt-4">
+                    <div class="bg-purple-900 bg-opacity-30 p-3 rounded border-l-4 border-purple-400">
+                        <h4 class="text-purple-200 font-bold text-sm mb-2"><i class="fas fa-mobile-alt mr-2"></i>Mobile Applications</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Direct integration with AWS SDK</li>
+                            <li>• AssumeRoleWithWebIdentity API</li>
+                            <li>• No server-side authentication needed</li>
+                            <li>• Temporary credentials for mobile apps</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-yellow-900 bg-opacity-30 p-3 rounded border-l-4 border-yellow-400">
+                        <h4 class="text-yellow-200 font-bold text-sm mb-2"><i class="fas fa-exclamation-triangle mr-2"></i>Considerations</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Token validation by AWS STS</li>
+                            <li>• Provider-specific configuration</li>
+                            <li>• Rate limiting and quotas</li>
+                            <li>• Consider Cognito for complex scenarios</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-block font-mono">
+                    <span class="text-gray-500">// JavaScript SDK example</span><br/>
+                    AWS.config.credentials = new AWS.WebIdentityCredentials({<br/>
+                    &nbsp;&nbsp;RoleArn: 'arn:aws:iam::123456789012:role/WebIdRole',<br/>
+                    &nbsp;&nbsp;ProviderId: 'graph.facebook.com',<br/>
+                    &nbsp;&nbsp;WebIdentityToken: facebookToken<br/>
+                    });
+                </div>
+            </div>
+
+            <!-- Amazon Cognito -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-users-cog aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Amazon Cognito</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">Managed service that provides authentication, authorization, and user management for web and mobile apps.</p>
+                
+                <div class="space-y-4">
+                    <div class="bg-blue-900 bg-opacity-30 p-3 rounded border-l-4 border-blue-400">
+                        <h4 class="text-blue-200 font-bold text-sm mb-2"><i class="fas fa-users mr-2"></i>User Pools</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• User directory service</li>
+                            <li>• Sign-up and sign-in functionality</li>
+                            <li>• MFA and password policies</li>
+                            <li>• Custom authentication flows</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-green-900 bg-opacity-30 p-3 rounded border-l-4 border-green-400">
+                        <h4 class="text-green-200 font-bold text-sm mb-2"><i class="fas fa-id-badge mr-2"></i>Identity Pools</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Federated identities</li>
+                            <li>• AWS credentials for authenticated users</li>
+                            <li>• Support for multiple identity providers</li>
+                            <li>• Guest (unauthenticated) access</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-purple-900 bg-opacity-30 p-3 rounded border-l-4 border-purple-400">
+                        <h4 class="text-purple-200 font-bold text-sm mb-2"><i class="fas fa-cogs mr-2"></i>Advanced Features</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Lambda triggers for custom logic</li>
+                            <li>• Advanced security features</li>
+                            <li>• Analytics and user insights</li>
+                            <li>• SDK integration for multiple platforms</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-4 p-3 bg-orange-900 bg-opacity-30 rounded border-l-4 border-orange-400">
+                    <h4 class="text-orange-200 font-bold text-sm mb-2">When to Use Cognito</h4>
+                    <ul class="text-gray-300 text-xs space-y-1">
+                        <li>• Complex user management requirements</li>
+                        <li>• Multiple identity providers</li>
+                        <li>• Mobile and web applications</li>
+                        <li>• Need for user attributes and groups</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Best Practices -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-star aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Federation Best Practices</h3>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="bg-green-900 bg-opacity-30 p-3 rounded border-l-4 border-green-400">
+                        <h4 class="text-green-200 font-bold text-sm mb-2"><i class="fas fa-shield-alt mr-2"></i>Security</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Use conditions to restrict access</li>
+                            <li>• Validate token audiences and issuers</li>
+                            <li>• Implement proper certificate validation</li>
+                            <li>• Monitor federation usage patterns</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-blue-900 bg-opacity-30 p-3 rounded border-l-4 border-blue-400">
+                        <h4 class="text-blue-200 font-bold text-sm mb-2"><i class="fas fa-clock mr-2"></i>Token Management</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Use short-lived tokens when possible</li>
+                            <li>• Implement token refresh mechanisms</li>
+                            <li>• Handle token expiration gracefully</li>
+                            <li>• Cache tokens appropriately</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-purple-900 bg-opacity-30 p-3 rounded border-l-4 border-purple-400">
+                        <h4 class="text-purple-200 font-bold text-sm mb-2"><i class="fas fa-eye mr-2"></i>Monitoring</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Enable CloudTrail for STS API calls</li>
+                            <li>• Monitor failed authentication attempts</li>
+                            <li>• Set up alerts for unusual patterns</li>
+                            <li>• Regular access reviews and audits</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-red-900 bg-opacity-30 p-3 rounded border-l-4 border-red-400">
+                        <h4 class="text-red-200 font-bold text-sm mb-2"><i class="fas fa-exclamation-triangle mr-2"></i>Common Pitfalls</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Overly permissive role policies</li>
+                            <li>• Insufficient token validation</li>
+                            <li>• Missing audience restrictions</li>
+                            <li>• Inadequate error handling</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page Number -->
+        <div class="text-right mt-4 text-gray-500 text-xs">
+            IAM Identity Federation
+        </div>
+        
+        <!-- Navigation -->
+        <div class="flex justify-between mt-8 pt-6 border-t border-gray-700">
+            <a href="IAM-Roles-Cross-Account.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Previous: Roles & Cross-Account
+            </a>
+            <a href="IAM-Security-and-Governance.html" class="inline-flex items-center bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                Next: Security & Governance <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+        
+        <!-- Back to Topics -->
+        <div class="text-center mt-6">
+            <a href="index.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors mr-4">
+                <i class="fas fa-list mr-2"></i> Back to Topics
+            </a>
+            <a href="../index.html" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <i class="fas fa-home mr-2"></i> Back to Home
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

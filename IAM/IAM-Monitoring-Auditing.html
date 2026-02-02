@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IAM Monitoring & Auditing</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            font-family: 'Open Sans', sans-serif;
+            width: 100vw;
+            overflow-x: hidden;
+        }
+        .slide-container {
+            width: 100vw;
+            min-height: 100vh;
+            background-color: #232F3E;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            color: #ffffff;
+        }
+        .aws-orange { color: #FF9900; }
+        .bg-aws-orange { background-color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+        .font-mono { font-family: 'Roboto Mono', monospace; }
+        
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            z-index: 10;
+            min-height: 100vh;
+        }
+        @media (min-width: 640px) {
+            .content-wrapper { padding: 2rem; }
+        }
+        @media (min-width: 1024px) {
+            .content-wrapper { padding: 3rem; }
+        }
+
+        .section-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 24px;
+            border-left: 4px solid #FF9900;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 153, 0, 0.15);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            flex-shrink: 0;
+        }
+
+        .monitoring-dashboard {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+            border: 1px solid rgba(255, 153, 0, 0.3);
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .metric-card {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            padding: 12px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #93C5FD;
+        }
+
+        .metric-label {
+            font-size: 0.7rem;
+            color: #9CA3AF;
+            margin-top: 4px;
+        }
+
+        .feature-list li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            font-size: 0.9rem;
+        }
+        .feature-list li::before {
+            content: "•";
+            color: #FF9900;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            font-size: 1.2em;
+        }
+
+        .code-block {
+            background-color: #161b22;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: #e6edf3;
+            border: 1px solid #30363d;
+            margin-top: 10px;
+        }
+
+        .audit-tool {
+            padding: 12px;
+            border-radius: 6px;
+            margin: 8px 0;
+            font-size: 0.85rem;
+        }
+
+        .cloudtrail-tool {
+            background: rgba(34, 197, 94, 0.2);
+            border-left: 4px solid #22C55E;
+            color: #86EFAC;
+        }
+
+        .access-analyzer {
+            background: rgba(59, 130, 246, 0.2);
+            border-left: 4px solid #3B82F6;
+            color: #93C5FD;
+        }
+
+        .credential-report {
+            background: rgba(245, 158, 11, 0.2);
+            border-left: 4px solid #F59E0B;
+            color: #FCD34D;
+        }
+
+        .config-tool {
+            background: rgba(139, 92, 246, 0.2);
+            border-left: 4px solid #8B5CF6;
+            color: #C4B5FD;
+        }
+
+        .alert-level {
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin: 8px 0;
+            font-size: 0.85rem;
+        }
+
+        .alert-critical {
+            background: rgba(239, 68, 68, 0.2);
+            border-left: 4px solid #EF4444;
+            color: #FCA5A5;
+        }
+
+        .alert-warning {
+            background: rgba(245, 158, 11, 0.2);
+            border-left: 4px solid #F59E0B;
+            color: #FCD34D;
+        }
+
+        .alert-info {
+            background: rgba(59, 130, 246, 0.2);
+            border-left: 4px solid #3B82F6;
+            color: #93C5FD;
+        }
+
+        .compliance-framework {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 153, 0, 0.3);
+            border-radius: 6px;
+            padding: 12px;
+            margin: 12px 0;
+        }
+
+        .finding-severity {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .severity-high {
+            background: rgba(239, 68, 68, 0.3);
+            color: #FCA5A5;
+        }
+
+        .severity-medium {
+            background: rgba(245, 158, 11, 0.3);
+            color: #FCD34D;
+        }
+
+        .severity-low {
+            background: rgba(34, 197, 94, 0.3);
+            color: #86EFAC;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container">
+    <div class="absolute top-0 left-0 w-full h-2 bg-aws-orange z-20"></div>
+    <div class="content-wrapper">
+        <!-- Navigation -->
+        <div class="mb-3 sm:mb-4">
+            <a href="index.html" class="inline-flex items-center text-aws-orange hover:text-white transition-colors text-sm sm:text-base">
+                <i class="fas fa-arrow-left mr-2"></i> Back to IAM Topics
+            </a>
+        </div>
+
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center mb-4 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4">
+            <div class="bg-aws-orange p-2 rounded mr-4">
+                <i class="fas fa-chart-line text-white text-xl"></i>
+            </div>
+            <div>
+                <h2 class="text-4xl font-montserrat font-bold text-white">IAM Monitoring & Auditing</h2>
+                <p class="text-gray-400 font-montserrat text-lg">CloudTrail, Access Analyzer, and Compliance Tools</p>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 lg:gap-8 flex-1">
+            
+            <!-- CloudTrail Integration -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-route aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">CloudTrail Integration</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">AWS CloudTrail provides comprehensive logging of all IAM API calls and user activities.</p>
+                
+                <div class="space-y-3">
+                    <div class="cloudtrail-tool">
+                        <h4 class="font-bold text-sm mb-2"><i class="fas fa-file-alt mr-2"></i>API Call Logging</h4>
+                        <ul class="text-xs space-y-1">
+                            <li>• All IAM API calls logged</li>
+                            <li>• User identity and source IP</li>
+                            <li>• Request parameters and responses</li>
+                            <li>• Timestamp and region information</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="access-analyzer">
+                        <h4 class="font-bold text-sm mb-2"><i class="fas fa-sign-in-alt mr-2"></i>Authentication Events</h4>
+                        <ul class="text-xs space-y-1">
+                            <li>• Console sign-in attempts</li>
+                            <li>• MFA authentication events</li>
+                            <li>• AssumeRole operations</li>
+                            <li>• Failed authentication attempts</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="credential-report">
+                        <h4 class="font-bold text-sm mb-2"><i class="fas fa-key mr-2"></i>Credential Usage</h4>
+                        <ul class="text-xs space-y-1">
+                            <li>• Access key usage tracking</li>
+                            <li>• Temporary credential issuance</li>
+                            <li>• Service-to-service calls</li>
+                            <li>• Cross-account access patterns</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="monitoring-dashboard">
+                    <div class="text-center text-aws-orange font-bold mb-3">Key CloudTrail Events</div>
+                    <div class="metric-grid">
+                        <div class="metric-card">
+                            <div class="metric-value">ConsoleLogin</div>
+                            <div class="metric-label">User Sign-in</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">AssumeRole</div>
+                            <div class="metric-label">Role Assumption</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">CreateUser</div>
+                            <div class="metric-label">User Creation</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value">AttachPolicy</div>
+                            <div class="metric-label">Policy Changes</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="code-block font-mono">
+                    <span class="text-gray-500"># Query CloudTrail logs</span><br/>
+                    aws logs filter-log-events \<br/>
+                    &nbsp;&nbsp;--log-group-name CloudTrail/IAMEvents \<br/>
+                    &nbsp;&nbsp;--filter-pattern "{ $.eventName = AssumeRole }" \<br/>
+                    &nbsp;&nbsp;--start-time 1640995200000
+                </div>
+            </div>
+
+            <!-- IAM Access Analyzer -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-search aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">IAM Access Analyzer</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">Analyze resource policies and identify unintended access to your resources from external entities.</p>
+                
+                <ul class="feature-list text-gray-200 mb-4">
+                    <li><strong class="text-white">External Access:</strong> Identify resources accessible from outside your account</li>
+                    <li><strong class="text-white">Policy Validation:</strong> Check policies for syntax and logic errors</li>
+                    <li><strong class="text-white">Unused Access:</strong> Find permissions that haven't been used</li>
+                    <li><strong class="text-white">Policy Generation:</strong> Generate policies based on access patterns</li>
+                </ul>
+
+                <div class="space-y-3">
+                    <div class="bg-red-900 bg-opacity-30 p-3 rounded border-l-4 border-red-400">
+                        <h4 class="text-red-200 font-bold text-sm mb-2"><i class="fas fa-exclamation-triangle mr-2"></i>Finding Types</h4>
+                        <div class="space-y-2">
+                            <div>
+                                <span class="finding-severity severity-high">HIGH</span>
+                                <span class="text-xs">Public read access to S3 bucket</span>
+                            </div>
+                            <div>
+                                <span class="finding-severity severity-medium">MEDIUM</span>
+                                <span class="text-xs">Cross-account role trust</span>
+                            </div>
+                            <div>
+                                <span class="finding-severity severity-low">LOW</span>
+                                <span class="text-xs">Unused IAM role</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-blue-900 bg-opacity-30 p-3 rounded border-l-4 border-blue-400">
+                        <h4 class="text-blue-200 font-bold text-sm mb-2"><i class="fas fa-cog mr-2"></i>Analyzer Types</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• <strong>Account:</strong> Analyze resources in your account</li>
+                            <li>• <strong>Organization:</strong> Analyze across AWS Organizations</li>
+                            <li>• <strong>Custom:</strong> Define your own zone of trust</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-block font-mono">
+                    <span class="text-gray-500"># Create Access Analyzer</span><br/>
+                    aws accessanalyzer create-analyzer \<br/>
+                    &nbsp;&nbsp;--analyzer-name MyAccountAnalyzer \<br/>
+                    &nbsp;&nbsp;--type ACCOUNT<br/><br/>
+                    <span class="text-gray-500"># List findings</span><br/>
+                    aws accessanalyzer list-findings \<br/>
+                    &nbsp;&nbsp;--analyzer-arn arn:aws:access-analyzer:us-east-1:123456789012:analyzer/MyAccountAnalyzer
+                </div>
+            </div>
+
+            <!-- Credential Reports -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-file-csv aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Credential Reports</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">Generate comprehensive reports about user credentials and their usage patterns.</p>
+                
+                <div class="space-y-4">
+                    <div class="bg-green-900 bg-opacity-30 p-3 rounded border-l-4 border-green-400">
+                        <h4 class="text-green-200 font-bold text-sm mb-2"><i class="fas fa-table mr-2"></i>Report Contents</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• User creation and last activity dates</li>
+                            <li>• Password and access key status</li>
+                            <li>• MFA device assignments</li>
+                            <li>• Certificate and signing certificate info</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-yellow-900 bg-opacity-30 p-3 rounded border-l-4 border-yellow-400">
+                        <h4 class="text-yellow-200 font-bold text-sm mb-2"><i class="fas fa-clock mr-2"></i>Usage Tracking</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Last console login timestamp</li>
+                            <li>• Access key last used date and service</li>
+                            <li>• Password last changed date</li>
+                            <li>• Identify inactive users and credentials</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <h4 class="text-white font-bold text-sm mb-2">Common Use Cases</h4>
+                    <ul class="feature-list text-gray-200 text-xs">
+                        <li>Compliance audits and reporting</li>
+                        <li>Identify unused or stale credentials</li>
+                        <li>Password policy compliance</li>
+                        <li>MFA adoption tracking</li>
+                    </ul>
+                </div>
+
+                <div class="code-block font-mono">
+                    <span class="text-gray-500"># Generate credential report</span><br/>
+                    aws iam generate-credential-report<br/><br/>
+                    <span class="text-gray-500"># Download credential report</span><br/>
+                    aws iam get-credential-report \<br/>
+                    &nbsp;&nbsp;--output text \<br/>
+                    &nbsp;&nbsp;--query 'Content' | base64 -d > credential-report.csv
+                </div>
+            </div>
+
+            <!-- AWS Config Rules -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-check-circle aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">AWS Config Rules</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">Automated compliance checking for IAM resources using AWS Config rules.</p>
+                
+                <div class="space-y-3">
+                    <div class="config-tool">
+                        <h4 class="font-bold text-sm mb-2"><i class="fas fa-shield-alt mr-2"></i>Security Rules</h4>
+                        <ul class="text-xs space-y-1">
+                            <li>• iam-password-policy</li>
+                            <li>• iam-user-mfa-enabled</li>
+                            <li>• iam-root-access-key-check</li>
+                            <li>• iam-user-unused-credentials-check</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="access-analyzer">
+                        <h4 class="font-bold text-sm mb-2"><i class="fas fa-key mr-2"></i>Access Rules</h4>
+                        <ul class="text-xs space-y-1">
+                            <li>• iam-policy-no-statements-with-admin-access</li>
+                            <li>• iam-user-no-policies-check</li>
+                            <li>• iam-group-has-users-check</li>
+                            <li>• iam-role-managed-policy-check</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="compliance-framework">
+                    <h4 class="text-aws-orange font-bold text-sm mb-2">Compliance Frameworks</h4>
+                    <div class="grid grid-cols-2 gap-4 text-xs">
+                        <div>
+                            <div class="font-bold text-blue-200 mb-1">SOC 2</div>
+                            <div class="text-gray-400">Security controls</div>
+                        </div>
+                        <div>
+                            <div class="font-bold text-green-200 mb-1">PCI DSS</div>
+                            <div class="text-gray-400">Payment card security</div>
+                        </div>
+                        <div>
+                            <div class="font-bold text-purple-200 mb-1">HIPAA</div>
+                            <div class="text-gray-400">Healthcare compliance</div>
+                        </div>
+                        <div>
+                            <div class="font-bold text-yellow-200 mb-1">GDPR</div>
+                            <div class="text-gray-400">Data protection</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="code-block font-mono">
+                    <span class="text-gray-500"># Deploy Config rule</span><br/>
+                    aws configservice put-config-rule \<br/>
+                    &nbsp;&nbsp;--config-rule '{<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"ConfigRuleName": "iam-user-mfa-enabled",<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;"Source": {<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Owner": "AWS",<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"SourceIdentifier": "IAM_USER_MFA_ENABLED"<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;}<br/>
+                    &nbsp;&nbsp;}'
+                </div>
+            </div>
+
+            <!-- Alerting and Notifications -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-bell aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Alerting & Notifications</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">Set up proactive monitoring and alerting for IAM security events and policy violations.</p>
+                
+                <div class="space-y-3">
+                    <div class="alert-critical">
+                        <strong><i class="fas fa-exclamation-triangle mr-2"></i>Critical Alerts</strong>
+                        <ul class="text-xs mt-2 space-y-1">
+                            <li>• Root account usage</li>
+                            <li>• New IAM user creation</li>
+                            <li>• Policy changes with admin permissions</li>
+                            <li>• Multiple failed login attempts</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="alert-warning">
+                        <strong><i class="fas fa-exclamation-circle mr-2"></i>Warning Alerts</strong>
+                        <ul class="text-xs mt-2 space-y-1">
+                            <li>• Unusual access patterns</li>
+                            <li>• Cross-account role assumptions</li>
+                            <li>• Access key rotation overdue</li>
+                            <li>• MFA device changes</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="alert-info">
+                        <strong><i class="fas fa-info-circle mr-2"></i>Informational Alerts</strong>
+                        <ul class="text-xs mt-2 space-y-1">
+                            <li>• New resource access</li>
+                            <li>• Policy validation results</li>
+                            <li>• Credential report generation</li>
+                            <li>• Access Analyzer findings</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-4 space-y-3">
+                    <div class="bg-blue-900 bg-opacity-30 p-3 rounded border-l-4 border-blue-400">
+                        <h4 class="text-blue-200 font-bold text-sm mb-2"><i class="fas fa-cog mr-2"></i>Alert Mechanisms</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• CloudWatch Alarms and SNS</li>
+                            <li>• EventBridge rules and targets</li>
+                            <li>• Lambda functions for custom logic</li>
+                            <li>• Third-party SIEM integration</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-block font-mono">
+                    <span class="text-gray-500"># CloudWatch alarm for root usage</span><br/>
+                    aws cloudwatch put-metric-alarm \<br/>
+                    &nbsp;&nbsp;--alarm-name "RootAccountUsage" \<br/>
+                    &nbsp;&nbsp;--alarm-description "Root account used" \<br/>
+                    &nbsp;&nbsp;--metric-name RootAccountUsageEventCount \<br/>
+                    &nbsp;&nbsp;--namespace CloudWatchLogMetrics \<br/>
+                    &nbsp;&nbsp;--statistic Sum \<br/>
+                    &nbsp;&nbsp;--period 300 \<br/>
+                    &nbsp;&nbsp;--threshold 1 \<br/>
+                    &nbsp;&nbsp;--comparison-operator GreaterThanOrEqualToThreshold
+                </div>
+            </div>
+
+            <!-- Best Practices -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-star aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Monitoring Best Practices</h3>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="bg-green-900 bg-opacity-30 p-3 rounded border-l-4 border-green-400">
+                        <h4 class="text-green-200 font-bold text-sm mb-2"><i class="fas fa-eye mr-2"></i>Comprehensive Logging</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Enable CloudTrail in all regions</li>
+                            <li>• Log both API and console activities</li>
+                            <li>• Include data events for sensitive resources</li>
+                            <li>• Centralize logs in dedicated account</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-blue-900 bg-opacity-30 p-3 rounded border-l-4 border-blue-400">
+                        <h4 class="text-blue-200 font-bold text-sm mb-2"><i class="fas fa-clock mr-2"></i>Regular Reviews</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Monthly credential reports</li>
+                            <li>• Quarterly access reviews</li>
+                            <li>• Annual policy audits</li>
+                            <li>• Continuous compliance monitoring</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-purple-900 bg-opacity-30 p-3 rounded border-l-4 border-purple-400">
+                        <h4 class="text-purple-200 font-bold text-sm mb-2"><i class="fas fa-robot mr-2"></i>Automation</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Automated remediation workflows</li>
+                            <li>• Policy drift detection</li>
+                            <li>• Unused resource cleanup</li>
+                            <li>• Compliance reporting automation</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-red-900 bg-opacity-30 p-3 rounded border-l-4 border-red-400">
+                        <h4 class="text-red-200 font-bold text-sm mb-2"><i class="fas fa-exclamation-triangle mr-2"></i>Security Focus</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Monitor privileged account usage</li>
+                            <li>• Track policy modifications</li>
+                            <li>• Alert on anomalous access patterns</li>
+                            <li>• Implement defense in depth</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page Number -->
+        <div class="text-right mt-4 text-gray-500 text-xs">
+            IAM Monitoring & Auditing
+        </div>
+        
+        <!-- Navigation -->
+        <div class="flex justify-between mt-8 pt-6 border-t border-gray-700">
+            <a href="IAM-Security-and-Governance.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Previous: Security & Governance
+            </a>
+            <a href="IAM-Service-Guide.html" class="inline-flex items-center bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                Next: Service Guide <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+        
+        <!-- Back to Topics -->
+        <div class="text-center mt-6">
+            <a href="index.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors mr-4">
+                <i class="fas fa-list mr-2"></i> Back to Topics
+            </a>
+            <a href="../index.html" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <i class="fas fa-home mr-2"></i> Back to Home
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

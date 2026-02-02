@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cache Selection Guide - AWS Study Guide</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="../styles.css" rel="stylesheet">
+</head>
+<body class="text-white">
+    <div class="w-full min-h-screen p-4 sm:p-6 lg:p-8">
+        <div class="mb-6">
+            <a href="index.html" class="inline-flex items-center text-aws-orange hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Back to RDS
+            </a>
+        </div>
+        
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-8">
+                <div class="bg-red-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-tachometer-alt text-white text-2xl"></i>
+                </div>
+                <h1 class="text-4xl font-montserrat font-bold mb-4">Cache Selection Guide</h1>
+                <p class="text-xl text-gray-300">Redis vs Valkey vs Memcached - Complete Decision Framework</p>
+            </div>
+
+            <!-- Overview -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h2 class="text-2xl font-bold mb-4 aws-orange">Cache Engine Selection Framework</h2>
+                <p class="text-gray-300 mb-4">Selecting the right caching engine depends on data structure requirements, performance needs, persistence requirements, and operational complexity. This guide provides a comprehensive framework for choosing between Redis, Valkey, and Memcached.</p>
+                <div class="bg-red-900 bg-opacity-30 border border-red-500 rounded p-4">
+                    <p class="text-red-200"><strong>Key Decision Factors:</strong> Data structure complexity, persistence needs, clustering requirements, performance characteristics, cost considerations, and operational features.</p>
+                </div>
+            </div>
+
+            <!-- Quick Decision Matrix -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 aws-orange">Quick Decision Matrix</h3>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-gray-600">
+                                <th class="text-left p-3 font-semibold">Feature/Requirement</th>
+                                <th class="text-center p-3 font-semibold text-red-400">Redis</th>
+                                <th class="text-center p-3 font-semibold text-purple-400">Valkey</th>
+                                <th class="text-center p-3 font-semibold text-green-400">Memcached</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-300">
+                            <tr class="border-b border-gray-700">
+                                <td class="p-3 font-medium">Complex Data Structures</td>
+                                <td class="text-center p-3">✅</td>
+                                <td class="text-center p-3">✅</td>
+                                <td class="text-center p-3">❌</td>
+                            </tr>
+                            <tr class="border-b border-gray-700">
+                                <td class="p-3 font-medium">Data Persistence</td>
+                                <td class="text-center p-3">✅</td>
+                                <td class="text-center p-3">✅</td>
+                                <td class="text-center p-3">❌</td>
+                            </tr>
+                            <tr class="border-b border-gray-700">
+                                <td class="p-3 font-medium">Pub/Sub Messaging</td>
+                                <td class="text-center p-3">✅</td>
+                                <td class="text-center p-3">✅</td>
+                                <td class="text-center p-3">❌</td>
+                            </tr>
+                            <tr class="border-b border-gray-700">
+                                <td class="p-3 font-medium">Multi-threading</td>
+                                <td class="text-center p-3">❌</td>
+                                <td class="text-center p-3">❌</td>
+                                <td class="text-center p-3">✅</td>
+                            </tr>
+                            <tr class="border-b border-gray-700">
+                                <td class="p-3 font-medium">Horizontal Scaling</td>
+                                <td class="text-center p-3">✅</td>
+                                <td class="text-center p-3">✅</td>
+                                <td class="text-center p-3">✅</td>
+                            </tr>
+                            <tr class="border-b border-gray-700">
+                                <td class="p-3 font-medium">Open Source</td>
+                                <td class="text-center p-3">⚠️</td>
+                                <td class="text-center p-3">✅</td>
+                                <td class="text-center p-3">✅</td>
+                            </tr>
+                            <tr class="border-b border-gray-700">
+                                <td class="p-3 font-medium">Lowest Latency</td>
+                                <td class="text-center p-3">❌</td>
+                                <td class="text-center p-3">❌</td>
+                                <td class="text-center p-3">✅</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Redis Use Cases -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 aws-orange">When to Choose Redis</h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-red-400">Perfect Redis Scenarios</h4>
+                        <div class="space-y-4">
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-red-300">Session Management</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Web applications:</strong> User session storage</li>
+                                    <li>• <strong>Shopping carts:</strong> E-commerce session data</li>
+                                    <li>• <strong>User preferences:</strong> Personalization data</li>
+                                    <li>• <strong>Authentication:</strong> JWT token storage</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-red-300">Real-time Applications</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Gaming:</strong> Leaderboards, player stats</li>
+                                    <li>• <strong>Chat applications:</strong> Message queuing</li>
+                                    <li>• <strong>Live dashboards:</strong> Real-time metrics</li>
+                                    <li>• <strong>IoT data:</strong> Sensor data aggregation</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-red-300">Complex Data Operations</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Sorted sets:</strong> Ranking systems</li>
+                                    <li>• <strong>Geospatial:</strong> Location-based services</li>
+                                    <li>• <strong>Time series:</strong> Metrics and monitoring</li>
+                                    <li>• <strong>Pub/Sub:</strong> Event-driven architectures</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-orange-400">Redis Advantages</h4>
+                        <div class="space-y-4">
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-orange-300">Rich Data Structures</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Strings:</strong> Simple key-value pairs</li>
+                                    <li>• <strong>Hashes:</strong> Object-like structures</li>
+                                    <li>• <strong>Lists:</strong> Ordered collections</li>
+                                    <li>• <strong>Sets:</strong> Unique value collections</li>
+                                    <li>• <strong>Sorted Sets:</strong> Ranked collections</li>
+                                    <li>• <strong>Streams:</strong> Log-like data structures</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-orange-300">Advanced Features</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Lua scripting:</strong> Server-side logic</li>
+                                    <li>• <strong>Transactions:</strong> ACID operations</li>
+                                    <li>• <strong>Modules:</strong> Extensible functionality</li>
+                                    <li>• <strong>Clustering:</strong> Horizontal scaling</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-orange-300">Persistence Options</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>RDB snapshots:</strong> Point-in-time backups</li>
+                                    <li>• <strong>AOF logging:</strong> Append-only file</li>
+                                    <li>• <strong>Mixed persistence:</strong> RDB + AOF</li>
+                                    <li>• <strong>Backup/restore:</strong> Data durability</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Valkey Use Cases -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 aws-orange">When to Choose Valkey</h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-purple-400">Perfect Valkey Scenarios</h4>
+                        <div class="space-y-4">
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-purple-300">Open Source Requirements</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Compliance:</strong> Open source license requirements</li>
+                                    <li>• <strong>Cost optimization:</strong> No licensing fees</li>
+                                    <li>• <strong>Community support:</strong> Community-driven development</li>
+                                    <li>• <strong>Transparency:</strong> Full source code access</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-purple-300">Redis Migration</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Drop-in replacement:</strong> Redis compatibility</li>
+                                    <li>• <strong>Existing applications:</strong> No code changes</li>
+                                    <li>• <strong>Same features:</strong> Redis API compatibility</li>
+                                    <li>• <strong>Performance benefits:</strong> Optimized implementation</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-purple-300">Enhanced Security</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Security-first:</strong> Enhanced security defaults</li>
+                                    <li>• <strong>Vulnerability management:</strong> Faster security patches</li>
+                                    <li>• <strong>Access controls:</strong> Improved authentication</li>
+                                    <li>• <strong>Audit compliance:</strong> Security-focused features</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-cyan-400">Valkey Advantages</h4>
+                        <div class="space-y-4">
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-cyan-300">Performance Optimizations</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Memory efficiency:</strong> Improved memory management</li>
+                                    <li>• <strong>CPU optimization:</strong> Better CPU utilization</li>
+                                    <li>• <strong>Network performance:</strong> Optimized networking</li>
+                                    <li>• <strong>Latency reduction:</strong> Performance improvements</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-cyan-300">Community Benefits</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Active development:</strong> Regular updates</li>
+                                    <li>• <strong>Innovation:</strong> Community-driven features</li>
+                                    <li>• <strong>Support:</strong> Community and commercial support</li>
+                                    <li>• <strong>Roadmap:</strong> Transparent development</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-cyan-300">Future-proofing</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>No vendor lock-in:</strong> Open source freedom</li>
+                                    <li>• <strong>Long-term viability:</strong> Community backing</li>
+                                    <li>• <strong>Customization:</strong> Source code modifications</li>
+                                    <li>• <strong>Integration:</strong> Ecosystem compatibility</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Memcached Use Cases -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 aws-orange">When to Choose Memcached</h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-green-400">Perfect Memcached Scenarios</h4>
+                        <div class="space-y-4">
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-green-300">Simple Caching</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Database query caching:</strong> SQL result caching</li>
+                                    <li>• <strong>Object caching:</strong> Serialized objects</li>
+                                    <li>• <strong>Page caching:</strong> Rendered HTML pages</li>
+                                    <li>• <strong>API response caching:</strong> External API results</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-green-300">High-Performance Requirements</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Ultra-low latency:</strong> Sub-millisecond response</li>
+                                    <li>• <strong>High throughput:</strong> Maximum requests/second</li>
+                                    <li>• <strong>CPU efficiency:</strong> Multi-threaded performance</li>
+                                    <li>• <strong>Memory optimization:</strong> Minimal overhead</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-green-300">Distributed Caching</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Horizontal scaling:</strong> Easy node addition</li>
+                                    <li>• <strong>Load distribution:</strong> Consistent hashing</li>
+                                    <li>• <strong>Fault tolerance:</strong> Node failure handling</li>
+                                    <li>• <strong>Auto Discovery:</strong> Dynamic cluster management</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-yellow-400">Memcached Advantages</h4>
+                        <div class="space-y-4">
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-yellow-300">Simplicity</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Simple protocol:</strong> Easy to implement</li>
+                                    <li>• <strong>Key-value only:</strong> No complex data types</li>
+                                    <li>• <strong>Minimal configuration:</strong> Easy setup</li>
+                                    <li>• <strong>Predictable behavior:</strong> Well-understood performance</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-yellow-300">Performance</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Multi-threaded:</strong> Better CPU utilization</li>
+                                    <li>• <strong>Memory efficient:</strong> Low memory overhead</li>
+                                    <li>• <strong>Network optimized:</strong> Efficient protocol</li>
+                                    <li>• <strong>Cache-focused:</strong> Optimized for caching</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-yellow-300">Operational Benefits</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Mature technology:</strong> Battle-tested</li>
+                                    <li>• <strong>Wide support:</strong> Library availability</li>
+                                    <li>• <strong>Monitoring tools:</strong> Established tooling</li>
+                                    <li>• <strong>Documentation:</strong> Extensive resources</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Use Case Comparison -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 aws-orange">Use Case Comparison Matrix</h3>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-gray-600">
+                                <th class="text-left p-3 font-semibold">Use Case</th>
+                                <th class="text-center p-3 font-semibold text-red-400">Redis</th>
+                                <th class="text-center p-3 font-semibold text-purple-400">Valkey</th>
+                                <th class="text-center p-3 font-semibold text-green-400">Memcached</th>
+                                <th class="text-left p-3 font-semibold">Best Choice</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-300">
+                            <tr class="border-b border-gray-700">
+                                <td class="p-3 font-medium">Session Store</td>
+                                <td class="text-center p-3">🥇</td>
+                                <td class="text-center p-3">🥇</td>
+                                <td class="text-center p-3">🥉</td>
+                                <td class="p-3">Redis/Valkey (persistence)</td>
+                            </tr>
+                            <tr class="border-b border-gray-700">
+                                <td class="p-3 font-medium">Database Query Cache</td>
+                                <td class="text-center p-3">🥈</td>
+                                <td class="text-center p-3">🥈</td>
+                                <td class="text-center p-3">🥇</td>
+                                <td class="p-3">Memcached (performance)</td>
+                            </tr>
+                            <tr class="border-b border-gray-700">
+                                <td class="p-3 font-medium">Real-time Analytics</td>
+                                <td class="text-center p-3">🥇</td>
+                                <td class="text-center p-3">🥇</td>
+                                <td class="text-center p-3">❌</td>
+                                <td class="p-3">Redis/Valkey (data structures)</td>
+                            </tr>
+                            <tr class="border-b border-gray-700">
+                                <td class="p-3 font-medium">Pub/Sub Messaging</td>
+                                <td class="text-center p-3">🥇</td>
+                                <td class="text-center p-3">🥇</td>
+                                <td class="text-center p-3">❌</td>
+                                <td class="p-3">Redis/Valkey (built-in)</td>
+                            </tr>
+                            <tr class="border-b border-gray-700">
+                                <td class="p-3 font-medium">Gaming Leaderboards</td>
+                                <td class="text-center p-3">🥇</td>
+                                <td class="text-center p-3">🥇</td>
+                                <td class="text-center p-3">❌</td>
+                                <td class="p-3">Redis/Valkey (sorted sets)</td>
+                            </tr>
+                            <tr class="border-b border-gray-700">
+                                <td class="p-3 font-medium">Simple Object Cache</td>
+                                <td class="text-center p-3">🥈</td>
+                                <td class="text-center p-3">🥈</td>
+                                <td class="text-center p-3">🥇</td>
+                                <td class="p-3">Memcached (simplicity)</td>
+                            </tr>
+                            <tr class="border-b border-gray-700">
+                                <td class="p-3 font-medium">Open Source Compliance</td>
+                                <td class="text-center p-3">⚠️</td>
+                                <td class="text-center p-3">🥇</td>
+                                <td class="text-center p-3">🥈</td>
+                                <td class="p-3">Valkey (fully open)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Performance Characteristics -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 aws-orange">Performance Characteristics</h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold mb-3 text-red-400">Redis Performance</h4>
+                        <ul class="text-sm text-gray-300 space-y-2">
+                            <li>• <strong>Throughput:</strong> ~100K ops/sec per core</li>
+                            <li>• <strong>Latency:</strong> Sub-millisecond for simple ops</li>
+                            <li>• <strong>Memory:</strong> Higher overhead for features</li>
+                            <li>• <strong>CPU:</strong> Single-threaded per instance</li>
+                            <li>• <strong>Scaling:</strong> Vertical + clustering</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold mb-3 text-purple-400">Valkey Performance</h4>
+                        <ul class="text-sm text-gray-300 space-y-2">
+                            <li>• <strong>Throughput:</strong> ~110K ops/sec per core</li>
+                            <li>• <strong>Latency:</strong> Optimized sub-millisecond</li>
+                            <li>• <strong>Memory:</strong> Improved memory efficiency</li>
+                            <li>• <strong>CPU:</strong> Better CPU utilization</li>
+                            <li>• <strong>Scaling:</strong> Enhanced clustering</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold mb-3 text-green-400">Memcached Performance</h4>
+                        <ul class="text-sm text-gray-300 space-y-2">
+                            <li>• <strong>Throughput:</strong> ~200K ops/sec per core</li>
+                            <li>• <strong>Latency:</strong> Ultra-low latency</li>
+                            <li>• <strong>Memory:</strong> Minimal overhead</li>
+                            <li>• <strong>CPU:</strong> Multi-threaded efficiency</li>
+                            <li>• <strong>Scaling:</strong> Linear horizontal scaling</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Migration Strategies -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 aws-orange">Migration and Transition Strategies</h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-blue-400">From Memcached to Redis/Valkey</h4>
+                        <div class="bg-gray-700 p-4 rounded">
+                            <h5 class="font-semibold mb-2 text-blue-300">Migration Scenarios</h5>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• <strong>Need persistence:</strong> Session data durability</li>
+                                <li>• <strong>Complex operations:</strong> Beyond simple caching</li>
+                                <li>• <strong>Data structures:</strong> Lists, sets, sorted sets</li>
+                                <li>• <strong>Pub/Sub required:</strong> Event-driven architecture</li>
+                            </ul>
+                            <div class="mt-3 p-3 bg-blue-900 bg-opacity-30 rounded">
+                                <p class="text-blue-200 text-xs"><strong>Strategy:</strong> Gradual migration with dual-write pattern, then switch reads.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-purple-400">From Redis to Valkey</h4>
+                        <div class="bg-gray-700 p-4 rounded">
+                            <h5 class="font-semibold mb-2 text-purple-300">Migration Benefits</h5>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• <strong>Drop-in replacement:</strong> No code changes</li>
+                                <li>• <strong>Performance gains:</strong> Optimized implementation</li>
+                                <li>• <strong>Open source:</strong> License compliance</li>
+                                <li>• <strong>Enhanced security:</strong> Better defaults</li>
+                            </ul>
+                            <div class="mt-3 p-3 bg-purple-900 bg-opacity-30 rounded">
+                                <p class="text-purple-200 text-xs"><strong>Strategy:</strong> Direct replacement with backup/restore or replication.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cost Considerations -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 aws-orange">Cost Optimization Framework</h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold mb-3 text-yellow-400">Instance Costs</h4>
+                        <ul class="text-sm text-gray-300 space-y-2">
+                            <li>• <strong>Redis:</strong> Standard ElastiCache pricing</li>
+                            <li>• <strong>Valkey:</strong> Same as Redis pricing</li>
+                            <li>• <strong>Memcached:</strong> Slightly lower pricing</li>
+                            <li>• <strong>Reserved instances:</strong> Up to 60% savings</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold mb-3 text-green-400">Operational Costs</h4>
+                        <ul class="text-sm text-gray-300 space-y-2">
+                            <li>• <strong>Complexity:</strong> Redis/Valkey higher ops cost</li>
+                            <li>• <strong>Monitoring:</strong> More metrics to track</li>
+                            <li>• <strong>Backup:</strong> Redis/Valkey backup costs</li>
+                            <li>• <strong>Scaling:</strong> Memcached simpler scaling</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold mb-3 text-blue-400">Total Cost of Ownership</h4>
+                        <ul class="text-sm text-gray-300 space-y-2">
+                            <li>• <strong>Development:</strong> Feature richness vs complexity</li>
+                            <li>• <strong>Performance:</strong> Right-sizing for workload</li>
+                            <li>• <strong>Maintenance:</strong> Operational overhead</li>
+                            <li>• <strong>Licensing:</strong> Open source considerations</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exam Tips -->
+            <div class="bg-gradient-to-r from-red-900 to-purple-900 bg-opacity-50 rounded-lg p-6 border border-red-500">
+                <h3 class="text-xl font-bold mb-4 text-red-300">SAA-C03 Exam Decision Framework</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <ul class="text-sm text-red-100 space-y-2">
+                            <li>• <strong>Simple caching:</strong> Database queries, objects → Memcached</li>
+                            <li>• <strong>Complex data:</strong> Sessions, analytics, pub/sub → Redis/Valkey</li>
+                            <li>• <strong>Performance:</strong> Ultra-low latency → Memcached</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul class="text-sm text-red-100 space-y-2">
+                            <li>• <strong>Persistence:</strong> Data durability required → Redis/Valkey</li>
+                            <li>• <strong>Open source:</strong> License compliance → Valkey</li>
+                            <li>• <strong>Multi-threading:</strong> CPU efficiency → Memcached</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

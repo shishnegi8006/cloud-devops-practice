@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Backup & Recovery - AWS Study Guide</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="../styles.css" rel="stylesheet">
+</head>
+<body class="text-white">
+    <div class="w-full min-h-screen p-4 sm:p-6 lg:p-8">
+        <div class="mb-6">
+            <a href="index.html" class="inline-flex items-center text-aws-orange hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Back to RDS
+            </a>
+        </div>
+        
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-8">
+                <div class="bg-cyan-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-save text-white text-2xl"></i>
+                </div>
+                <h1 class="text-4xl font-montserrat font-bold mb-4">Database Backup & Recovery</h1>
+                <p class="text-xl text-gray-300">Comprehensive Data Protection Strategies</p>
+            </div>
+
+            <!-- Overview -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h2 class="text-2xl font-bold mb-4 aws-orange">Backup & Recovery Fundamentals</h2>
+                <p class="text-gray-300 mb-4">AWS provides multiple backup and recovery options for RDS and Aurora databases, ensuring data durability, availability, and compliance with business requirements. Understanding RTO and RPO requirements is crucial for designing appropriate backup strategies.</p>
+                <div class="bg-cyan-900 bg-opacity-30 border border-cyan-500 rounded p-4">
+                    <p class="text-cyan-200"><strong>Key Concepts:</strong> RTO (Recovery Time Objective), RPO (Recovery Point Objective), Automated backups, Manual snapshots, Point-in-time recovery.</p>
+                </div>
+            </div>
+
+            <!-- Backup Types -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 aws-orange">Backup Types & Strategies</h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-blue-400">Automated Backups</h4>
+                        <div class="space-y-4">
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2">Configuration</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Retention period:</strong> 1-35 days (default 7 days)</li>
+                                    <li>• <strong>Backup window:</strong> 30-minute window during low activity</li>
+                                    <li>• <strong>Storage type:</strong> Stored in Amazon S3</li>
+                                    <li>• <strong>Encryption:</strong> Encrypted if source DB is encrypted</li>
+                                    <li>• <strong>Cross-region:</strong> Can be copied to other regions</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2">Features</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Full database backup:</strong> Complete DB instance backup</li>
+                                    <li>• <strong>Transaction logs:</strong> Continuous log backup</li>
+                                    <li>• <strong>Point-in-time recovery:</strong> Restore to any second</li>
+                                    <li>• <strong>No performance impact:</strong> Uses Multi-AZ standby</li>
+                                    <li>• <strong>Automatic deletion:</strong> Based on retention period</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-green-400">Manual Snapshots</h4>
+                        <div class="space-y-4">
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2">Characteristics</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>User-initiated:</strong> Created manually or via API</li>
+                                    <li>• <strong>Persistent:</strong> Retained until explicitly deleted</li>
+                                    <li>• <strong>Incremental:</strong> Only changed blocks stored</li>
+                                    <li>• <strong>Shareable:</strong> Can be shared across accounts</li>
+                                    <li>• <strong>Copyable:</strong> Cross-region copy supported</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2">Use Cases</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Pre-maintenance:</strong> Before major changes</li>
+                                    <li>• <strong>Long-term retention:</strong> Compliance requirements</li>
+                                    <li>• <strong>Development/testing:</strong> Create test environments</li>
+                                    <li>• <strong>Migration:</strong> Cross-region database migration</li>
+                                    <li>• <strong>Disaster recovery:</strong> Off-site backup copies</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Point-in-Time Recovery -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 aws-orange">Point-in-Time Recovery (PITR)</h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2">
+                        <h4 class="text-xl font-semibold mb-4 text-purple-400">Recovery Process</h4>
+                        <div class="space-y-4">
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2">How PITR Works</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Base backup:</strong> Uses most recent automated backup</li>
+                                    <li>• <strong>Transaction logs:</strong> Applies logs up to specified time</li>
+                                    <li>• <strong>New instance:</strong> Creates new DB instance</li>
+                                    <li>• <strong>Granularity:</strong> Restore to any second within retention</li>
+                                    <li>• <strong>Latest restorable time:</strong> Usually within 5 minutes</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2">Recovery Scenarios</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Data corruption:</strong> Restore before corruption occurred</li>
+                                    <li>• <strong>Accidental deletion:</strong> Recover deleted data</li>
+                                    <li>• <strong>Application errors:</strong> Rollback problematic changes</li>
+                                    <li>• <strong>Testing:</strong> Create point-in-time test environments</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-yellow-400">Limitations</h4>
+                        <div class="space-y-3">
+                            <div class="bg-gray-700 p-3 rounded">
+                                <h5 class="font-semibold text-yellow-300">Time Constraints</h5>
+                                <p class="text-xs text-gray-300">Limited to backup retention period</p>
+                            </div>
+                            <div class="bg-gray-700 p-3 rounded">
+                                <h5 class="font-semibold text-yellow-300">New Instance</h5>
+                                <p class="text-xs text-gray-300">Cannot restore over existing instance</p>
+                            </div>
+                            <div class="bg-gray-700 p-3 rounded">
+                                <h5 class="font-semibold text-yellow-300">Engine Versions</h5>
+                                <p class="text-xs text-gray-300">Must use same or compatible version</p>
+                            </div>
+                            <div class="bg-gray-700 p-3 rounded">
+                                <h5 class="font-semibold text-yellow-300">Parameter Groups</h5>
+                                <p class="text-xs text-gray-300">Uses default parameter group</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aurora Backup Features -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 aws-orange">Aurora Advanced Backup Features</h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-blue-400">Continuous Backup</h4>
+                        <div class="space-y-4">
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2">Aurora Storage Architecture</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Distributed storage:</strong> Data replicated across 3 AZs</li>
+                                    <li>• <strong>Continuous backup:</strong> Automatic backup to S3</li>
+                                    <li>• <strong>No backup window:</strong> No performance impact</li>
+                                    <li>• <strong>Incremental:</strong> Only changed data blocks</li>
+                                    <li>• <strong>Fast recovery:</strong> Parallel recovery process</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2">Backtrack Feature</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>In-place rewind:</strong> No new cluster creation</li>
+                                    <li>• <strong>Fast recovery:</strong> Minutes instead of hours</li>
+                                    <li>• <strong>MySQL compatible:</strong> Aurora MySQL only</li>
+                                    <li>• <strong>72-hour window:</strong> Configurable backtrack window</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-green-400">Global Database Backup</h4>
+                        <div class="space-y-4">
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2">Cross-Region Replication</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Primary region:</strong> Read-write cluster</li>
+                                    <li>• <strong>Secondary regions:</strong> Read-only clusters</li>
+                                    <li>• <strong>Replication lag:</strong> Typically < 1 second</li>
+                                    <li>• <strong>Disaster recovery:</strong> Fast regional failover</li>
+                                    <li>• <strong>Independent backups:</strong> Each region maintains backups</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2">Failover Process</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Promote secondary:</strong> Convert to primary cluster</li>
+                                    <li>• <strong>RTO:</strong> < 1 minute for failover</li>
+                                    <li>• <strong>RPO:</strong> < 1 second data loss</li>
+                                    <li>• <strong>Application changes:</strong> Update connection endpoints</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cross-Region Backup -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 aws-orange">Cross-Region Backup Strategies</h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold mb-3 text-orange-400">Automated Cross-Region</h4>
+                        <ul class="text-sm text-gray-300 space-y-2">
+                            <li>• <strong>Configuration:</strong> Enable during DB creation</li>
+                            <li>• <strong>Destination region:</strong> Choose target region</li>
+                            <li>• <strong>KMS encryption:</strong> Different keys per region</li>
+                            <li>• <strong>Retention:</strong> Independent retention settings</li>
+                            <li>• <strong>Cost:</strong> Cross-region data transfer charges</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold mb-3 text-purple-400">Manual Snapshot Copy</h4>
+                        <ul class="text-sm text-gray-300 space-y-2">
+                            <li>• <strong>On-demand:</strong> Copy snapshots as needed</li>
+                            <li>• <strong>Selective copying:</strong> Choose specific snapshots</li>
+                            <li>• <strong>Encryption options:</strong> Re-encrypt with different keys</li>
+                            <li>• <strong>Sharing:</strong> Share across AWS accounts</li>
+                            <li>• <strong>Automation:</strong> Use Lambda for scheduled copies</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold mb-3 text-cyan-400">Compliance Considerations</h4>
+                        <ul class="text-sm text-gray-300 space-y-2">
+                            <li>• <strong>Data residency:</strong> Understand regional requirements</li>
+                            <li>• <strong>Encryption keys:</strong> Manage KMS keys per region</li>
+                            <li>• <strong>Access controls:</strong> IAM policies for cross-region</li>
+                            <li>• <strong>Audit trails:</strong> CloudTrail in all regions</li>
+                            <li>• <strong>Cost optimization:</strong> Balance DR needs with costs</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Disaster Recovery -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 aws-orange">Disaster Recovery Planning</h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-red-400">DR Strategies</h4>
+                        <div class="space-y-4">
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2">Backup and Restore</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>RTO:</strong> Hours to days</li>
+                                    <li>• <strong>RPO:</strong> Hours (backup frequency)</li>
+                                    <li>• <strong>Cost:</strong> Lowest cost option</li>
+                                    <li>• <strong>Use case:</strong> Non-critical applications</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2">Pilot Light</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>RTO:</strong> 10s of minutes to hours</li>
+                                    <li>• <strong>RPO:</strong> Minutes (replication lag)</li>
+                                    <li>• <strong>Cost:</strong> Moderate cost</li>
+                                    <li>• <strong>Use case:</strong> Business-critical applications</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2">Warm Standby</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>RTO:</strong> Minutes</li>
+                                    <li>• <strong>RPO:</strong> Seconds to minutes</li>
+                                    <li>• <strong>Cost:</strong> Higher cost</li>
+                                    <li>• <strong>Use case:</strong> Mission-critical applications</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-teal-400">Implementation</h4>
+                        <div class="space-y-4">
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2">Multi-AZ Deployment</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Synchronous replication:</strong> Zero data loss</li>
+                                    <li>• <strong>Automatic failover:</strong> 1-2 minutes RTO</li>
+                                    <li>• <strong>Same region:</strong> AZ-level disaster recovery</li>
+                                    <li>• <strong>Transparent:</strong> No application changes</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2">Read Replicas</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Asynchronous replication:</strong> Minimal data loss</li>
+                                    <li>• <strong>Manual promotion:</strong> Application changes required</li>
+                                    <li>• <strong>Cross-region:</strong> Regional disaster recovery</li>
+                                    <li>• <strong>Read scaling:</strong> Additional benefit</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2">Aurora Global Database</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Cross-region replication:</strong> < 1 second lag</li>
+                                    <li>• <strong>Fast failover:</strong> < 1 minute RTO</li>
+                                    <li>• <strong>Global read scaling:</strong> Up to 16 read replicas per region</li>
+                                    <li>• <strong>Disaster recovery:</strong> Best-in-class DR solution</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Best Practices -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 aws-orange">Backup & Recovery Best Practices</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold mb-3 text-yellow-400">Backup Strategy</h4>
+                        <ul class="text-sm text-gray-300 space-y-1">
+                            <li>• Define RTO and RPO requirements</li>
+                            <li>• Enable automated backups</li>
+                            <li>• Create manual snapshots before changes</li>
+                            <li>• Implement cross-region backup</li>
+                            <li>• Test backup and restore procedures</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold mb-3 text-blue-400">Monitoring & Alerting</h4>
+                        <ul class="text-sm text-gray-300 space-y-1">
+                            <li>• Monitor backup success/failure</li>
+                            <li>• Set up CloudWatch alarms</li>
+                            <li>• Track backup storage costs</li>
+                            <li>• Monitor replication lag</li>
+                            <li>• Automate backup validation</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold mb-3 text-green-400">Security & Compliance</h4>
+                        <ul class="text-sm text-gray-300 space-y-1">
+                            <li>• Encrypt backups and snapshots</li>
+                            <li>• Implement proper IAM policies</li>
+                            <li>• Audit backup access and usage</li>
+                            <li>• Document recovery procedures</li>
+                            <li>• Regular disaster recovery drills</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exam Tips -->
+            <div class="bg-gradient-to-r from-cyan-900 to-blue-900 bg-opacity-50 rounded-lg p-6 border border-cyan-500">
+                <h3 class="text-xl font-bold mb-4 text-cyan-300">SAA-C03 Exam Key Points</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <ul class="text-sm text-cyan-100 space-y-2">
+                            <li>• <strong>Automated Backups:</strong> 1-35 days retention, enables PITR, stored in S3</li>
+                            <li>• <strong>Manual Snapshots:</strong> User-initiated, persistent until deleted, shareable</li>
+                            <li>• <strong>PITR:</strong> Restore to any second within retention period, creates new instance</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul class="text-sm text-cyan-100 space-y-2">
+                            <li>• <strong>Aurora Backtrack:</strong> In-place rewind for Aurora MySQL, up to 72 hours</li>
+                            <li>• <strong>Multi-AZ:</strong> Synchronous replication, automatic failover, zero data loss</li>
+                            <li>• <strong>Cross-Region:</strong> Automated backup copy, manual snapshot copy, compliance</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

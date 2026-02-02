@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>EC2 Service Limitations</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #232F3E;
+            width: 100vw;
+            overflow-x: hidden;
+        }
+        .slide-container {
+            width: 100vw;
+            min-height: 100vh;
+            background-color: #232F3E;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            color: #ffffff;
+        }
+        .aws-orange { color: #FF9900; }
+        .bg-aws-orange { background-color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+        
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            z-index: 10;
+            min-height: 100vh;
+        }
+        @media (min-width: 640px) {
+            .content-wrapper {
+                padding: 2rem;
+            }
+        }
+        @media (min-width: 1024px) {
+            .content-wrapper {
+                padding: 3rem;
+            }
+        }
+
+        .limitation-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #ef4444;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .limit-item {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #ef4444;
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+        }
+
+        .quota-table {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .quota-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            padding: 0.75rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .quota-row:last-child {
+            border-bottom: none;
+        }
+
+        .quota-header {
+            background: rgba(239, 68, 68, 0.2);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="absolute top-0 left-0 w-full h-2 bg-aws-orange z-20"></div>
+        
+        <div class="content-wrapper">
+            <!-- Navigation -->
+            <div class="mb-3 sm:mb-4">
+                <a href="index.html" class="inline-flex items-center text-aws-orange hover:text-white transition-colors text-sm sm:text-base">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to EC2 Topics
+                </a>
+            </div>
+
+            <!-- Header -->
+            <div class="flex flex-col sm:flex-row items-start sm:items-center mb-4 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4">
+                <div class="bg-aws-orange p-2 rounded mr-0 sm:mr-4 mb-3 sm:mb-0">
+                    <i class="fas fa-exclamation-triangle text-white text-lg sm:text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-montserrat font-bold text-white">EC2 Service Limitations</h2>
+                    <p class="text-gray-400 font-montserrat text-sm sm:text-base lg:text-lg">Instance Limits, Quotas, and Constraints</p>
+                </div>
+            </div>
+
+            <!-- Service Limits -->
+            <div class="max-w-5xl mx-auto w-full">
+                
+                <!-- Instance Limits -->
+                <div class="limitation-card">
+                    <h3 class="font-bold text-xl mb-4 text-red-400 flex items-center">
+                        <i class="fas fa-server mr-3"></i>Instance Limits by Type
+                    </h3>
+                    
+                    <div class="quota-table">
+                        <div class="quota-row quota-header">
+                            <div>Instance Family</div>
+                            <div>Default vCPU Limit</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">On-Demand Standard (A, C, D, H, I, M, R, T, Z)</div>
+                            <div class="text-sm font-bold text-red-300">1,152 vCPUs</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">On-Demand F instances</div>
+                            <div class="text-sm font-bold text-red-300">128 vCPUs</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">On-Demand G and VT instances</div>
+                            <div class="text-sm font-bold text-red-300">128 vCPUs</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">On-Demand P instances</div>
+                            <div class="text-sm font-bold text-red-300">128 vCPUs</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">On-Demand X instances</div>
+                            <div class="text-sm font-bold text-red-300">128 vCPUs</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Storage Limits -->
+                <div class="limitation-card">
+                    <h3 class="font-bold text-xl mb-4 text-red-400 flex items-center">
+                        <i class="fas fa-hdd mr-3"></i>Storage Limitations
+                    </h3>
+                    
+                    <div class="quota-table">
+                        <div class="quota-row quota-header">
+                            <div>Storage Type</div>
+                            <div>Limit</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">EBS volumes per instance</div>
+                            <div class="text-sm font-bold text-red-300">128</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">EBS snapshots per region</div>
+                            <div class="text-sm font-bold text-red-300">100,000</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">General Purpose SSD (gp3) volume size</div>
+                            <div class="text-sm font-bold text-red-300">1 GiB - 16 TiB</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">Provisioned IOPS SSD (io2) volume size</div>
+                            <div class="text-sm font-bold text-red-300">4 GiB - 64 TiB</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">Cold HDD (sc1) volume size</div>
+                            <div class="text-sm font-bold text-red-300">125 GiB - 16 TiB</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Network Limits -->
+                <div class="limitation-card">
+                    <h3 class="font-bold text-xl mb-4 text-red-400 flex items-center">
+                        <i class="fas fa-network-wired mr-3"></i>Network Limitations
+                    </h3>
+                    
+                    <div class="limit-item">
+                        <h4 class="font-bold text-sm mb-2 text-red-300">Security Groups per Instance</h4>
+                        <p class="text-sm text-gray-300">Maximum of <strong>5 security groups</strong> per network interface. Each instance can have multiple network interfaces.</p>
+                    </div>
+                    
+                    <div class="limit-item">
+                        <h4 class="font-bold text-sm mb-2 text-red-300">Rules per Security Group</h4>
+                        <p class="text-sm text-gray-300">Maximum of <strong>60 inbound</strong> and <strong>60 outbound</strong> rules per security group.</p>
+                    </div>
+                    
+                    <div class="limit-item">
+                        <h4 class="font-bold text-sm mb-2 text-red-300">Elastic IP Addresses</h4>
+                        <p class="text-sm text-gray-300">Default limit of <strong>5 Elastic IPs</strong> per region. Can be increased via support request.</p>
+                    </div>
+                    
+                    <div class="limit-item">
+                        <h4 class="font-bold text-sm mb-2 text-red-300">Network Interfaces per Instance</h4>
+                        <p class="text-sm text-gray-300">Varies by instance type. Small instances: <strong>2-3</strong>, Large instances: <strong>8-15</strong> network interfaces.</p>
+                    </div>
+                </div>
+
+                <!-- Placement Group Limits -->
+                <div class="limitation-card">
+                    <h3 class="font-bold text-xl mb-4 text-red-400 flex items-center">
+                        <i class="fas fa-layer-group mr-3"></i>Placement Group Constraints
+                    </h3>
+                    
+                    <div class="quota-table">
+                        <div class="quota-row quota-header">
+                            <div>Placement Group Type</div>
+                            <div>Limitation</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">Cluster - Instances per group</div>
+                            <div class="text-sm font-bold text-red-300">No hard limit</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">Spread - Instances per AZ</div>
+                            <div class="text-sm font-bold text-red-300">7 instances</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">Partition - Partitions per group</div>
+                            <div class="text-sm font-bold text-red-300">7 partitions</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">Partition - Instances per partition</div>
+                            <div class="text-sm font-bold text-red-300">No hard limit</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Auto Scaling Limits -->
+                <div class="limitation-card">
+                    <h3 class="font-bold text-xl mb-4 text-red-400 flex items-center">
+                        <i class="fas fa-expand-arrows-alt mr-3"></i>Auto Scaling Limitations
+                    </h3>
+                    
+                    <div class="quota-table">
+                        <div class="quota-row quota-header">
+                            <div>Auto Scaling Resource</div>
+                            <div>Default Limit</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">Auto Scaling groups per region</div>
+                            <div class="text-sm font-bold text-red-300">500</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">Launch configurations per region</div>
+                            <div class="text-sm font-bold text-red-300">200</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">Scaling policies per Auto Scaling group</div>
+                            <div class="text-sm font-bold text-red-300">50</div>
+                        </div>
+                        <div class="quota-row">
+                            <div class="text-sm">Scheduled actions per Auto Scaling group</div>
+                            <div class="text-sm font-bold text-red-300">125</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Regional & AZ Constraints -->
+                <div class="limitation-card">
+                    <h3 class="font-bold text-xl mb-4 text-red-400 flex items-center">
+                        <i class="fas fa-globe mr-3"></i>Regional & Availability Zone Constraints
+                    </h3>
+                    
+                    <div class="limit-item">
+                        <h4 class="font-bold text-sm mb-2 text-red-300">Instance Mobility</h4>
+                        <p class="text-sm text-gray-300">Instances cannot be moved between regions. Can only be moved between AZs by creating AMI and launching new instance.</p>
+                    </div>
+                    
+                    <div class="limit-item">
+                        <h4 class="font-bold text-sm mb-2 text-red-300">EBS Volume Attachment</h4>
+                        <p class="text-sm text-gray-300">EBS volumes can only be attached to instances in the <strong>same Availability Zone</strong>.</p>
+                    </div>
+                    
+                    <div class="limit-item">
+                        <h4 class="font-bold text-sm mb-2 text-red-300">Instance Store Persistence</h4>
+                        <p class="text-sm text-gray-300">Instance store data is <strong>lost permanently</strong> when instance stops, terminates, or fails. Cannot be detached/reattached.</p>
+                    </div>
+                </div>
+
+                <!-- Important Notes -->
+                <div class="limitation-card">
+                    <h3 class="font-bold text-xl mb-4 text-yellow-400 flex items-center">
+                        <i class="fas fa-lightbulb mr-3"></i>Important Considerations
+                    </h3>
+                    
+                    <div class="space-y-3">
+                        <div class="bg-yellow-900 bg-opacity-20 border border-yellow-600 rounded p-3">
+                            <p class="text-sm text-gray-300"><strong class="text-yellow-300">Soft Limits:</strong> Most EC2 limits are soft limits that can be increased by submitting a support case to AWS.</p>
+                        </div>
+                        <div class="bg-yellow-900 bg-opacity-20 border border-yellow-600 rounded p-3">
+                            <p class="text-sm text-gray-300"><strong class="text-yellow-300">Spot Instance Interruption:</strong> Spot instances can be interrupted with only 2-minute warning when capacity is needed.</p>
+                        </div>
+                        <div class="bg-yellow-900 bg-opacity-20 border border-yellow-600 rounded p-3">
+                            <p class="text-sm text-gray-300"><strong class="text-yellow-300">Instance Type Availability:</strong> Not all instance types are available in all AZs. Check availability before deployment.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Page Number -->
+            <div class="text-right mt-4 text-gray-500 text-xs">
+                EC2 Service Limitations
+            </div>
+            
+            <!-- Navigation -->
+            <div class="flex justify-between mt-8 pt-6 border-t border-gray-700">
+                <a href="EC2-Service-Guide.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                    <i class="fas fa-arrow-left mr-2"></i> Previous: Service Guide
+                </a>
+                <div></div>
+            </div>
+            
+            <!-- Back to Topics -->
+            <div class="text-center mt-6">
+                <a href="index.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors mr-4">
+                    <i class="fas fa-list mr-2"></i> Back to Topics
+                </a>
+                <a href="../index.html" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                    <i class="fas fa-home mr-2"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

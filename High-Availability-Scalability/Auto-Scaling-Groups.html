@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Scaling Groups</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Open Sans', sans-serif; background: linear-gradient(135deg, #232F3E 0%, #1a252f 50%, #0f1419 100%); min-height: 100vh; color: white; }
+        .feature-card { background: rgba(55, 65, 81, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.3s ease; backdrop-filter: blur(10px); }
+        .feature-card:hover { background: rgba(75, 85, 99, 0.8); border-color: rgba(34, 197, 94, 0.3); transform: translateY(-2px); }
+        .aws-orange { color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-8">
+        <div class="mb-8">
+            <a href="index.html" class="inline-flex items-center text-green-400 hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Back to HA & Scalability Topics
+            </a>
+        </div>
+        <div class="text-center mb-12">
+            <div class="bg-gradient-to-r from-green-600 to-green-800 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-expand-arrows-alt text-white text-3xl"></i>
+            </div>
+            <h1 class="text-5xl font-montserrat font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">Auto Scaling Groups</h1>
+            <p class="text-xl text-gray-300">Dynamic scaling and automated capacity management</p>
+        </div>
+
+        <!-- ASG Overview -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Auto Scaling Overview</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">What is Auto Scaling?</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-expand-arrows-alt text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Dynamic Capacity:</strong> Automatically adjusts EC2 instance count</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-dollar-sign text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Cost Optimization:</strong> Scale down during low demand periods</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-shield-alt text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>High Availability:</strong> Maintains desired capacity across AZs</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">Key Components</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-rocket text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Launch Template:</strong> Defines instance configuration</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-chart-line text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Scaling Policies:</strong> Rules for when to scale in/out</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-heartbeat text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Health Checks:</strong> Monitors instance health status</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Launch Templates -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Launch Templates & Configurations</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-green-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-rocket text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Launch Templates</h3>
+                    <p class="text-gray-300 text-sm mb-4">Modern approach for defining instance launch parameters with versioning.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Features:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Version control and rollback</li>
+                            <li>• Mixed instance types support</li>
+                            <li>• Spot instance integration</li>
+                            <li>• Advanced networking options</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-green-300">
+                        <strong>Recommended:</strong> Use instead of launch configurations
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-green-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-cogs text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Instance Configuration</h3>
+                    <p class="text-gray-300 text-sm mb-4">Define AMI, instance type, security groups, and storage settings.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Parameters:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• AMI ID and instance type</li>
+                            <li>• Key pair and security groups</li>
+                            <li>• IAM instance profile</li>
+                            <li>• User data scripts</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-green-300">
+                        <strong>Best Practice:</strong> Use golden AMIs for consistency
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-green-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-layer-group text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Mixed Instance Types</h3>
+                    <p class="text-gray-300 text-sm mb-4">Use multiple instance types and purchase options for cost optimization.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Options:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• On-Demand and Spot instances</li>
+                            <li>• Multiple instance families</li>
+                            <li>• Allocation strategies</li>
+                            <li>• Capacity rebalancing</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-green-300">
+                        <strong>Benefit:</strong> Up to 90% cost savings with Spot
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scaling Policies -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Scaling Policies</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-blue-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-bullseye text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Target Tracking</h3>
+                    <p class="text-gray-300 text-sm mb-4">Maintains a specific metric value by automatically scaling capacity.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Metrics:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Average CPU utilization</li>
+                            <li>• Request count per target</li>
+                            <li>• Network bytes in/out</li>
+                            <li>• Custom CloudWatch metrics</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Example:</strong></p>
+                        <p class="text-xs text-gray-300">Maintain 70% CPU utilization</p>
+                    </div>
+                    <div class="text-xs text-blue-300">
+                        <strong>Recommended:</strong> Easiest to configure and manage
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-blue-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-stairs text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Step Scaling</h3>
+                    <p class="text-gray-300 text-sm mb-4">Scales based on the size of the alarm breach with multiple steps.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Configuration:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Multiple scaling adjustments</li>
+                            <li>• Metric value ranges</li>
+                            <li>• Cooldown periods</li>
+                            <li>• CloudWatch alarms</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Example:</strong></p>
+                        <p class="text-xs text-gray-300">+1 instance if CPU 70-80%, +2 if >80%</p>
+                    </div>
+                    <div class="text-xs text-blue-300">
+                        <strong>Use Case:</strong> Fine-grained scaling control
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-blue-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-chart-line text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Simple Scaling</h3>
+                    <p class="text-gray-300 text-sm mb-4">Single scaling adjustment based on CloudWatch alarm state.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Features:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Single scaling action</li>
+                            <li>• Cooldown period required</li>
+                            <li>• CloudWatch alarm trigger</li>
+                            <li>• Simple configuration</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Limitation:</strong></p>
+                        <p class="text-xs text-gray-300">Cannot scale during cooldown period</p>
+                    </div>
+                    <div class="text-xs text-blue-300">
+                        <strong>Status:</strong> Legacy, use target tracking instead
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-purple-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-calendar-alt text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Scheduled Scaling</h3>
+                    <p class="text-gray-300 text-sm mb-4">Proactive scaling based on predictable time patterns.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Schedule Types:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• One-time scheduled actions</li>
+                            <li>• Recurring schedules</li>
+                            <li>• Cron expressions</li>
+                            <li>• Time zone support</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Example:</strong></p>
+                        <p class="text-xs text-gray-300">Scale up at 8 AM, scale down at 6 PM</p>
+                    </div>
+                    <div class="text-xs text-purple-300">
+                        <strong>Best For:</strong> Predictable traffic patterns
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-purple-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-brain text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Predictive Scaling</h3>
+                    <p class="text-gray-300 text-sm mb-4">Uses machine learning to forecast traffic and scale proactively.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Features:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• ML-based forecasting</li>
+                            <li>• Historical data analysis</li>
+                            <li>• Proactive capacity provisioning</li>
+                            <li>• Forecast-only or scale mode</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Requirement:</strong></p>
+                        <p class="text-xs text-gray-300">Minimum 14 days of historical data</p>
+                    </div>
+                    <div class="text-xs text-purple-300">
+                        <strong>Benefit:</strong> Reduces scaling lag time
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-purple-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-balance-scale text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Warm Pools</h3>
+                    <p class="text-gray-300 text-sm mb-4">Pre-initialized instances for faster scaling response times.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>States:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Stopped (EBS-backed only)</li>
+                            <li>• Running (immediate availability)</li>
+                            <li>• Hibernated (faster than stopped)</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Benefit:</strong></p>
+                        <p class="text-xs text-gray-300">Reduces instance launch time</p>
+                    </div>
+                    <div class="text-xs text-purple-300">
+                        <strong>Cost:</strong> Pay for EBS storage only when stopped
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Health Checks -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Health Checks & Monitoring</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-red-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-heartbeat text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">EC2 Health Checks</h3>
+                    <p class="text-gray-300 text-sm mb-4">Basic instance health monitoring using EC2 status checks.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Checks:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• System status checks</li>
+                            <li>• Instance status checks</li>
+                            <li>• Instance reachability</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-red-300">
+                        <strong>Default:</strong> Enabled by default for all ASGs
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-red-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-balance-scale text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">ELB Health Checks</h3>
+                    <p class="text-gray-300 text-sm mb-4">Application-level health monitoring through load balancer checks.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Features:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• HTTP/HTTPS endpoint checks</li>
+                            <li>• Custom health check paths</li>
+                            <li>• Configurable thresholds</li>
+                            <li>• More sensitive than EC2 checks</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-red-300">
+                        <strong>Recommended:</strong> Use with load balancers
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-red-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-clock text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Health Check Grace Period</h3>
+                    <p class="text-gray-300 text-sm mb-4">Time to allow new instances to initialize before health checks begin.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Configuration:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Default: 300 seconds</li>
+                            <li>• Adjustable based on app startup time</li>
+                            <li>• Prevents premature termination</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-red-300">
+                        <strong>Best Practice:</strong> Set based on application startup time
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lifecycle Hooks -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Lifecycle Hooks</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-orange-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-play text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Launch Lifecycle Hooks</h3>
+                    <p class="text-gray-300 text-sm mb-4">Pause instance launch to perform custom initialization tasks.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Use Cases:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Software installation and configuration</li>
+                            <li>• Log file copying</li>
+                            <li>• Service registration</li>
+                            <li>• Custom health checks</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Integration:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• SNS notifications</li>
+                            <li>• SQS messages</li>
+                            <li>• Lambda functions</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-orange-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-stop text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Terminate Lifecycle Hooks</h3>
+                    <p class="text-gray-300 text-sm mb-4">Pause instance termination to perform cleanup tasks.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Use Cases:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Data backup and archival</li>
+                            <li>• Log file extraction</li>
+                            <li>• Service deregistration</li>
+                            <li>• Connection draining</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Timeout:</strong></p>
+                        <p class="text-xs text-gray-300">Default 1 hour, configurable up to 48 hours</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Best Practices -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Auto Scaling Best Practices</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">Configuration Best Practices</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Launch templates:</strong> Use instead of launch configurations</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Multiple AZs:</strong> Distribute instances across availability zones</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Health checks:</strong> Enable ELB health checks for web applications</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">Scaling Best Practices</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-bullseye text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Target tracking:</strong> Preferred scaling policy for most use cases</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-clock text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Cooldown periods:</strong> Prevent rapid scaling oscillations</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-chart-line text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Monitoring:</strong> Use CloudWatch metrics and alarms</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RDS Fundamentals</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            font-family: 'Open Sans', sans-serif;
+            width: 100vw;
+            overflow-x: hidden;
+        }
+        .slide-container {
+            width: 100vw;
+            min-height: 100vh;
+            background-color: #232F3E;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            color: #ffffff;
+        }
+        .aws-orange { color: #FF9900; }
+        .bg-aws-orange { background-color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+        .font-mono { font-family: 'Roboto Mono', monospace; }
+        
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            z-index: 10;
+            min-height: 100vh;
+        }
+        @media (min-width: 640px) {
+            .content-wrapper { padding: 2rem; }
+        }
+        @media (min-width: 1024px) {
+            .content-wrapper { padding: 3rem; }
+        }
+
+        .section-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 24px;
+            border-left: 4px solid #FF9900;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 153, 0, 0.15);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            flex-shrink: 0;
+        }
+
+        .feature-list li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            font-size: 0.9rem;
+        }
+        .feature-list li::before {
+            content: "•";
+            color: #FF9900;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            font-size: 1.2em;
+        }
+
+        .code-block {
+            background-color: #161b22;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: #e6edf3;
+            border: 1px solid #30363d;
+            margin-top: 10px;
+        }
+
+        .engine-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+        .engine-table th,
+        .engine-table td {
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.85rem;
+        }
+        .engine-table th {
+            background: rgba(255, 153, 0, 0.1);
+            color: #FF9900;
+            font-weight: bold;
+        }
+        .engine-table td {
+            color: #e5e7eb;
+        }
+
+        .engine-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin: 12px 0;
+            border: 1px solid rgba(255, 153, 0, 0.3);
+        }
+
+        .storage-type {
+            padding: 12px;
+            border-radius: 6px;
+            margin: 8px 0;
+            font-size: 0.85rem;
+        }
+
+        .gp2-storage {
+            background: rgba(34, 197, 94, 0.2);
+            border-left: 4px solid #22C55E;
+            color: #86EFAC;
+        }
+
+        .gp3-storage {
+            background: rgba(59, 130, 246, 0.2);
+            border-left: 4px solid #3B82F6;
+            color: #93C5FD;
+        }
+
+        .io1-storage {
+            background: rgba(245, 158, 11, 0.2);
+            border-left: 4px solid #F59E0B;
+            color: #FCD34D;
+        }
+
+        .magnetic-storage {
+            background: rgba(139, 92, 246, 0.2);
+            border-left: 4px solid #8B5CF6;
+            color: #C4B5FD;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container">
+    <div class="absolute top-0 left-0 w-full h-2 bg-aws-orange z-20"></div>
+    <div class="content-wrapper">
+        <!-- Navigation -->
+        <div class="mb-3 sm:mb-4">
+            <a href="index.html" class="inline-flex items-center text-aws-orange hover:text-white transition-colors text-sm sm:text-base">
+                <i class="fas fa-arrow-left mr-2"></i> Back to RDS Topics
+            </a>
+        </div>
+
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center mb-4 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4">
+            <div class="bg-aws-orange p-2 rounded mr-4">
+                <i class="fas fa-database text-white text-xl"></i>
+            </div>
+            <div>
+                <h2 class="text-4xl font-montserrat font-bold text-white">RDS Fundamentals</h2>
+                <p class="text-gray-400 font-montserrat text-lg">Relational Database Service Core Concepts</p>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 lg:gap-8 flex-1">
+            
+            <!-- Database Engines -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-cogs aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Database Engines</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">RDS supports multiple database engines, each optimized for different use cases and workloads.</p>
+                
+                <table class="engine-table">
+                    <thead>
+                        <tr>
+                            <th>Engine</th>
+                            <th>Version</th>
+                            <th>Use Case</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong class="text-blue-300">MySQL</strong></td>
+                            <td>8.0, 5.7</td>
+                            <td>Web applications, OLTP</td>
+                        </tr>
+                        <tr>
+                            <td><strong class="text-green-300">PostgreSQL</strong></td>
+                            <td>14, 13, 12</td>
+                            <td>Complex queries, JSON</td>
+                        </tr>
+                        <tr>
+                            <td><strong class="text-purple-300">MariaDB</strong></td>
+                            <td>10.6, 10.5</td>
+                            <td>MySQL alternative</td>
+                        </tr>
+                        <tr>
+                            <td><strong class="text-red-300">Oracle</strong></td>
+                            <td>19c, 12c</td>
+                            <td>Enterprise applications</td>
+                        </tr>
+                        <tr>
+                            <td><strong class="text-yellow-300">SQL Server</strong></td>
+                            <td>2019, 2017</td>
+                            <td>Microsoft ecosystem</td>
+                        </tr>
+                        <tr>
+                            <td><strong class="text-cyan-300">Aurora</strong></td>
+                            <td>MySQL/PostgreSQL</td>
+                            <td>Cloud-native, high performance</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="engine-card">
+                    <h4 class="text-aws-orange font-bold text-sm mb-2">Engine Selection Criteria</h4>
+                    <ul class="feature-list text-gray-200 text-xs">
+                        <li>Application compatibility and requirements</li>
+                        <li>Performance and scalability needs</li>
+                        <li>Licensing costs and budget constraints</li>
+                        <li>Feature requirements (JSON, spatial data)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Instance Classes -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-server aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Instance Classes</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">RDS instance classes are optimized for different workload patterns and performance requirements.</p>
+                
+                <div class="space-y-4">
+                    <div class="bg-blue-900 bg-opacity-30 p-3 rounded border-l-4 border-blue-400">
+                        <h4 class="text-blue-200 font-bold text-sm mb-2"><i class="fas fa-balance-scale mr-2"></i>General Purpose (db.t3, db.m5)</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Balanced CPU, memory, and network</li>
+                            <li>• Burstable performance (T3)</li>
+                            <li>• Cost-effective for variable workloads</li>
+                            <li>• 2-96 vCPUs, 1-384 GiB memory</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-green-900 bg-opacity-30 p-3 rounded border-l-4 border-green-400">
+                        <h4 class="text-green-200 font-bold text-sm mb-2"><i class="fas fa-memory mr-2"></i>Memory Optimized (db.r5, db.x1e)</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• High memory-to-vCPU ratio</li>
+                            <li>• In-memory databases and caching</li>
+                            <li>• Real-time analytics workloads</li>
+                            <li>• Up to 768 GiB memory per vCPU</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-purple-900 bg-opacity-30 p-3 rounded border-l-4 border-purple-400">
+                        <h4 class="text-purple-200 font-bold text-sm mb-2"><i class="fas fa-tachometer-alt mr-2"></i>Burstable Performance (db.t3, db.t2)</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• CPU credits for burst capability</li>
+                            <li>• Development and testing environments</li>
+                            <li>• Low to moderate baseline performance</li>
+                            <li>• Cost-effective for intermittent workloads</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-block font-mono">
+                    <span class="text-gray-500"># Create RDS instance</span><br/>
+                    aws rds create-db-instance \<br/>
+                    &nbsp;&nbsp;--db-instance-identifier mydb \<br/>
+                    &nbsp;&nbsp;--db-instance-class db.t3.micro \<br/>
+                    &nbsp;&nbsp;--engine mysql \<br/>
+                    &nbsp;&nbsp;--master-username admin \<br/>
+                    &nbsp;&nbsp;--master-user-password mypassword \<br/>
+                    &nbsp;&nbsp;--allocated-storage 20
+                </div>
+            </div>
+
+            <!-- Storage Types -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-hdd aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Storage Types</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">RDS offers different storage types optimized for various performance and cost requirements.</p>
+                
+                <div class="space-y-3">
+                    <div class="gp3-storage">
+                        <h4 class="font-bold text-sm mb-2"><i class="fas fa-bolt mr-2"></i>General Purpose SSD (gp3)</h4>
+                        <ul class="text-xs space-y-1">
+                            <li>• Latest generation, cost-effective</li>
+                            <li>• 3,000 IOPS baseline, up to 16,000 IOPS</li>
+                            <li>• 125 MB/s baseline, up to 1,000 MB/s</li>
+                            <li>• Independent IOPS and throughput scaling</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="gp2-storage">
+                        <h4 class="font-bold text-sm mb-2"><i class="fas fa-chart-line mr-2"></i>General Purpose SSD (gp2)</h4>
+                        <ul class="text-xs space-y-1">
+                            <li>• 3 IOPS per GB, up to 16,000 IOPS</li>
+                            <li>• Burst capability up to 3,000 IOPS</li>
+                            <li>• Good for most workloads</li>
+                            <li>• 20 GiB to 64 TiB storage</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="io1-storage">
+                        <h4 class="font-bold text-sm mb-2"><i class="fas fa-rocket mr-2"></i>Provisioned IOPS SSD (io1/io2)</h4>
+                        <ul class="text-xs space-y-1">
+                            <li>• Up to 64,000 IOPS (io2)</li>
+                            <li>• Consistent, high IOPS performance</li>
+                            <li>• I/O intensive applications</li>
+                            <li>• 99.999% durability (io2)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="magnetic-storage">
+                        <h4 class="font-bold text-sm mb-2"><i class="fas fa-archive mr-2"></i>Magnetic Storage</h4>
+                        <ul class="text-xs space-y-1">
+                            <li>• Legacy storage type</li>
+                            <li>• Lower cost, lower performance</li>
+                            <li>• Not recommended for new deployments</li>
+                            <li>• 10 GiB to 3 TiB storage</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Multi-AZ Deployments -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-globe aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Multi-AZ Deployments</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">Multi-AZ provides high availability and automatic failover for RDS instances.</p>
+                
+                <ul class="feature-list text-gray-200 mb-4">
+                    <li><strong class="text-white">Synchronous Replication:</strong> Data replicated to standby in different AZ</li>
+                    <li><strong class="text-white">Automatic Failover:</strong> 1-2 minutes failover time</li>
+                    <li><strong class="text-white">No Performance Impact:</strong> Standby not accessible for reads</li>
+                    <li><strong class="text-white">Maintenance Benefits:</strong> Zero-downtime maintenance</li>
+                </ul>
+
+                <div class="space-y-3">
+                    <div class="bg-green-900 bg-opacity-30 p-3 rounded border-l-4 border-green-400">
+                        <h4 class="text-green-200 font-bold text-sm mb-2"><i class="fas fa-check-circle mr-2"></i>Benefits</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Enhanced availability and durability</li>
+                            <li>• Protection against AZ failures</li>
+                            <li>• Automatic database failover</li>
+                            <li>• No manual intervention required</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-yellow-900 bg-opacity-30 p-3 rounded border-l-4 border-yellow-400">
+                        <h4 class="text-yellow-200 font-bold text-sm mb-2"><i class="fas fa-exclamation-triangle mr-2"></i>Considerations</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Additional cost (approximately 2x)</li>
+                            <li>• Standby replica not readable</li>
+                            <li>• Cross-AZ data transfer charges</li>
+                            <li>• Use Read Replicas for read scaling</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-block font-mono">
+                    <span class="text-gray-500"># Enable Multi-AZ</span><br/>
+                    aws rds modify-db-instance \<br/>
+                    &nbsp;&nbsp;--db-instance-identifier mydb \<br/>
+                    &nbsp;&nbsp;--multi-az \<br/>
+                    &nbsp;&nbsp;--apply-immediately
+                </div>
+            </div>
+
+            <!-- Read Replicas -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-copy aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Read Replicas</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">Read replicas provide read scaling and can be used for reporting and analytics workloads.</p>
+                
+                <div class="space-y-4">
+                    <div class="bg-blue-900 bg-opacity-30 p-3 rounded border-l-4 border-blue-400">
+                        <h4 class="text-blue-200 font-bold text-sm mb-2"><i class="fas fa-expand-arrows-alt mr-2"></i>Scaling Capabilities</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Up to 5 read replicas per source DB</li>
+                            <li>• Cross-region read replicas supported</li>
+                            <li>• Asynchronous replication</li>
+                            <li>• Can be promoted to standalone DB</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-purple-900 bg-opacity-30 p-3 rounded border-l-4 border-purple-400">
+                        <h4 class="text-purple-200 font-bold text-sm mb-2"><i class="fas fa-chart-bar mr-2"></i>Use Cases</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Read-heavy database workloads</li>
+                            <li>• Business reporting and analytics</li>
+                            <li>• Disaster recovery scenarios</li>
+                            <li>• Cross-region data distribution</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-4 p-3 bg-orange-900 bg-opacity-30 rounded border-l-4 border-orange-400">
+                    <h4 class="text-orange-200 font-bold text-sm mb-2">Important Notes</h4>
+                    <ul class="text-gray-300 text-xs space-y-1">
+                        <li>• Automatic backups must be enabled</li>
+                        <li>• Replication lag varies by workload</li>
+                        <li>• Each replica has its own endpoint</li>
+                        <li>• Can have different instance classes</li>
+                    </ul>
+                </div>
+
+                <div class="code-block font-mono">
+                    <span class="text-gray-500"># Create read replica</span><br/>
+                    aws rds create-db-instance-read-replica \<br/>
+                    &nbsp;&nbsp;--db-instance-identifier mydb-replica \<br/>
+                    &nbsp;&nbsp;--source-db-instance-identifier mydb \<br/>
+                    &nbsp;&nbsp;--db-instance-class db.t3.micro
+                </div>
+            </div>
+
+            <!-- RDS Features -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-star aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Key Features</h3>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="bg-green-900 bg-opacity-30 p-3 rounded border-l-4 border-green-400">
+                        <h4 class="text-green-200 font-bold text-sm mb-2"><i class="fas fa-cog mr-2"></i>Automated Management</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Automated backups and snapshots</li>
+                            <li>• Software patching and updates</li>
+                            <li>• Monitoring and metrics</li>
+                            <li>• Parameter group management</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-blue-900 bg-opacity-30 p-3 rounded border-l-4 border-blue-400">
+                        <h4 class="text-blue-200 font-bold text-sm mb-2"><i class="fas fa-shield-alt mr-2"></i>Security Features</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• VPC isolation and security groups</li>
+                            <li>• Encryption at rest and in transit</li>
+                            <li>• IAM database authentication</li>
+                            <li>• Database activity streams</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-purple-900 bg-opacity-30 p-3 rounded border-l-4 border-purple-400">
+                        <h4 class="text-purple-200 font-bold text-sm mb-2"><i class="fas fa-chart-line mr-2"></i>Performance Features</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Performance Insights</li>
+                            <li>• Enhanced monitoring</li>
+                            <li>• Connection pooling (RDS Proxy)</li>
+                            <li>• Storage auto-scaling</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-red-900 bg-opacity-30 p-3 rounded border-l-4 border-red-400">
+                        <h4 class="text-red-200 font-bold text-sm mb-2"><i class="fas fa-save mr-2"></i>Backup & Recovery</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Point-in-time recovery</li>
+                            <li>• Manual snapshots</li>
+                            <li>• Cross-region snapshot copy</li>
+                            <li>• Backup retention up to 35 days</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page Number -->
+        <div class="text-right mt-4 text-gray-500 text-xs">
+            Page 1 of 13
+        </div>
+        
+        <!-- Navigation -->
+        <div class="flex justify-between mt-8 pt-6 border-t border-gray-700">
+            <div></div>
+            <a href="Aurora-Deep-Dive.html" class="inline-flex items-center bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                Next: Aurora Deep Dive <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+        
+        <!-- Back to Topics -->
+        <div class="text-center mt-6">
+            <a href="index.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors mr-4">
+                <i class="fas fa-list mr-2"></i> Back to Topics
+            </a>
+            <a href="../index.html" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <i class="fas fa-home mr-2"></i> Back to Home
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ElastiCache Deep Dive - AWS Study Guide</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="../styles.css" rel="stylesheet">
+</head>
+<body class="text-white">
+    <div class="w-full min-h-screen p-4 sm:p-6 lg:p-8">
+        <div class="mb-6">
+            <a href="index.html" class="inline-flex items-center text-aws-orange hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Back to RDS
+            </a>
+        </div>
+        
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-8">
+                <div class="bg-red-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-tachometer-alt text-white text-2xl"></i>
+                </div>
+                <h1 class="text-4xl font-montserrat font-bold mb-4">ElastiCache Deep Dive</h1>
+                <p class="text-xl text-gray-300">In-Memory Caching & Performance Optimization</p>
+            </div>
+
+            <!-- Overview -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h2 class="text-2xl font-bold mb-4 aws-orange">What is Amazon ElastiCache?</h2>
+                <p class="text-gray-300 mb-4">Amazon ElastiCache is a fully managed in-memory caching service that supports Redis, Valkey, and Memcached engines. It improves application performance by storing frequently accessed data in memory, reducing database load and latency.</p>
+                <div class="bg-blue-900 bg-opacity-30 border border-blue-500 rounded p-4">
+                    <p class="text-blue-200"><strong>Key Benefits:</strong> Sub-millisecond latency, automatic failover, backup and restore, monitoring and metrics, security features.</p>
+                </div>
+            </div>
+
+            <!-- Redis vs Memcached vs Valkey -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+                <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 border border-gray-700">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-red-600 w-10 h-10 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-database text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Redis</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-red-400 mb-2">Advanced Features</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Data persistence (RDB snapshots, AOF)</li>
+                                <li>• Complex data structures (lists, sets, hashes)</li>
+                                <li>• Pub/Sub messaging</li>
+                                <li>• Lua scripting support</li>
+                                <li>• Geospatial data support</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-red-400 mb-2">High Availability</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Multi-AZ with automatic failover</li>
+                                <li>• Read replicas for scaling reads</li>
+                                <li>• Redis Cluster for horizontal scaling</li>
+                                <li>• Backup and restore capabilities</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-red-400 mb-2">Use Cases</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Session store</li>
+                                <li>• Real-time analytics</li>
+                                <li>• Gaming leaderboards</li>
+                                <li>• Chat/messaging applications</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 border border-gray-700">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-purple-600 w-10 h-10 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-bolt text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Valkey</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-purple-400 mb-2">Open Source Alternative</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Redis-compatible open source fork</li>
+                                <li>• Same API and data structures as Redis</li>
+                                <li>• Community-driven development</li>
+                                <li>• No licensing restrictions</li>
+                                <li>• Enhanced security features</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-purple-400 mb-2">Key Benefits</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Drop-in Redis replacement</li>
+                                <li>• Improved performance optimizations</li>
+                                <li>• Enhanced memory management</li>
+                                <li>• Better security defaults</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-purple-400 mb-2">Use Cases</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Redis migration scenarios</li>
+                                <li>• Cost-sensitive applications</li>
+                                <li>• Open source compliance requirements</li>
+                                <li>• High-performance caching</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 border border-gray-700">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-green-600 w-10 h-10 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-memory text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Memcached</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-green-400 mb-2">Simple & Fast</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Simple key-value store</li>
+                                <li>• Multi-threaded architecture</li>
+                                <li>• Extremely low latency</li>
+                                <li>• Minimal memory overhead</li>
+                                <li>• Easy horizontal scaling</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-green-400 mb-2">Scaling</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Auto Discovery for dynamic scaling</li>
+                                <li>• Consistent hashing</li>
+                                <li>• Node addition/removal</li>
+                                <li>• No data persistence</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-green-400 mb-2">Use Cases</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Database query caching</li>
+                                <li>• Web session caching</li>
+                                <li>• Object caching</li>
+                                <li>• Simple distributed caching</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Redis Cluster Architecture -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-xl font-bold mb-4 aws-orange">Redis Cluster Architecture</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-semibold mb-3">Cluster Mode Disabled (Single Shard)</h4>
+                        <ul class="text-sm text-gray-300 space-y-2">
+                            <li>• One primary node with up to 5 read replicas</li>
+                            <li>• Asynchronous replication</li>
+                            <li>• Automatic failover to replica</li>
+                            <li>• Multi-AZ deployment supported</li>
+                            <li>• Backup and restore available</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold mb-3">Cluster Mode Enabled (Multiple Shards)</h4>
+                        <ul class="text-sm text-gray-300 space-y-2">
+                            <li>• Up to 500 nodes (90 shards × 5 replicas + 90 primaries)</li>
+                            <li>• Data partitioned across shards</li>
+                            <li>• Horizontal scaling capability</li>
+                            <li>• Online resharding support</li>
+                            <li>• Higher availability and performance</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security & Monitoring -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 border border-gray-700">
+                    <h3 class="text-xl font-bold mb-4 aws-orange">Security Features</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <h4 class="font-semibold text-purple-400">Encryption</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Encryption at rest with KMS</li>
+                                <li>• Encryption in transit (TLS)</li>
+                                <li>• Auth tokens for Redis</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-purple-400">Network Security</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• VPC deployment</li>
+                                <li>• Security groups</li>
+                                <li>• Subnet groups</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-purple-400">Access Control</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• IAM authentication (Redis 6.0+)</li>
+                                <li>• Redis AUTH command</li>
+                                <li>• Role-based access control</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 border border-gray-700">
+                    <h3 class="text-xl font-bold mb-4 aws-orange">Monitoring & Maintenance</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <h4 class="font-semibold text-blue-400">CloudWatch Metrics</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• CPU utilization</li>
+                                <li>• Memory usage</li>
+                                <li>• Network I/O</li>
+                                <li>• Cache hit ratio</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-blue-400">Maintenance</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Automatic software patching</li>
+                                <li>• Maintenance windows</li>
+                                <li>• Engine version upgrades</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-blue-400">Notifications</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• SNS notifications</li>
+                                <li>• CloudWatch alarms</li>
+                                <li>• Event notifications</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Best Practices -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-xl font-bold mb-4 aws-orange">Best Practices & Performance Tips</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div>
+                        <h4 class="font-semibold text-yellow-400 mb-2">Design Patterns</h4>
+                        <ul class="text-sm text-gray-300 space-y-1">
+                            <li>• Lazy loading (cache-aside)</li>
+                            <li>• Write-through caching</li>
+                            <li>• Write-behind caching</li>
+                            <li>• TTL for data expiration</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-yellow-400 mb-2">Performance</h4>
+                        <ul class="text-sm text-gray-300 space-y-1">
+                            <li>• Choose appropriate node types</li>
+                            <li>• Monitor memory usage</li>
+                            <li>• Use connection pooling</li>
+                            <li>• Optimize data structures</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-yellow-400 mb-2">Scaling</h4>
+                        <ul class="text-sm text-gray-300 space-y-1">
+                            <li>• Horizontal scaling with sharding</li>
+                            <li>• Read replicas for read scaling</li>
+                            <li>• Monitor cache hit ratios</li>
+                            <li>• Plan for peak traffic</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exam Tips -->
+            <div class="bg-gradient-to-r from-orange-900 to-red-900 bg-opacity-50 rounded-lg p-6 border border-orange-500">
+                <h3 class="text-xl font-bold mb-4 text-orange-300">SAA-C03 Exam Key Points</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <ul class="text-sm text-orange-100 space-y-2">
+                            <li>• <strong>Engine Selection:</strong> Redis for advanced features, Valkey for open-source compatibility, Memcached for simple caching</li>
+                            <li>• <strong>Multi-AZ:</strong> Available for Redis and Valkey, provides automatic failover</li>
+                            <li>• <strong>Backup:</strong> Redis and Valkey support backup/restore, Memcached does not</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul class="text-sm text-orange-100 space-y-2">
+                            <li>• <strong>Scaling:</strong> Redis Cluster for horizontal scaling, read replicas for read scaling</li>
+                            <li>• <strong>Security:</strong> VPC deployment, encryption at rest/transit, IAM authentication</li>
+                            <li>• <strong>Use Cases:</strong> Session store, real-time analytics, gaming, chat applications</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- Navigation -->
+            <div class="flex justify-between mt-8 pt-6 border-t border-gray-700">
+                <a href="Aurora-Deep-Dive.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                    <i class="fas fa-arrow-left mr-2"></i> Previous: Aurora Deep Dive
+                </a>
+                <a href="Database-Security-Encryption.html" class="inline-flex items-center bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                    Next: Database Security <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+            
+            <!-- Back to Topics -->
+            <div class="text-center mt-6">
+                <a href="index.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors mr-4">
+                    <i class="fas fa-list mr-2"></i> Back to Topics
+                </a>
+                <a href="../index.html" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                    <i class="fas fa-home mr-2"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

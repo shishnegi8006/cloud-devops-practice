@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EBS Multi-Attach</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Open Sans', sans-serif; background: linear-gradient(135deg, #232F3E 0%, #1a252f 50%, #0f1419 100%); min-height: 100vh; color: white; }
+        .feature-card { background: rgba(55, 65, 81, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.3s ease; backdrop-filter: blur(10px); }
+        .feature-card:hover { background: rgba(75, 85, 99, 0.8); border-color: rgba(59, 130, 246, 0.3); transform: translateY(-2px); }
+        .aws-orange { color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-8">
+        <div class="mb-8">
+            <a href="index.html" class="inline-flex items-center text-blue-400 hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Back to EBS Topics
+            </a>
+        </div>
+        <div class="text-center mb-12">
+            <div class="bg-gradient-to-r from-blue-600 to-blue-800 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-share-alt text-white text-3xl"></i>
+            </div>
+            <h1 class="text-5xl font-montserrat font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">EBS Multi-Attach</h1>
+            <p class="text-xl text-gray-300">Share EBS volumes across multiple EC2 instances</p>
+        </div>
+
+        <!-- Multi-Attach Overview -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Multi-Attach Overview</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">How Multi-Attach Works</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-share-alt text-blue-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Shared access:</strong> Single volume attached to multiple instances</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-network-wired text-blue-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Block-level:</strong> Raw block device shared at storage level</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-sync text-blue-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Concurrent:</strong> All instances can read/write simultaneously</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">Key Limitations</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-hdd text-blue-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Volume types:</strong> Only io1 and io2 volumes supported</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-server text-blue-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Instance limit:</strong> Maximum 16 instances per volume</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-blue-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Same AZ:</strong> All instances must be in same Availability Zone</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technical Requirements -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Technical Requirements</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-blue-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-hdd text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Volume Requirements</h3>
+                    <p class="text-gray-300 text-sm mb-4">Specific EBS volume types and configurations required for Multi-Attach.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Supported Types:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• io1 volumes (legacy)</li>
+                            <li>• io2 volumes (recommended)</li>
+                            <li>• Provisioned IOPS required</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Not Supported:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• gp2, gp3 volumes</li>
+                            <li>• st1, sc1 volumes</li>
+                            <li>• Root volumes</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-blue-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-server text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Instance Requirements</h3>
+                    <p class="text-gray-300 text-sm mb-4">EC2 instance specifications and configurations for Multi-Attach support.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Instance Types:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Nitro System instances only</li>
+                            <li>• R5, M5, C5, and newer generations</li>
+                            <li>• EBS-optimized recommended</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Networking:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Enhanced networking support</li>
+                            <li>• SR-IOV enabled</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-blue-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-folder text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">File System Requirements</h3>
+                    <p class="text-gray-300 text-sm mb-4">Cluster-aware file systems required to prevent data corruption.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Supported Systems:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Oracle Cluster File System (OCFS2)</li>
+                            <li>• Red Hat Global File System (GFS2)</li>
+                            <li>• Pacemaker with DRBD</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Not Supported:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Standard file systems (ext4, xfs)</li>
+                            <li>• NTFS, FAT32</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Use Cases -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Multi-Attach Use Cases</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-green-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-database text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Oracle RAC Clusters</h3>
+                    <p class="text-gray-300 text-sm mb-4">Oracle Real Application Clusters requiring shared storage access.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Benefits:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Shared database files</li>
+                            <li>• High availability</li>
+                            <li>• Load distribution</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Configuration:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Oracle Cluster File System</li>
+                            <li>• ASM disk groups</li>
+                            <li>• Voting disks and OCR</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-green-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-heart text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">High Availability Applications</h3>
+                    <p class="text-gray-300 text-sm mb-4">Applications requiring shared storage for failover scenarios.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Scenarios:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Active-passive clusters</li>
+                            <li>• Shared application data</li>
+                            <li>• Configuration synchronization</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Tools:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Pacemaker</li>
+                            <li>• Corosync</li>
+                            <li>• DRBD</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-green-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-share-alt-square text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Shared File Systems</h3>
+                    <p class="text-gray-300 text-sm mb-4">Applications requiring concurrent access to shared file systems.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Examples:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Content management systems</li>
+                            <li>• Media processing workflows</li>
+                            <li>• Scientific computing</li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Requirements:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Cluster-aware file system</li>
+                            <li>• Distributed lock manager</li>
+                            <li>• Coordination protocols</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Implementation Considerations -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Implementation Considerations</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">Performance Considerations</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-tachometer-alt text-blue-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>IOPS sharing:</strong> Total IOPS shared across all attached instances</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-network-wired text-blue-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Network overhead:</strong> Cluster coordination adds latency</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-balance-scale text-blue-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Load balancing:</strong> Distribute I/O across instances</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">Data Consistency</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-lock text-blue-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Locking:</strong> Distributed locking prevents conflicts</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-sync text-blue-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Synchronization:</strong> Cluster coordination required</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-exclamation-triangle text-blue-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Risk:</strong> Data corruption without proper file system</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Configuration Steps -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Configuration Steps</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 text-green-400">Volume Setup</h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-700 rounded p-3">
+                            <p class="text-sm font-semibold text-blue-400 mb-2">Step 1: Create Volume</p>
+                            <ul class="text-xs text-gray-300 space-y-1">
+                                <li>1. Choose io1 or io2 volume type</li>
+                                <li>2. Provision required IOPS</li>
+                                <li>3. Enable Multi-Attach option</li>
+                                <li>4. Configure encryption if needed</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-700 rounded p-3">
+                            <p class="text-sm font-semibold text-blue-400 mb-2">Step 2: Attach to Instances</p>
+                            <ul class="text-xs text-gray-300 space-y-1">
+                                <li>1. Attach volume to first instance</li>
+                                <li>2. Attach same volume to additional instances</li>
+                                <li>3. Verify attachment on all instances</li>
+                                <li>4. Note device names may differ</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 text-green-400">File System Setup</h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-700 rounded p-3">
+                            <p class="text-sm font-semibold text-blue-400 mb-2">Step 3: Install Cluster Software</p>
+                            <ul class="text-xs text-gray-300 space-y-1">
+                                <li>1. Install cluster-aware file system</li>
+                                <li>2. Configure cluster membership</li>
+                                <li>3. Set up distributed locking</li>
+                                <li>4. Test cluster communication</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-700 rounded p-3">
+                            <p class="text-sm font-semibold text-blue-400 mb-2">Step 4: Format and Mount</p>
+                            <ul class="text-xs text-gray-300 space-y-1">
+                                <li>1. Format volume with cluster file system</li>
+                                <li>2. Mount on all cluster nodes</li>
+                                <li>3. Configure automatic mounting</li>
+                                <li>4. Test concurrent access</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Best Practices -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Best Practices</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="feature-card rounded-xl p-6">
+                    <h3 class="text-lg font-semibold mb-3 aws-orange">Volume Sizing</h3>
+                    <p class="text-gray-300 text-sm mb-4">Size volumes appropriately for shared workloads.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Considerations:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Total IOPS shared across instances</li>
+                            <li>• Plan for peak concurrent usage</li>
+                            <li>• Monitor performance metrics</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <h3 class="text-lg font-semibold mb-3 aws-orange">Monitoring</h3>
+                    <p class="text-gray-300 text-sm mb-4">Monitor cluster health and volume performance.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Metrics:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Volume IOPS utilization</li>
+                            <li>• Cluster node health</li>
+                            <li>• File system consistency</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <h3 class="text-lg font-semibold mb-3 aws-orange">Backup Strategy</h3>
+                    <p class="text-gray-300 text-sm mb-4">Implement consistent backup procedures.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Approach:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Coordinate snapshots across cluster</li>
+                            <li>• Ensure application consistency</li>
+                            <li>• Test restore procedures</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

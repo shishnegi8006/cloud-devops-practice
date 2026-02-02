@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>EC2 Architecture Diagram</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #232F3E;
+            width: 100vw;
+            overflow-x: hidden;
+        }
+        .slide-container {
+            width: 100vw;
+            min-height: 100vh;
+            background-color: #232F3E;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            color: #ffffff;
+        }
+        .aws-orange { color: #FF9900; }
+        .bg-aws-orange { background-color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+        
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            z-index: 10;
+            min-height: 100vh;
+        }
+        @media (min-width: 640px) {
+            .content-wrapper {
+                padding: 2rem;
+            }
+        }
+        @media (min-width: 1024px) {
+            .content-wrapper {
+                padding: 3rem;
+            }
+        }
+
+        .diagram-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid #FF9900;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .architecture-layer {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(99, 102, 241, 0.05) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+        }
+
+        .best-practice {
+            background: rgba(34, 197, 94, 0.1);
+            border-left: 4px solid #22c55e;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            border-radius: 0 6px 6px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="absolute top-0 left-0 w-full h-2 bg-aws-orange z-20"></div>
+        
+        <div class="content-wrapper">
+            <!-- Navigation -->
+            <div class="mb-3 sm:mb-4">
+                <a href="index.html" class="inline-flex items-center text-aws-orange hover:text-white transition-colors text-sm sm:text-base">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to EC2 Topics
+                </a>
+            </div>
+
+            <!-- Header -->
+            <div class="flex flex-col sm:flex-row items-start sm:items-center mb-4 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4">
+                <div class="bg-aws-orange p-2 rounded mr-0 sm:mr-4 mb-3 sm:mb-0">
+                    <i class="fas fa-sitemap text-white text-lg sm:text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-montserrat font-bold text-white">EC2 Architecture Diagram</h2>
+                    <p class="text-gray-400 font-montserrat text-sm sm:text-base lg:text-lg">Scalable & Resilient EC2 Implementation</p>
+                </div>
+            </div>
+
+            <!-- EC2 Architecture Diagram -->
+            <div class="diagram-box">
+                <h3 class="text-xl font-bold mb-4 text-center text-aws-orange">Multi-AZ EC2 Architecture</h3>
+                
+                <!-- Layer 1: Load Balancer -->
+                <div class="architecture-layer">
+                    <h4 class="font-bold text-lg mb-2 flex items-center">
+                        <i class="fas fa-balance-scale text-blue-400 mr-2"></i>
+                        Layer 1: Application Load Balancer
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                        <div class="bg-gray-800 p-3 rounded">
+                            <i class="fas fa-globe text-blue-400 mb-2"></i>
+                            <p><strong>Internet-facing</strong></p>
+                            <p class="text-xs text-gray-400">Public subnets, SSL termination</p>
+                        </div>
+                        <div class="bg-gray-800 p-3 rounded">
+                            <i class="fas fa-heartbeat text-green-400 mb-2"></i>
+                            <p><strong>Health Checks</strong></p>
+                            <p class="text-xs text-gray-400">Route to healthy instances</p>
+                        </div>
+                        <div class="bg-gray-800 p-3 rounded">
+                            <i class="fas fa-shield-alt text-red-400 mb-2"></i>
+                            <p><strong>Security Groups</strong></p>
+                            <p class="text-xs text-gray-400">Allow HTTP/HTTPS only</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Layer 2: Auto Scaling Group -->
+                <div class="architecture-layer">
+                    <h4 class="font-bold text-lg mb-2 flex items-center">
+                        <i class="fas fa-expand-arrows-alt text-indigo-400 mr-2"></i>
+                        Layer 2: Auto Scaling Group
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <div class="bg-gray-800 p-3 rounded">
+                            <p><strong>Multi-AZ Deployment</strong></p>
+                            <ul class="text-xs text-gray-400 mt-1 space-y-1">
+                                <li>• Minimum 2 AZs for high availability</li>
+                                <li>• Private subnets for security</li>
+                                <li>• Launch Template with AMI</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-800 p-3 rounded">
+                            <p><strong>Scaling Policies</strong></p>
+                            <ul class="text-xs text-gray-400 mt-1 space-y-1">
+                                <li>• Target Tracking (CPU 70%)</li>
+                                <li>• Scale out: Add 2 instances</li>
+                                <li>• Scale in: Remove 1 instance</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Layer 3: Database Layer -->
+                <div class="architecture-layer">
+                    <h4 class="font-bold text-lg mb-2 flex items-center">
+                        <i class="fas fa-database text-green-400 mr-2"></i>
+                        Layer 3: Database Layer
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                        <div class="bg-gray-800 p-3 rounded">
+                            <p><strong>RDS Multi-AZ</strong></p>
+                            <p class="text-xs text-gray-400">Primary + Standby replica</p>
+                        </div>
+                        <div class="bg-gray-800 p-3 rounded">
+                            <p><strong>ElastiCache</strong></p>
+                            <p class="text-xs text-gray-400">Redis cluster for caching</p>
+                        </div>
+                        <div class="bg-gray-800 p-3 rounded">
+                            <p><strong>Private Subnets</strong></p>
+                            <p class="text-xs text-gray-400">No internet access</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Instance Types & Use Cases -->
+            <div class="diagram-box mt-6">
+                <h3 class="text-lg font-bold mb-4 text-center text-aws-orange">Instance Family Selection Guide</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+                    <div class="bg-blue-900 p-4 rounded-lg">
+                        <h4 class="font-bold text-blue-300 mb-2">General Purpose (T3/M5)</h4>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Web servers</li>
+                            <li>• Small databases</li>
+                            <li>• Development environments</li>
+                        </ul>
+                    </div>
+                    <div class="bg-purple-900 p-4 rounded-lg">
+                        <h4 class="font-bold text-purple-300 mb-2">Compute Optimized (C5)</h4>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• High-performance web servers</li>
+                            <li>• Scientific computing</li>
+                            <li>• Batch processing</li>
+                        </ul>
+                    </div>
+                    <div class="bg-green-900 p-4 rounded-lg">
+                        <h4 class="font-bold text-green-300 mb-2">Memory Optimized (R5)</h4>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• In-memory databases</li>
+                            <li>• Real-time analytics</li>
+                            <li>• High-performance databases</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Best Practices -->
+            <div class="mt-6">
+                <h3 class="text-xl font-bold mb-4 text-aws-orange">EC2 Best Practices</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <div class="best-practice">
+                            <h4 class="font-bold text-sm mb-1">
+                                <i class="fas fa-server text-yellow-400 mr-2"></i>Instance Management
+                            </h4>
+                            <p class="text-xs text-gray-300">Use Launch Templates, enable detailed monitoring, tag all resources</p>
+                        </div>
+                        <div class="best-practice">
+                            <h4 class="font-bold text-sm mb-1">
+                                <i class="fas fa-shield-alt text-yellow-400 mr-2"></i>Security Groups
+                            </h4>
+                            <p class="text-xs text-gray-300">Principle of least privilege, use specific ports, avoid 0.0.0.0/0 for SSH</p>
+                        </div>
+                        <div class="best-practice">
+                            <h4 class="font-bold text-sm mb-1">
+                                <i class="fas fa-hdd text-yellow-400 mr-2"></i>Storage Optimization
+                            </h4>
+                            <p class="text-xs text-gray-300">Use EBS GP3 for cost-efficiency, enable encryption, regular snapshots</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="best-practice">
+                            <h4 class="font-bold text-sm mb-1">
+                                <i class="fas fa-expand-arrows-alt text-yellow-400 mr-2"></i>Auto Scaling
+                            </h4>
+                            <p class="text-xs text-gray-300">Use multiple AZs, set appropriate scaling policies, use warm pools</p>
+                        </div>
+                        <div class="best-practice">
+                            <h4 class="font-bold text-sm mb-1">
+                                <i class="fas fa-eye text-yellow-400 mr-2"></i>Monitoring
+                            </h4>
+                            <p class="text-xs text-gray-300">Enable CloudWatch detailed monitoring, set up alarms, use Systems Manager</p>
+                        </div>
+                        <div class="best-practice">
+                            <h4 class="font-bold text-sm mb-1">
+                                <i class="fas fa-coins text-yellow-400 mr-2"></i>Cost Optimization
+                            </h4>
+                            <p class="text-xs text-gray-300">Right-size instances, use Spot for fault-tolerant workloads, Reserved Instances for steady state</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Deployment Flow -->
+            <div class="diagram-box mt-6">
+                <h3 class="text-lg font-bold mb-4 text-center text-aws-orange">EC2 Deployment Flow</h3>
+                <div class="flex flex-col md:flex-row items-center justify-between text-center text-sm">
+                    <div class="bg-blue-900 p-3 rounded-lg mb-2 md:mb-0">
+                        <i class="fas fa-image text-blue-300 text-lg mb-1"></i>
+                        <p class="font-bold">AMI Selection</p>
+                        <p class="text-xs text-gray-400">Choose base image</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-aws-orange hidden md:block"></i>
+                    <div class="bg-purple-900 p-3 rounded-lg mb-2 md:mb-0">
+                        <i class="fas fa-cog text-purple-300 text-lg mb-1"></i>
+                        <p class="font-bold">Instance Config</p>
+                        <p class="text-xs text-gray-400">Type, VPC, Subnet</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-aws-orange hidden md:block"></i>
+                    <div class="bg-green-900 p-3 rounded-lg mb-2 md:mb-0">
+                        <i class="fas fa-shield-alt text-green-300 text-lg mb-1"></i>
+                        <p class="font-bold">Security Setup</p>
+                        <p class="text-xs text-gray-400">Security Groups, Key Pair</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-aws-orange hidden md:block"></i>
+                    <div class="bg-yellow-900 p-3 rounded-lg">
+                        <i class="fas fa-rocket text-yellow-300 text-lg mb-1"></i>
+                        <p class="font-bold">Launch & Monitor</p>
+                        <p class="text-xs text-gray-400">Deploy & Track</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page Number -->
+            <div class="text-right mt-4 text-gray-500 text-xs">
+                EC2 Architecture Guide
+            </div>
+        </div>
+    </div>
+</body>
+</html>

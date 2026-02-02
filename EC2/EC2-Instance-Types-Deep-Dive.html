@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EC2 Instance Types Deep Dive</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            font-family: 'Open Sans', sans-serif;
+            width: 100vw;
+            overflow-x: hidden;
+        }
+        .slide-container {
+            width: 100vw;
+            min-height: 100vh;
+            background-color: #232F3E;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            color: #ffffff;
+        }
+        .aws-orange { color: #FF9900; }
+        .bg-aws-orange { background-color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+        .font-mono { font-family: 'Roboto Mono', monospace; }
+        
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            z-index: 10;
+            min-height: 100vh;
+        }
+        @media (min-width: 640px) {
+            .content-wrapper { padding: 2rem; }
+        }
+        @media (min-width: 1024px) {
+            .content-wrapper { padding: 3rem; }
+        }
+
+        .section-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 24px;
+            border-left: 4px solid #FF9900;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 153, 0, 0.15);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            flex-shrink: 0;
+        }
+
+        .instance-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+        .instance-table th,
+        .instance-table td {
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.85rem;
+        }
+        .instance-table th {
+            background: rgba(255, 153, 0, 0.1);
+            color: #FF9900;
+            font-weight: bold;
+        }
+        .instance-table td {
+            color: #e5e7eb;
+        }
+
+        .family-badge {
+            background: linear-gradient(135deg, #FF9900, #FFB84D);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        .use-case-item {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            border-left: 3px solid #FF9900;
+        }
+
+        .performance-metric {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            padding: 8px 12px;
+            border-radius: 6px;
+            text-align: center;
+            color: #93C5FD;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container">
+    <div class="absolute top-0 left-0 w-full h-2 bg-aws-orange z-20"></div>
+    <div class="content-wrapper">
+        <!-- Navigation -->
+        <div class="mb-3 sm:mb-4">
+            <a href="index.html" class="inline-flex items-center text-aws-orange hover:text-white transition-colors text-sm sm:text-base">
+                <i class="fas fa-arrow-left mr-2"></i> Back to EC2 Topics
+            </a>
+        </div>
+
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center mb-4 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4">
+            <div class="bg-aws-orange p-2 rounded mr-4">
+                <i class="fas fa-microchip text-white text-xl"></i>
+            </div>
+            <div>
+                <h2 class="text-4xl font-montserrat font-bold text-white">EC2 Instance Types Deep Dive</h2>
+                <p class="text-gray-400 font-montserrat text-lg">Comprehensive Guide to AWS Instance Families</p>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 lg:gap-8 flex-1">
+            
+            <!-- General Purpose Instances -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-balance-scale aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">General Purpose</h3>
+                </div>
+                
+                <div class="family-badge">T4g, T3, T3a, T2 | M6i, M6a, M5, M5a, M4</div>
+                
+                <p class="text-gray-300 text-sm mb-4">Balanced compute, memory, and networking resources. Ideal for applications that use these resources in equal proportions.</p>
+                
+                <div class="space-y-3">
+                    <div class="use-case-item">
+                        <h4 class="text-white font-bold text-sm mb-1"><i class="fas fa-globe mr-2 text-aws-orange"></i>Web Servers & Applications</h4>
+                        <p class="text-gray-400 text-xs">Apache, Nginx, Node.js applications with moderate traffic</p>
+                    </div>
+                    <div class="use-case-item">
+                        <h4 class="text-white font-bold text-sm mb-1"><i class="fas fa-code-branch mr-2 text-aws-orange"></i>Development & Testing</h4>
+                        <p class="text-gray-400 text-xs">CI/CD pipelines, staging environments, code repositories</p>
+                    </div>
+                    <div class="use-case-item">
+                        <h4 class="text-white font-bold text-sm mb-1"><i class="fas fa-database mr-2 text-aws-orange"></i>Small to Medium Databases</h4>
+                        <p class="text-gray-400 text-xs">MySQL, PostgreSQL with moderate workloads</p>
+                    </div>
+                </div>
+
+                <table class="instance-table">
+                    <thead>
+                        <tr>
+                            <th>Instance</th>
+                            <th>vCPUs</th>
+                            <th>Memory</th>
+                            <th>Network</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>t3.micro</td>
+                            <td>2</td>
+                            <td>1 GiB</td>
+                            <td>Up to 5 Gbps</td>
+                        </tr>
+                        <tr>
+                            <td>m5.large</td>
+                            <td>2</td>
+                            <td>8 GiB</td>
+                            <td>Up to 10 Gbps</td>
+                        </tr>
+                        <tr>
+                            <td>m5.xlarge</td>
+                            <td>4</td>
+                            <td>16 GiB</td>
+                            <td>Up to 10 Gbps</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Compute Optimized -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-tachometer-alt aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Compute Optimized</h3>
+                </div>
+                
+                <div class="family-badge">C6i, C6a, C5, C5a, C4</div>
+                
+                <p class="text-gray-300 text-sm mb-4">High-performance processors for compute-intensive applications that benefit from high-performance CPUs.</p>
+                
+                <div class="space-y-3">
+                    <div class="use-case-item">
+                        <h4 class="text-white font-bold text-sm mb-1"><i class="fas fa-server mr-2 text-aws-orange"></i>High-Performance Web Servers</h4>
+                        <p class="text-gray-400 text-xs">CPU-intensive web applications, API servers</p>
+                    </div>
+                    <div class="use-case-item">
+                        <h4 class="text-white font-bold text-sm mb-1"><i class="fas fa-calculator mr-2 text-aws-orange"></i>Scientific Computing</h4>
+                        <p class="text-gray-400 text-xs">Batch processing, distributed analytics, HPC</p>
+                    </div>
+                    <div class="use-case-item">
+                        <h4 class="text-white font-bold text-sm mb-1"><i class="fas fa-gamepad mr-2 text-aws-orange"></i>Gaming & Media</h4>
+                        <p class="text-gray-400 text-xs">Game servers, media transcoding, real-time processing</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 mt-4">
+                    <div class="performance-metric">
+                        <div class="text-lg font-bold">3.5+ GHz</div>
+                        <div class="text-xs">Base Clock</div>
+                    </div>
+                    <div class="performance-metric">
+                        <div class="text-lg font-bold">25 Gbps</div>
+                        <div class="text-xs">Network</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Memory Optimized -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-memory aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Memory Optimized</h3>
+                </div>
+                
+                <div class="family-badge">R6i, R6a, R5, R5a, R4 | X1e, X1, z1d</div>
+                
+                <p class="text-gray-300 text-sm mb-4">Fast performance for workloads that process large data sets in memory.</p>
+                
+                <div class="space-y-3">
+                    <div class="use-case-item">
+                        <h4 class="text-white font-bold text-sm mb-1"><i class="fas fa-database mr-2 text-aws-orange"></i>In-Memory Databases</h4>
+                        <p class="text-gray-400 text-xs">Redis, Memcached, SAP HANA, Apache Spark</p>
+                    </div>
+                    <div class="use-case-item">
+                        <h4 class="text-white font-bold text-sm mb-1"><i class="fas fa-chart-line mr-2 text-aws-orange"></i>Real-Time Analytics</h4>
+                        <p class="text-gray-400 text-xs">Big data processing, real-time analytics engines</p>
+                    </div>
+                    <div class="use-case-item">
+                        <h4 class="text-white font-bold text-sm mb-1"><i class="fas fa-search mr-2 text-aws-orange"></i>Search Engines</h4>
+                        <p class="text-gray-400 text-xs">Elasticsearch, Solr, distributed search</p>
+                    </div>
+                </div>
+
+                <table class="instance-table">
+                    <thead>
+                        <tr>
+                            <th>Instance</th>
+                            <th>vCPUs</th>
+                            <th>Memory</th>
+                            <th>Memory/vCPU</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>r5.large</td>
+                            <td>2</td>
+                            <td>16 GiB</td>
+                            <td>8 GiB</td>
+                        </tr>
+                        <tr>
+                            <td>r5.xlarge</td>
+                            <td>4</td>
+                            <td>32 GiB</td>
+                            <td>8 GiB</td>
+                        </tr>
+                        <tr>
+                            <td>x1e.xlarge</td>
+                            <td>4</td>
+                            <td>122 GiB</td>
+                            <td>30.5 GiB</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Storage Optimized -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-hdd aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Storage Optimized</h3>
+                </div>
+                
+                <div class="family-badge">I4i, I3, I3en | D2, D3, D3en | H1</div>
+                
+                <p class="text-gray-300 text-sm mb-4">High sequential read/write access to large data sets on local storage.</p>
+                
+                <div class="space-y-3">
+                    <div class="use-case-item">
+                        <h4 class="text-white font-bold text-sm mb-1"><i class="fas fa-warehouse mr-2 text-aws-orange"></i>Data Warehousing</h4>
+                        <p class="text-gray-400 text-xs">Distributed file systems, data processing engines</p>
+                    </div>
+                    <div class="use-case-item">
+                        <h4 class="text-white font-bold text-sm mb-1"><i class="fas fa-project-diagram mr-2 text-aws-orange"></i>NoSQL Databases</h4>
+                        <p class="text-gray-400 text-xs">Cassandra, MongoDB, distributed databases</p>
+                    </div>
+                    <div class="use-case-item">
+                        <h4 class="text-white font-bold text-sm mb-1"><i class="fas fa-file-alt mr-2 text-aws-orange"></i>Log Processing</h4>
+                        <p class="text-gray-400 text-xs">Log analytics, search indexing, data ingestion</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 mt-4">
+                    <div class="performance-metric">
+                        <div class="text-lg font-bold">7.5 GB/s</div>
+                        <div class="text-xs">Sequential Read</div>
+                    </div>
+                    <div class="performance-metric">
+                        <div class="text-lg font-bold">6.4 GB/s</div>
+                        <div class="text-xs">Sequential Write</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Accelerated Computing -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-rocket aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Accelerated Computing</h3>
+                </div>
+                
+                <div class="family-badge">P4, P3, P2 | G4dn, G4ad, G3 | F1 | Inf1</div>
+                
+                <p class="text-gray-300 text-sm mb-4">Hardware accelerators or co-processors for floating-point calculations, graphics processing, or data pattern matching.</p>
+                
+                <div class="space-y-3">
+                    <div class="use-case-item">
+                        <h4 class="text-white font-bold text-sm mb-1"><i class="fas fa-brain mr-2 text-aws-orange"></i>Machine Learning</h4>
+                        <p class="text-gray-400 text-xs">Deep learning training, neural networks, AI inference</p>
+                    </div>
+                    <div class="use-case-item">
+                        <h4 class="text-white font-bold text-sm mb-1"><i class="fas fa-cube mr-2 text-aws-orange"></i>3D Rendering</h4>
+                        <p class="text-gray-400 text-xs">Graphics workstations, video processing, CAD</p>
+                    </div>
+                    <div class="use-case-item">
+                        <h4 class="text-white font-bold text-sm mb-1"><i class="fas fa-dna mr-2 text-aws-orange"></i>Scientific Computing</h4>
+                        <p class="text-gray-400 text-xs">Genomics research, computational fluid dynamics</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-2 mt-4">
+                    <div class="performance-metric">
+                        <div class="text-sm font-bold">NVIDIA</div>
+                        <div class="text-xs">V100/A100</div>
+                    </div>
+                    <div class="performance-metric">
+                        <div class="text-sm font-bold">FPGA</div>
+                        <div class="text-xs">Xilinx</div>
+                    </div>
+                    <div class="performance-metric">
+                        <div class="text-sm font-bold">Inferentia</div>
+                        <div class="text-xs">ML Inference</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Instance Selection Guide -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-compass aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Selection Guide</h3>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="bg-blue-900 bg-opacity-30 p-3 rounded border-l-4 border-blue-400">
+                        <h4 class="text-blue-200 font-bold text-sm mb-2">Performance Requirements</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• CPU-intensive: Choose Compute Optimized (C family)</li>
+                            <li>• Memory-intensive: Choose Memory Optimized (R, X, z1d)</li>
+                            <li>• Storage-intensive: Choose Storage Optimized (I, D, H)</li>
+                            <li>• GPU workloads: Choose Accelerated Computing (P, G, F)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-green-900 bg-opacity-30 p-3 rounded border-l-4 border-green-400">
+                        <h4 class="text-green-200 font-bold text-sm mb-2">Cost Optimization</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Burstable: T instances for variable workloads</li>
+                            <li>• Graviton2: a instances for better price/performance</li>
+                            <li>• Previous generation: Lower cost for non-critical workloads</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-purple-900 bg-opacity-30 p-3 rounded border-l-4 border-purple-400">
+                        <h4 class="text-purple-200 font-bold text-sm mb-2">Network Performance</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Enhanced Networking: SR-IOV for higher PPS</li>
+                            <li>• Placement Groups: Cluster for low latency</li>
+                            <li>• Elastic Fabric Adapter: HPC workloads</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page Number -->
+        <div class="text-right mt-4 text-gray-500 text-xs">
+            EC2 Instance Types Deep Dive
+        </div>
+        
+        <!-- Navigation -->
+        <div class="flex justify-between mt-8 pt-6 border-t border-gray-700">
+            <a href="EC2-Fundamentals.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Previous: EC2 Fundamentals
+            </a>
+            <a href="EC2-Storage-Deep-Dive.html" class="inline-flex items-center bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                Next: Storage Deep Dive <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+        
+        <!-- Back to Topics -->
+        <div class="text-center mt-6">
+            <a href="index.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors mr-4">
+                <i class="fas fa-list mr-2"></i> Back to Topics
+            </a>
+            <a href="../index.html" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <i class="fas fa-home mr-2"></i> Back to Home
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

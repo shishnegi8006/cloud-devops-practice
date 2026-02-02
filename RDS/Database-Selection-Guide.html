@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Selection Guide - AWS Study Guide</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="../styles.css" rel="stylesheet">
+</head>
+<body class="text-white">
+    <div class="w-full min-h-screen p-4 sm:p-6 lg:p-8">
+        <div class="mb-6">
+            <a href="index.html" class="inline-flex items-center text-aws-orange hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Back to RDS
+            </a>
+        </div>
+        
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-8">
+                <div class="bg-blue-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-compass text-white text-2xl"></i>
+                </div>
+                <h1 class="text-4xl font-montserrat font-bold mb-4">Database Selection Guide</h1>
+                <p class="text-xl text-gray-300">When to Use RDS vs Aurora - Complete Decision Framework</p>
+            </div>
+
+            <!-- Overview -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h2 class="text-2xl font-bold mb-4 aws-orange">Database Selection Framework</h2>
+                <p class="text-gray-300 mb-4">Choosing the right database service depends on performance requirements, scalability needs, cost considerations, and operational complexity. This guide provides a comprehensive framework for selecting between RDS and Aurora services.</p>
+                <div class="bg-blue-900 bg-opacity-30 border border-blue-500 rounded p-4">
+                    <p class="text-blue-200"><strong>Key Decision Factors:</strong> Performance requirements, scalability needs, availability requirements, cost constraints, operational complexity, and specific feature requirements.</p>
+                </div>
+            </div>
+
+            <!-- Decision Matrix -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 aws-orange">Quick Decision Matrix</h3>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-gray-600">
+                                <th class="text-left p-3 font-semibold">Requirement</th>
+                                <th class="text-center p-3 font-semibold text-green-400">RDS</th>
+                                <th class="text-center p-3 font-semibold text-blue-400">Aurora</th>
+                                <th class="text-left p-3 font-semibold">Recommendation</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-300">
+                            <tr class="border-b border-gray-700">
+                                <td class="p-3 font-medium">High Performance (>40,000 IOPS)</td>
+                                <td class="text-center p-3">❌</td>
+                                <td class="text-center p-3">✅</td>
+                                <td class="p-3">Aurora for high-performance workloads</td>
+                            </tr>
+                            <tr class="border-b border-gray-700">
+                                <td class="p-3 font-medium">Global Read Scaling</td>
+                                <td class="text-center p-3">❌</td>
+                                <td class="text-center p-3">✅</td>
+                                <td class="p-3">Aurora Global Database</td>
+                            </tr>
+                            <tr class="border-b border-gray-700">
+                                <td class="p-3 font-medium">Serverless/Auto-scaling</td>
+                                <td class="text-center p-3">❌</td>
+                                <td class="text-center p-3">✅</td>
+                                <td class="p-3">Aurora Serverless v2</td>
+                            </tr>
+                            <tr class="border-b border-gray-700">
+                                <td class="p-3 font-medium">Cost Optimization</td>
+                                <td class="text-center p-3">✅</td>
+                                <td class="text-center p-3">❌</td>
+                                <td class="p-3">RDS for cost-sensitive workloads</td>
+                            </tr>
+                            <tr class="border-b border-gray-700">
+                                <td class="p-3 font-medium">Simple Setup</td>
+                                <td class="text-center p-3">✅</td>
+                                <td class="text-center p-3">❌</td>
+                                <td class="p-3">RDS for straightforward deployments</td>
+                            </tr>
+                            <tr class="border-b border-gray-700">
+                                <td class="p-3 font-medium">Fast Recovery (< 1 min)</td>
+                                <td class="text-center p-3">❌</td>
+                                <td class="text-center p-3">✅</td>
+                                <td class="p-3">Aurora for mission-critical apps</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- RDS Use Cases -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 aws-orange">When to Choose RDS</h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-green-400">Perfect RDS Scenarios</h4>
+                        <div class="space-y-4">
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-green-300">Cost-Sensitive Applications</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Startups:</strong> Limited budget, predictable workloads</li>
+                                    <li>• <strong>Development/Testing:</strong> Non-production environments</li>
+                                    <li>• <strong>Small businesses:</strong> Basic database needs</li>
+                                    <li>• <strong>Legacy migrations:</strong> Lift-and-shift scenarios</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-green-300">Moderate Performance Needs</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>OLTP workloads:</strong> < 40,000 IOPS</li>
+                                    <li>• <strong>Web applications:</strong> Standard e-commerce sites</li>
+                                    <li>• <strong>Content management:</strong> CMS platforms</li>
+                                    <li>• <strong>Business applications:</strong> ERP, CRM systems</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-green-300">Specific Engine Requirements</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Oracle:</strong> Enterprise Oracle applications</li>
+                                    <li>• <strong>SQL Server:</strong> Microsoft stack applications</li>
+                                    <li>• <strong>MariaDB:</strong> MySQL alternative preference</li>
+                                    <li>• <strong>PostgreSQL:</strong> Standard PostgreSQL features</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-yellow-400">RDS Advantages</h4>
+                        <div class="space-y-4">
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-yellow-300">Cost Benefits</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Lower base cost:</strong> 20-30% cheaper than Aurora</li>
+                                    <li>• <strong>Reserved instances:</strong> Significant long-term savings</li>
+                                    <li>• <strong>Predictable pricing:</strong> No storage auto-scaling surprises</li>
+                                    <li>• <strong>Free tier eligible:</strong> db.t3.micro instances</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-yellow-300">Operational Simplicity</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Familiar architecture:</strong> Traditional database model</li>
+                                    <li>• <strong>Easier migration:</strong> Direct engine compatibility</li>
+                                    <li>• <strong>Standard tooling:</strong> Existing DBA tools work</li>
+                                    <li>• <strong>Predictable behavior:</strong> Well-understood performance</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-yellow-300">Engine Variety</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Multiple engines:</strong> MySQL, PostgreSQL, Oracle, SQL Server, MariaDB</li>
+                                    <li>• <strong>Version flexibility:</strong> Multiple engine versions</li>
+                                    <li>• <strong>Custom parameters:</strong> Fine-grained configuration</li>
+                                    <li>• <strong>Compatibility:</strong> Exact engine feature parity</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aurora Use Cases -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 aws-orange">When to Choose Aurora</h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-blue-400">Perfect Aurora Scenarios</h4>
+                        <div class="space-y-4">
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-blue-300">High-Performance Applications</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>SaaS platforms:</strong> Multi-tenant applications</li>
+                                    <li>• <strong>Gaming:</strong> Real-time leaderboards, user data</li>
+                                    <li>• <strong>Financial services:</strong> Trading platforms, risk analysis</li>
+                                    <li>• <strong>Analytics:</strong> Real-time reporting, dashboards</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-blue-300">Global Applications</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Multi-region apps:</strong> Global user base</li>
+                                    <li>• <strong>CDN backends:</strong> Content distribution</li>
+                                    <li>• <strong>Mobile apps:</strong> Worldwide mobile applications</li>
+                                    <li>• <strong>IoT platforms:</strong> Global device management</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-blue-300">Variable Workloads</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Seasonal traffic:</strong> E-commerce, media</li>
+                                    <li>• <strong>Event-driven:</strong> Marketing campaigns</li>
+                                    <li>• <strong>Development:</strong> Auto-scaling dev environments</li>
+                                    <li>• <strong>Batch processing:</strong> Periodic heavy workloads</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-purple-400">Aurora Advantages</h4>
+                        <div class="space-y-4">
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-purple-300">Performance Benefits</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>5x MySQL performance:</strong> Up to 500,000 reads/sec</li>
+                                    <li>• <strong>3x PostgreSQL performance:</strong> Optimized storage engine</li>
+                                    <li>• <strong>Auto-scaling storage:</strong> Up to 128TB automatically</li>
+                                    <li>• <strong>Fast cloning:</strong> Copy-on-write technology</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-purple-300">High Availability</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>99.99% availability:</strong> Built-in fault tolerance</li>
+                                    <li>• <strong>Instant failover:</strong> < 30 seconds typically</li>
+                                    <li>• <strong>Self-healing storage:</strong> Automatic error correction</li>
+                                    <li>• <strong>Continuous backup:</strong> Point-in-time recovery</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2 text-purple-300">Advanced Features</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Serverless:</strong> Automatic capacity management</li>
+                                    <li>• <strong>Global Database:</strong> Cross-region replication</li>
+                                    <li>• <strong>Machine Learning:</strong> Built-in ML capabilities</li>
+                                    <li>• <strong>Parallel Query:</strong> Analytical query acceleration</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Engine-Specific Guidance -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 aws-orange">Engine-Specific Selection Guide</h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-green-400">MySQL Workloads</h4>
+                        <div class="space-y-3">
+                            <div class="bg-gray-700 p-3 rounded">
+                                <h5 class="font-semibold text-green-300">Choose RDS MySQL When:</h5>
+                                <ul class="text-xs text-gray-300 space-y-1 mt-2">
+                                    <li>• Cost is primary concern</li>
+                                    <li>• Standard MySQL features sufficient</li>
+                                    <li>• Predictable, moderate workload</li>
+                                    <li>• Existing MySQL expertise</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-3 rounded">
+                                <h5 class="font-semibold text-blue-300">Choose Aurora MySQL When:</h5>
+                                <ul class="text-xs text-gray-300 space-y-1 mt-2">
+                                    <li>• High performance required (>40K IOPS)</li>
+                                    <li>• Global read scaling needed</li>
+                                    <li>• Variable workload patterns</li>
+                                    <li>• Mission-critical availability</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-purple-400">PostgreSQL Workloads</h4>
+                        <div class="space-y-3">
+                            <div class="bg-gray-700 p-3 rounded">
+                                <h5 class="font-semibold text-green-300">Choose RDS PostgreSQL When:</h5>
+                                <ul class="text-xs text-gray-300 space-y-1 mt-2">
+                                    <li>• Complex queries with extensions</li>
+                                    <li>• Custom data types needed</li>
+                                    <li>• Moderate performance requirements</li>
+                                    <li>• Cost optimization priority</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-3 rounded">
+                                <h5 class="font-semibold text-blue-300">Choose Aurora PostgreSQL When:</h5>
+                                <ul class="text-xs text-gray-300 space-y-1 mt-2">
+                                    <li>• Analytical workloads (Parallel Query)</li>
+                                    <li>• Global applications</li>
+                                    <li>• Auto-scaling requirements</li>
+                                    <li>• High availability critical</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cost Comparison -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 aws-orange">Cost Analysis Framework</h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold mb-3 text-yellow-400">RDS Cost Structure</h4>
+                        <ul class="text-sm text-gray-300 space-y-2">
+                            <li>• <strong>Instance cost:</strong> Predictable hourly rate</li>
+                            <li>• <strong>Storage cost:</strong> Fixed GB pricing</li>
+                            <li>• <strong>IOPS cost:</strong> Provisioned IOPS pricing</li>
+                            <li>• <strong>Backup cost:</strong> Free up to DB size</li>
+                            <li>• <strong>Reserved instances:</strong> Up to 60% savings</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold mb-3 text-blue-400">Aurora Cost Structure</h4>
+                        <ul class="text-sm text-gray-300 space-y-2">
+                            <li>• <strong>Instance cost:</strong> Higher base rate</li>
+                            <li>• <strong>Storage cost:</strong> Pay-per-use, auto-scaling</li>
+                            <li>• <strong>I/O cost:</strong> Per-request pricing</li>
+                            <li>• <strong>Backup cost:</strong> Continuous, included</li>
+                            <li>• <strong>Serverless:</strong> Pay-per-second scaling</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold mb-3 text-green-400">Cost Optimization Tips</h4>
+                        <ul class="text-sm text-gray-300 space-y-2">
+                            <li>• <strong>Right-sizing:</strong> Monitor CPU/memory usage</li>
+                            <li>• <strong>Storage optimization:</strong> Choose appropriate type</li>
+                            <li>• <strong>Reserved capacity:</strong> Long-term commitments</li>
+                            <li>• <strong>Serverless:</strong> Variable workloads</li>
+                            <li>• <strong>Read replicas:</strong> Offload read traffic</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Migration Considerations -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 aws-orange">Migration Path Recommendations</h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-orange-400">Start with RDS</h4>
+                        <div class="bg-gray-700 p-4 rounded">
+                            <h5 class="font-semibold mb-2 text-orange-300">When to Begin with RDS</h5>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• <strong>Uncertain requirements:</strong> Start simple, scale later</li>
+                                <li>• <strong>Budget constraints:</strong> Lower initial investment</li>
+                                <li>• <strong>Learning curve:</strong> Familiar database model</li>
+                                <li>• <strong>Proof of concept:</strong> Validate before optimizing</li>
+                            </ul>
+                            <div class="mt-3 p-3 bg-orange-900 bg-opacity-30 rounded">
+                                <p class="text-orange-200 text-xs"><strong>Migration Path:</strong> RDS → Aurora migration is straightforward with minimal downtime using read replicas.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-cyan-400">Start with Aurora</h4>
+                        <div class="bg-gray-700 p-4 rounded">
+                            <h5 class="font-semibold mb-2 text-cyan-300">When to Begin with Aurora</h5>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• <strong>Known high performance needs:</strong> Avoid future migration</li>
+                                <li>• <strong>Global requirements:</strong> Multi-region from start</li>
+                                <li>• <strong>Variable workloads:</strong> Serverless benefits</li>
+                                <li>• <strong>Mission-critical apps:</strong> High availability required</li>
+                            </ul>
+                            <div class="mt-3 p-3 bg-cyan-900 bg-opacity-30 rounded">
+                                <p class="text-cyan-200 text-xs"><strong>Future-proofing:</strong> Aurora provides growth path without architectural changes.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exam Tips -->
+            <div class="bg-gradient-to-r from-blue-900 to-purple-900 bg-opacity-50 rounded-lg p-6 border border-blue-500">
+                <h3 class="text-xl font-bold mb-4 text-blue-300">SAA-C03 Exam Decision Framework</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <ul class="text-sm text-blue-100 space-y-2">
+                            <li>• <strong>Performance:</strong> >40K IOPS = Aurora, <40K IOPS = RDS acceptable</li>
+                            <li>• <strong>Global:</strong> Multi-region reads = Aurora Global Database</li>
+                            <li>• <strong>Serverless:</strong> Variable workloads = Aurora Serverless</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul class="text-sm text-blue-100 space-y-2">
+                            <li>• <strong>Cost:</strong> Budget constraints = RDS with Reserved Instances</li>
+                            <li>• <strong>Availability:</strong> Mission-critical = Aurora (99.99%)</li>
+                            <li>• <strong>Engine:</strong> Oracle/SQL Server = RDS only</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

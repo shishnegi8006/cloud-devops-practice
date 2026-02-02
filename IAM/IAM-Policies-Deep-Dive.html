@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IAM Policies Deep Dive</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            font-family: 'Open Sans', sans-serif;
+            width: 100vw;
+            overflow-x: hidden;
+        }
+        .slide-container {
+            width: 100vw;
+            min-height: 100vh;
+            background-color: #232F3E;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            color: #ffffff;
+        }
+        .aws-orange { color: #FF9900; }
+        .bg-aws-orange { background-color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+        .font-mono { font-family: 'Roboto Mono', monospace; }
+        
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            z-index: 10;
+            min-height: 100vh;
+        }
+        @media (min-width: 640px) {
+            .content-wrapper { padding: 2rem; }
+        }
+        @media (min-width: 1024px) {
+            .content-wrapper { padding: 3rem; }
+        }
+
+        .section-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 24px;
+            border-left: 4px solid #FF9900;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 153, 0, 0.15);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            flex-shrink: 0;
+        }
+
+        .policy-flow {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+            border: 1px solid rgba(255, 153, 0, 0.3);
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(59, 130, 246, 0.1);
+            padding: 12px;
+            border-radius: 6px;
+            margin: 8px 0;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .step-number {
+            background: #FF9900;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.8rem;
+            margin-right: 12px;
+        }
+
+        .feature-list li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            font-size: 0.9rem;
+        }
+        .feature-list li::before {
+            content: "•";
+            color: #FF9900;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            font-size: 1.2em;
+        }
+
+        .code-block {
+            background-color: #161b22;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: #e6edf3;
+            border: 1px solid #30363d;
+            margin-top: 10px;
+        }
+
+        .policy-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+        .policy-table th,
+        .policy-table td {
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.85rem;
+        }
+        .policy-table th {
+            background: rgba(255, 153, 0, 0.1);
+            color: #FF9900;
+            font-weight: bold;
+        }
+        .policy-table td {
+            color: #e5e7eb;
+        }
+
+        .policy-type {
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin: 8px 0;
+            font-size: 0.85rem;
+        }
+
+        .identity-based {
+            background: rgba(34, 197, 94, 0.2);
+            border-left: 4px solid #22C55E;
+            color: #86EFAC;
+        }
+
+        .resource-based {
+            background: rgba(59, 130, 246, 0.2);
+            border-left: 4px solid #3B82F6;
+            color: #93C5FD;
+        }
+
+        .permission-boundary {
+            background: rgba(245, 158, 11, 0.2);
+            border-left: 4px solid #F59E0B;
+            color: #FCD34D;
+        }
+
+        .scp-policy {
+            background: rgba(239, 68, 68, 0.2);
+            border-left: 4px solid #EF4444;
+            color: #FCA5A5;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container">
+    <div class="absolute top-0 left-0 w-full h-2 bg-aws-orange z-20"></div>
+    <div class="content-wrapper">
+        <!-- Navigation -->
+        <div class="mb-3 sm:mb-4">
+            <a href="index.html" class="inline-flex items-center text-aws-orange hover:text-white transition-colors text-sm sm:text-base">
+                <i class="fas fa-arrow-left mr-2"></i> Back to IAM Topics
+            </a>
+        </div>
+
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center mb-4 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4">
+            <div class="bg-aws-orange p-2 rounded mr-4">
+                <i class="fas fa-file-contract text-white text-xl"></i>
+            </div>
+            <div>
+                <h2 class="text-4xl font-montserrat font-bold text-white">IAM Policies Deep Dive</h2>
+                <p class="text-gray-400 font-montserrat text-lg">Policy Types, Evaluation Logic & Best Practices</p>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 lg:gap-8 flex-1">
+            
+            <!-- Policy Types -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-layer-group aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Policy Types</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">AWS IAM supports multiple policy types that work together to control access to resources.</p>
+                
+                <div class="space-y-3">
+                    <div class="identity-based">
+                        <h4 class="font-bold text-sm mb-2"><i class="fas fa-user mr-2"></i>Identity-Based Policies</h4>
+                        <ul class="text-xs space-y-1">
+                            <li>• Attached to users, groups, or roles</li>
+                            <li>• Define what actions the identity can perform</li>
+                            <li>• Managed or inline policies</li>
+                            <li>• Most common policy type</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="resource-based">
+                        <h4 class="font-bold text-sm mb-2"><i class="fas fa-cube mr-2"></i>Resource-Based Policies</h4>
+                        <ul class="text-xs space-y-1">
+                            <li>• Attached directly to resources</li>
+                            <li>• Define who can access the resource</li>
+                            <li>• S3 bucket policies, KMS key policies</li>
+                            <li>• Support cross-account access</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="permission-boundary">
+                        <h4 class="font-bold text-sm mb-2"><i class="fas fa-border-all mr-2"></i>Permission Boundaries</h4>
+                        <ul class="text-xs space-y-1">
+                            <li>• Maximum permissions for an entity</li>
+                            <li>• Used with identity-based policies</li>
+                            <li>• Delegated administration use case</li>
+                            <li>• Advanced feature for large organizations</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="scp-policy">
+                        <h4 class="font-bold text-sm mb-2"><i class="fas fa-building mr-2"></i>Service Control Policies (SCPs)</h4>
+                        <ul class="text-xs space-y-1">
+                            <li>• AWS Organizations feature</li>
+                            <li>• Maximum permissions for accounts</li>
+                            <li>• Guardrails for organizational units</li>
+                            <li>• Cannot grant permissions, only restrict</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Policy Evaluation Logic -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-route aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Policy Evaluation Logic</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">AWS evaluates policies in a specific order to determine if a request is allowed or denied.</p>
+                
+                <div class="policy-flow">
+                    <div class="text-center text-aws-orange font-bold mb-3">Policy Evaluation Flow</div>
+                    
+                    <div class="flow-step">
+                        <div class="flex items-center">
+                            <div class="step-number">1</div>
+                            <div>
+                                <div class="font-bold text-sm">Explicit Deny</div>
+                                <div class="text-xs text-gray-400">Check for explicit deny in any policy</div>
+                            </div>
+                        </div>
+                        <div class="text-red-400 font-bold">DENY</div>
+                    </div>
+                    
+                    <div class="flow-step">
+                        <div class="flex items-center">
+                            <div class="step-number">2</div>
+                            <div>
+                                <div class="font-bold text-sm">Service Control Policies</div>
+                                <div class="text-xs text-gray-400">Check SCPs for account/OU restrictions</div>
+                            </div>
+                        </div>
+                        <div class="text-yellow-400 font-bold">FILTER</div>
+                    </div>
+                    
+                    <div class="flow-step">
+                        <div class="flex items-center">
+                            <div class="step-number">3</div>
+                            <div>
+                                <div class="font-bold text-sm">Resource-Based Policies</div>
+                                <div class="text-xs text-gray-400">Check if resource policy allows</div>
+                            </div>
+                        </div>
+                        <div class="text-green-400 font-bold">ALLOW</div>
+                    </div>
+                    
+                    <div class="flow-step">
+                        <div class="flex items-center">
+                            <div class="step-number">4</div>
+                            <div>
+                                <div class="font-bold text-sm">Identity-Based Policies</div>
+                                <div class="text-xs text-gray-400">Check identity permissions</div>
+                            </div>
+                        </div>
+                        <div class="text-green-400 font-bold">ALLOW</div>
+                    </div>
+                    
+                    <div class="flow-step">
+                        <div class="flex items-center">
+                            <div class="step-number">5</div>
+                            <div>
+                                <div class="font-bold text-sm">Permission Boundaries</div>
+                                <div class="text-xs text-gray-400">Check maximum permissions</div>
+                            </div>
+                        </div>
+                        <div class="text-yellow-400 font-bold">LIMIT</div>
+                    </div>
+                </div>
+
+                <div class="mt-4 p-3 bg-red-900 bg-opacity-30 rounded border-l-4 border-red-400">
+                    <h4 class="text-red-200 font-bold text-sm mb-2">Default Behavior</h4>
+                    <p class="text-gray-300 text-xs">By default, all requests are denied. An explicit allow is required from an applicable policy.</p>
+                </div>
+            </div>
+
+            <!-- Policy Structure -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-code aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Policy Structure</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">IAM policies are JSON documents with specific elements that define permissions.</p>
+                
+                <table class="policy-table">
+                    <thead>
+                        <tr>
+                            <th>Element</th>
+                            <th>Required</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong class="text-blue-300">Version</strong></td>
+                            <td>Yes</td>
+                            <td>Policy language version</td>
+                        </tr>
+                        <tr>
+                            <td><strong class="text-blue-300">Statement</strong></td>
+                            <td>Yes</td>
+                            <td>Array of permission statements</td>
+                        </tr>
+                        <tr>
+                            <td><strong class="text-green-300">Effect</strong></td>
+                            <td>Yes</td>
+                            <td>Allow or Deny</td>
+                        </tr>
+                        <tr>
+                            <td><strong class="text-green-300">Action</strong></td>
+                            <td>Yes*</td>
+                            <td>API actions to allow/deny</td>
+                        </tr>
+                        <tr>
+                            <td><strong class="text-green-300">Resource</strong></td>
+                            <td>Yes*</td>
+                            <td>Resources the actions apply to</td>
+                        </tr>
+                        <tr>
+                            <td><strong class="text-purple-300">Principal</strong></td>
+                            <td>No</td>
+                            <td>Who the policy applies to</td>
+                        </tr>
+                        <tr>
+                            <td><strong class="text-purple-300">Condition</strong></td>
+                            <td>No</td>
+                            <td>Circumstances for policy application</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="code-block font-mono">
+                    <span class="text-gray-500">// Basic policy structure</span><br/>
+                    {<br/>
+                    &nbsp;&nbsp;<span class="text-blue-300">"Version"</span>: <span class="text-green-300">"2012-10-17"</span>,<br/>
+                    &nbsp;&nbsp;<span class="text-blue-300">"Statement"</span>: [<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;{<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-yellow-300">"Effect"</span>: <span class="text-green-300">"Allow"</span>,<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-yellow-300">"Action"</span>: <span class="text-green-300">"s3:GetObject"</span>,<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-yellow-300">"Resource"</span>: <span class="text-green-300">"arn:aws:s3:::bucket/*"</span><br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;}<br/>
+                    &nbsp;&nbsp;]<br/>
+                    }
+                </div>
+            </div>
+
+            <!-- Policy Variables & Conditions -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-filter aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Variables & Conditions</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">Use policy variables and conditions to create dynamic, context-aware policies.</p>
+                
+                <div class="space-y-4">
+                    <div class="bg-blue-900 bg-opacity-30 p-3 rounded border-l-4 border-blue-400">
+                        <h4 class="text-blue-200 font-bold text-sm mb-2"><i class="fas fa-dollar-sign mr-2"></i>Policy Variables</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• <strong>${aws:username}</strong> - IAM user name</li>
+                            <li>• <strong>${aws:userid}</strong> - Unique user ID</li>
+                            <li>• <strong>${aws:PrincipalTag/TagKey}</strong> - Principal tags</li>
+                            <li>• <strong>${aws:RequestedRegion}</strong> - Requested region</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-green-900 bg-opacity-30 p-3 rounded border-l-4 border-green-400">
+                        <h4 class="text-green-200 font-bold text-sm mb-2"><i class="fas fa-clock mr-2"></i>Date/Time Conditions</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• <strong>DateGreaterThan</strong> - After specific date</li>
+                            <li>• <strong>DateLessThan</strong> - Before specific date</li>
+                            <li>• <strong>DateEquals</strong> - On specific date</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-purple-900 bg-opacity-30 p-3 rounded border-l-4 border-purple-400">
+                        <h4 class="text-purple-200 font-bold text-sm mb-2"><i class="fas fa-globe mr-2"></i>IP Address Conditions</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• <strong>IpAddress</strong> - Allow from specific IPs</li>
+                            <li>• <strong>NotIpAddress</strong> - Deny from specific IPs</li>
+                            <li>• <strong>aws:VpcSourceIp</strong> - VPC source IP</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-block font-mono">
+                    <span class="text-gray-500">// Condition example</span><br/>
+                    <span class="text-blue-300">"Condition"</span>: {<br/>
+                    &nbsp;&nbsp;<span class="text-yellow-300">"IpAddress"</span>: {<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-green-300">"aws:SourceIp"</span>: <span class="text-green-300">"203.0.113.0/24"</span><br/>
+                    &nbsp;&nbsp;},<br/>
+                    &nbsp;&nbsp;<span class="text-yellow-300">"DateGreaterThan"</span>: {<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-green-300">"aws:CurrentTime"</span>: <span class="text-green-300">"2024-01-01T00:00:00Z"</span><br/>
+                    &nbsp;&nbsp;}<br/>
+                    }
+                </div>
+            </div>
+
+            <!-- Managed vs Inline Policies -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-copy aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Managed vs Inline</h3>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="bg-green-900 bg-opacity-30 p-3 rounded border-l-4 border-green-400">
+                        <h4 class="text-green-200 font-bold text-sm mb-2"><i class="fas fa-aws mr-2"></i>AWS Managed Policies</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Created and maintained by AWS</li>
+                            <li>• Automatically updated for new services</li>
+                            <li>• Cannot be modified</li>
+                            <li>• Examples: PowerUserAccess, ReadOnlyAccess</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-blue-900 bg-opacity-30 p-3 rounded border-l-4 border-blue-400">
+                        <h4 class="text-blue-200 font-bold text-sm mb-2"><i class="fas fa-user-cog mr-2"></i>Customer Managed Policies</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Created and maintained by you</li>
+                            <li>• Reusable across multiple entities</li>
+                            <li>• Version control and rollback</li>
+                            <li>• Up to 6,144 characters</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-yellow-900 bg-opacity-30 p-3 rounded border-l-4 border-yellow-400">
+                        <h4 class="text-yellow-200 font-bold text-sm mb-2"><i class="fas fa-link mr-2"></i>Inline Policies</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Directly embedded in single entity</li>
+                            <li>• One-to-one relationship</li>
+                            <li>• Deleted when entity is deleted</li>
+                            <li>• Use for unique, specific permissions</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-4 p-3 bg-orange-900 bg-opacity-30 rounded border-l-4 border-orange-400">
+                    <h4 class="text-orange-200 font-bold text-sm mb-2">Best Practice</h4>
+                    <p class="text-gray-300 text-xs">Use managed policies for common permissions, inline policies for exceptions or unique requirements.</p>
+                </div>
+            </div>
+
+            <!-- Policy Best Practices -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-star aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Best Practices</h3>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="bg-green-900 bg-opacity-30 p-3 rounded border-l-4 border-green-400">
+                        <h4 class="text-green-200 font-bold text-sm mb-2"><i class="fas fa-shield-alt mr-2"></i>Principle of Least Privilege</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Grant minimum permissions required</li>
+                            <li>• Start with deny all, add permissions as needed</li>
+                            <li>• Regular access reviews and cleanup</li>
+                            <li>• Use IAM Access Analyzer</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-blue-900 bg-opacity-30 p-3 rounded border-l-4 border-blue-400">
+                        <h4 class="text-blue-200 font-bold text-sm mb-2"><i class="fas fa-layer-group mr-2"></i>Policy Organization</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Use groups for common permissions</li>
+                            <li>• Consistent naming conventions</li>
+                            <li>• Document policy purposes</li>
+                            <li>• Version control for custom policies</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-purple-900 bg-opacity-30 p-3 rounded border-l-4 border-purple-400">
+                        <h4 class="text-purple-200 font-bold text-sm mb-2"><i class="fas fa-eye mr-2"></i>Monitoring & Auditing</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Enable CloudTrail for API logging</li>
+                            <li>• Use IAM credential reports</li>
+                            <li>• Monitor unused permissions</li>
+                            <li>• Set up access pattern alerts</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-red-900 bg-opacity-30 p-3 rounded border-l-4 border-red-400">
+                        <h4 class="text-red-200 font-bold text-sm mb-2"><i class="fas fa-exclamation-triangle mr-2"></i>Security Considerations</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Avoid wildcards in production</li>
+                            <li>• Use conditions to restrict access</li>
+                            <li>• Implement MFA for sensitive operations</li>
+                            <li>• Regular policy validation and testing</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page Number -->
+        <div class="text-right mt-4 text-gray-500 text-xs">
+            IAM Policies Deep Dive
+        </div>
+        
+        <!-- Navigation -->
+        <div class="flex justify-between mt-8 pt-6 border-t border-gray-700">
+            <a href="IAM-Fundamentals.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Previous: IAM Fundamentals
+            </a>
+            <a href="IAM-Roles-Cross-Account.html" class="inline-flex items-center bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                Next: Roles & Cross-Account <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+        
+        <!-- Back to Topics -->
+        <div class="text-center mt-6">
+            <a href="index.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors mr-4">
+                <i class="fas fa-list mr-2"></i> Back to Topics
+            </a>
+            <a href="../index.html" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <i class="fas fa-home mr-2"></i> Back to Home
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

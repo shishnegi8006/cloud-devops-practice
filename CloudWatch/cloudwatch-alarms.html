@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudWatch Alarms - AWS Solution Architect</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="../styles.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Navigation -->
+        <nav class="mb-8">
+            <a href="index.html" class="text-aws-orange hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i>Back to CloudWatch
+            </a>
+        </nav>
+
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <div class="bg-red-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-bell text-white text-3xl"></i>
+            </div>
+            <h1 class="text-4xl font-montserrat font-bold mb-4">CloudWatch Alarms</h1>
+            <p class="text-xl text-gray-300">Alerting & Automated Actions</p>
+        </header>
+
+        <!-- Content -->
+        <div class="max-w-4xl mx-auto">
+            
+            <!-- Overview -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Alarms Overview</h2>
+                <div class="bg-gray-800 rounded-lg p-6 mb-6">
+                    <p class="text-gray-300 mb-4">
+                        CloudWatch alarms watch a single metric over a time period and perform one or more actions based on the value of the metric relative to a given threshold over a number of time periods.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+                        <div class="bg-gray-700 p-4 rounded-lg text-center">
+                            <i class="fas fa-eye text-red-400 text-2xl mb-2"></i>
+                            <h4 class="font-semibold text-red-400">Monitor</h4>
+                            <p class="text-sm text-gray-300">Watch metric values</p>
+                        </div>
+                        <div class="bg-gray-700 p-4 rounded-lg text-center">
+                            <i class="fas fa-exclamation-triangle text-yellow-400 text-2xl mb-2"></i>
+                            <h4 class="font-semibold text-yellow-400">Alert</h4>
+                            <p class="text-sm text-gray-300">Notify when thresholds breach</p>
+                        </div>
+                        <div class="bg-gray-700 p-4 rounded-lg text-center">
+                            <i class="fas fa-cogs text-blue-400 text-2xl mb-2"></i>
+                            <h4 class="font-semibold text-blue-400">Act</h4>
+                            <p class="text-sm text-gray-300">Trigger automated responses</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Alarm States -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Alarm States</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <div class="text-center mb-4">
+                            <div class="bg-green-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-check text-white text-xl"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold text-green-400">OK</h3>
+                        </div>
+                        <p class="text-gray-300 text-sm text-center">
+                            The metric is within the defined threshold. The alarm is not triggered.
+                        </p>
+                    </div>
+                    
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <div class="text-center mb-4">
+                            <div class="bg-red-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-exclamation text-white text-xl"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold text-red-400">ALARM</h3>
+                        </div>
+                        <p class="text-gray-300 text-sm text-center">
+                            The metric has breached the threshold. Actions are triggered.
+                        </p>
+                    </div>
+                    
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <div class="text-center mb-4">
+                            <div class="bg-gray-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-question text-white text-xl"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold text-gray-400">INSUFFICIENT_DATA</h3>
+                        </div>
+                        <p class="text-gray-300 text-sm text-center">
+                            Not enough data to determine the alarm state.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Alarm Components -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Alarm Components</h2>
+                
+                <div class="space-y-6">
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-blue-400">
+                            <i class="fas fa-tachometer-alt mr-2"></i>Metric Configuration
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-gray-700 p-4 rounded-lg">
+                                <h4 class="font-semibold text-blue-300 mb-2">Required Parameters</h4>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Metric Name:</strong> The metric to monitor</li>
+                                    <li>• <strong>Namespace:</strong> Metric namespace</li>
+                                    <li>• <strong>Dimensions:</strong> Metric dimensions</li>
+                                    <li>• <strong>Statistic:</strong> Average, Sum, Min, Max, etc.</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded-lg">
+                                <h4 class="font-semibold text-blue-300 mb-2">Threshold Settings</h4>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Comparison Operator:</strong> >, >=, <, <=</li>
+                                    <li>• <strong>Threshold Value:</strong> Numeric threshold</li>
+                                    <li>• <strong>Period:</strong> Evaluation period (60s, 300s, etc.)</li>
+                                    <li>• <strong>Evaluation Periods:</strong> Number of periods</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-green-400">
+                            <i class="fas fa-cog mr-2"></i>Advanced Configuration
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-gray-700 p-4 rounded-lg">
+                                <h4 class="font-semibold text-green-300 mb-2">Datapoints to Alarm</h4>
+                                <p class="text-sm text-gray-300 mb-2">
+                                    Specify how many datapoints within the evaluation period must be breaching to trigger the alarm.
+                                </p>
+                                <div class="text-xs text-gray-400">
+                                    Example: 2 out of 3 datapoints must breach
+                                </div>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded-lg">
+                                <h4 class="font-semibold text-green-300 mb-2">Missing Data Treatment</h4>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>notBreaching:</strong> Treat as not breaching</li>
+                                    <li>• <strong>breaching:</strong> Treat as breaching</li>
+                                    <li>• <strong>ignore:</strong> Ignore missing data</li>
+                                    <li>• <strong>missing:</strong> Evaluate as missing</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Alarm Actions -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Alarm Actions</h2>
+                
+                <div class="space-y-6">
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-purple-400">
+                            <i class="fas fa-envelope mr-2"></i>SNS Notifications
+                        </h3>
+                        <p class="text-gray-300 mb-4">
+                            Send notifications to SNS topics when alarm state changes. SNS can then deliver notifications via email, SMS, HTTP endpoints, or other AWS services.
+                        </p>
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-semibold text-purple-300 mb-2">Notification Types</h4>
+                            <div class="grid grid-cols-2 gap-2 text-sm text-gray-300">
+                                <div>• Email notifications</div>
+                                <div>• SMS messages</div>
+                                <div>• HTTP/HTTPS endpoints</div>
+                                <div>• Lambda functions</div>
+                                <div>• SQS queues</div>
+                                <div>• Mobile push notifications</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-yellow-400">
+                            <i class="fas fa-expand-arrows-alt mr-2"></i>Auto Scaling Actions
+                        </h3>
+                        <p class="text-gray-300 mb-4">
+                            Trigger Auto Scaling policies to automatically adjust the number of EC2 instances based on demand.
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-gray-700 p-4 rounded-lg">
+                                <h4 class="font-semibold text-yellow-300 mb-2">Scale Out (Add Instances)</h4>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• High CPU utilization</li>
+                                    <li>• High network traffic</li>
+                                    <li>• Queue depth increase</li>
+                                    <li>• Custom application metrics</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded-lg">
+                                <h4 class="font-semibold text-yellow-300 mb-2">Scale In (Remove Instances)</h4>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• Low CPU utilization</li>
+                                    <li>• Reduced network traffic</li>
+                                    <li>• Queue depth decrease</li>
+                                    <li>• Cost optimization triggers</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-red-400">
+                            <i class="fas fa-power-off mr-2"></i>EC2 Actions
+                        </h3>
+                        <p class="text-gray-300 mb-4">
+                            Perform actions on EC2 instances when alarms trigger. Useful for automated recovery and maintenance.
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="bg-gray-700 p-4 rounded-lg text-center">
+                                <i class="fas fa-stop text-red-400 text-xl mb-2"></i>
+                                <h4 class="font-semibold text-red-300">Stop Instance</h4>
+                                <p class="text-xs text-gray-300">Stop EC2 instance</p>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded-lg text-center">
+                                <i class="fas fa-skull text-red-400 text-xl mb-2"></i>
+                                <h4 class="font-semibold text-red-300">Terminate Instance</h4>
+                                <p class="text-xs text-gray-300">Terminate EC2 instance</p>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded-lg text-center">
+                                <i class="fas fa-redo text-red-400 text-xl mb-2"></i>
+                                <h4 class="font-semibold text-red-300">Reboot Instance</h4>
+                                <p class="text-xs text-gray-300">Reboot EC2 instance</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Composite Alarms -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Composite Alarms</h2>
+                
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <p class="text-gray-300 mb-4">
+                        Composite alarms combine multiple alarms using Boolean logic (AND, OR, NOT) to reduce alarm noise and create more sophisticated alerting rules.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-semibold text-indigo-400 mb-3">Benefits</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Reduce false positives</li>
+                                <li>• Complex alerting logic</li>
+                                <li>• Centralized alarm management</li>
+                                <li>• Hierarchical alarm structure</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-semibold text-indigo-400 mb-3">Use Cases</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Application health monitoring</li>
+                                <li>• Multi-tier architecture alerts</li>
+                                <li>• Service dependency tracking</li>
+                                <li>• Business process monitoring</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 bg-gray-900 p-4 rounded-lg">
+                        <h4 class="font-semibold text-indigo-300 mb-2">Example Rule</h4>
+                        <code class="text-green-400 text-sm">
+                            (CPUAlarm OR MemoryAlarm) AND NOT MaintenanceMode
+                        </code>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Best Practices -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Alarm Best Practices</h2>
+                <div class="space-y-4">
+                    <div class="bg-green-900 bg-opacity-50 border-l-4 border-green-500 p-4 rounded-lg">
+                        <h4 class="font-semibold text-green-400 mb-2">Threshold Selection</h4>
+                        <p class="text-gray-300 text-sm">Set thresholds based on historical data and business requirements. Avoid setting thresholds too sensitive to prevent false alarms.</p>
+                    </div>
+                    
+                    <div class="bg-blue-900 bg-opacity-50 border-l-4 border-blue-500 p-4 rounded-lg">
+                        <h4 class="font-semibold text-blue-400 mb-2">Evaluation Periods</h4>
+                        <p class="text-gray-300 text-sm">Use multiple evaluation periods to avoid triggering on temporary spikes. Consider using "M out of N" datapoints for more reliable alerting.</p>
+                    </div>
+                    
+                    <div class="bg-purple-900 bg-opacity-50 border-l-4 border-purple-500 p-4 rounded-lg">
+                        <h4 class="font-semibold text-purple-400 mb-2">Action Grouping</h4>
+                        <p class="text-gray-300 text-sm">Group related alarms and use composite alarms to reduce notification noise and create meaningful alert hierarchies.</p>
+                    </div>
+                    
+                    <div class="bg-yellow-900 bg-opacity-50 border-l-4 border-yellow-500 p-4 rounded-lg">
+                        <h4 class="font-semibold text-yellow-400 mb-2">Testing & Validation</h4>
+                        <p class="text-gray-300 text-sm">Regularly test alarm configurations and validate that actions work as expected. Use alarm history for troubleshooting.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Key Takeaways -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Key Takeaways</h2>
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <ul class="space-y-3 text-gray-300">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>Alarms monitor metrics and trigger actions when thresholds are breached</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>Three alarm states: OK, ALARM, and INSUFFICIENT_DATA</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>Actions include SNS notifications, Auto Scaling, and EC2 instance actions</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>Composite alarms enable complex alerting logic and reduce false positives</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>Proper threshold and evaluation period configuration is crucial for effective alerting</span>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+        </div>
+    </div>
+</body>
+</html>

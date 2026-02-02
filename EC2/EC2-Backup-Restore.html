@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EC2 Backup & Restore</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, #232F3E 0%, #1a252f 50%, #0f1419 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .feature-card {
+            background: rgba(55, 65, 81, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        .feature-card:hover {
+            background: rgba(75, 85, 99, 0.8);
+            border-color: rgba(6, 182, 212, 0.3);
+            transform: translateY(-2px);
+        }
+        .aws-orange { color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-8">
+        <!-- Navigation -->
+        <div class="mb-8">
+            <a href="index.html" class="inline-flex items-center text-cyan-400 hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Back to EC2 Topics
+            </a>
+        </div>
+
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <div class="bg-gradient-to-r from-cyan-600 to-cyan-800 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-save text-white text-3xl"></i>
+            </div>
+            <h1 class="text-5xl font-montserrat font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">EC2 Backup & Restore</h1>
+            <p class="text-xl text-gray-300">Complete guide to data protection and disaster recovery strategies</p>
+        </div>
+
+        <!-- EBS Snapshots -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">EBS Snapshots</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-cyan-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-camera text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Point-in-Time Snapshots</h3>
+                    <p class="text-gray-300 text-sm mb-4">Create incremental backups of EBS volumes stored in Amazon S3.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Use Case:</strong></p>
+                        <p class="text-xs text-gray-300">Daily backups of production database volumes</p>
+                    </div>
+                    <div class="text-xs text-cyan-300">
+                        <strong>Benefit:</strong> Only changed blocks are stored, reducing costs
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-cyan-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-clock text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Automated Snapshots</h3>
+                    <p class="text-gray-300 text-sm mb-4">Schedule automatic snapshots using Data Lifecycle Manager (DLM).</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Use Case:</strong></p>
+                        <p class="text-xs text-gray-300">Automated daily backups with 30-day retention</p>
+                    </div>
+                    <div class="text-xs text-cyan-300">
+                        <strong>Feature:</strong> Tag-based policies and cross-region copying
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-cyan-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-globe text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Cross-Region Snapshots</h3>
+                    <p class="text-gray-300 text-sm mb-4">Copy snapshots to different regions for disaster recovery.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Use Case:</strong></p>
+                        <p class="text-xs text-gray-300">Disaster recovery with geographic separation</p>
+                    </div>
+                    <div class="text-xs text-cyan-300">
+                        <strong>Benefit:</strong> Protection against regional failures
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-cyan-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-lock text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Encrypted Snapshots</h3>
+                    <p class="text-gray-300 text-sm mb-4">Snapshots inherit encryption from source volumes automatically.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Use Case:</strong></p>
+                        <p class="text-xs text-gray-300">Secure backups of sensitive data with KMS encryption</p>
+                    </div>
+                    <div class="text-xs text-cyan-300">
+                        <strong>Security:</strong> Data encrypted at rest and in transit
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-cyan-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-undo text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Fast Snapshot Restore</h3>
+                    <p class="text-gray-300 text-sm mb-4">Enable FSR for instant volume creation from snapshots.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Use Case:</strong></p>
+                        <p class="text-xs text-gray-300">Quick recovery for critical production systems</p>
+                    </div>
+                    <div class="text-xs text-cyan-300">
+                        <strong>Performance:</strong> No initialization penalty on first access
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-cyan-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-share-alt text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Snapshot Sharing</h3>
+                    <p class="text-gray-300 text-sm mb-4">Share snapshots across AWS accounts or make them public.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Use Case:</strong></p>
+                        <p class="text-xs text-gray-300">Share golden images across development accounts</p>
+                    </div>
+                    <div class="text-xs text-cyan-300">
+                        <strong>Control:</strong> Granular permissions and access control
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- AMI Backups -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">AMI (Amazon Machine Image) Backups</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-blue-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-compact-disc text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Complete Instance Images</h3>
+                    <p class="text-gray-300 text-sm mb-4">Create full system images including OS, applications, and configurations.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Use Case:</strong></p>
+                        <p class="text-xs text-gray-300">Golden images for auto scaling groups</p>
+                    </div>
+                    <div class="text-xs text-blue-300">
+                        <strong>Components:</strong> Root volume + additional EBS volumes
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-blue-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-rocket text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Launch Templates</h3>
+                    <p class="text-gray-300 text-sm mb-4">Use AMIs in launch templates for consistent deployments.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Use Case:</strong></p>
+                        <p class="text-xs text-gray-300">Standardized instance configurations across environments</p>
+                    </div>
+                    <div class="text-xs text-blue-300">
+                        <strong>Benefit:</strong> Version control for infrastructure
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-blue-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-copy text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">AMI Copying</h3>
+                    <p class="text-gray-300 text-sm mb-4">Copy AMIs across regions and accounts for distribution.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Use Case:</strong></p>
+                        <p class="text-xs text-gray-300">Multi-region deployments and disaster recovery</p>
+                    </div>
+                    <div class="text-xs text-blue-300">
+                        <strong>Feature:</strong> Encryption and permission management
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Backup Strategies -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Backup Strategies & Best Practices</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">3-2-1 Backup Strategy</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>3 copies:</strong> Original data + 2 backups</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>2 different media:</strong> EBS snapshots + AMI backups</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>1 offsite:</strong> Cross-region snapshots</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">Automated Backup Policies</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300">Daily snapshots with 7-day retention</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300">Weekly AMI creation for golden images</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300">Monthly cross-region backup verification</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Disaster Recovery -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Disaster Recovery Scenarios</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 text-red-400">Instance Failure Recovery</h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-700 rounded p-3">
+                            <p class="text-sm font-semibold text-yellow-400 mb-2">Scenario:</p>
+                            <p class="text-xs text-gray-300">EC2 instance becomes unresponsive or corrupted</p>
+                        </div>
+                        <div class="bg-gray-700 rounded p-3">
+                            <p class="text-sm font-semibold text-green-400 mb-2">Recovery Steps:</p>
+                            <ol class="text-xs text-gray-300 space-y-1">
+                                <li>1. Stop the failed instance</li>
+                                <li>2. Create new volume from latest snapshot</li>
+                                <li>3. Attach volume to new instance</li>
+                                <li>4. Update DNS/load balancer</li>
+                            </ol>
+                        </div>
+                        <div class="text-xs text-blue-300">
+                            <strong>RTO:</strong> 15-30 minutes | <strong>RPO:</strong> Last snapshot
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 text-red-400">Regional Disaster Recovery</h3>
+                    <div class="space-y-4">
+                        <div class="bg-gray-700 rounded p-3">
+                            <p class="text-sm font-semibold text-yellow-400 mb-2">Scenario:</p>
+                            <p class="text-xs text-gray-300">Entire AWS region becomes unavailable</p>
+                        </div>
+                        <div class="bg-gray-700 rounded p-3">
+                            <p class="text-sm font-semibold text-green-400 mb-2">Recovery Steps:</p>
+                            <ol class="text-xs text-gray-300 space-y-1">
+                                <li>1. Switch to secondary region</li>
+                                <li>2. Launch instances from cross-region AMIs</li>
+                                <li>3. Restore data from cross-region snapshots</li>
+                                <li>4. Update Route 53 DNS records</li>
+                            </ol>
+                        </div>
+                        <div class="text-xs text-blue-300">
+                            <strong>RTO:</strong> 1-4 hours | <strong>RPO:</strong> Last cross-region sync
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Cost Optimization -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Cost Optimization for Backups</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <div class="feature-card rounded-xl p-6">
+                    <h3 class="text-lg font-semibold mb-3 aws-orange">Lifecycle Policies</h3>
+                    <p class="text-gray-300 text-sm mb-4">Automatically delete old snapshots based on age.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Example:</strong></p>
+                        <p class="text-xs text-gray-300">Keep daily for 7 days, weekly for 4 weeks</p>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <h3 class="text-lg font-semibold mb-3 aws-orange">Incremental Backups</h3>
+                    <p class="text-gray-300 text-sm mb-4">EBS snapshots only store changed blocks.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Savings:</strong></p>
+                        <p class="text-xs text-gray-300">Up to 90% storage cost reduction</p>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <h3 class="text-lg font-semibold mb-3 aws-orange">Archive Storage</h3>
+                    <p class="text-gray-300 text-sm mb-4">Move old snapshots to EBS Snapshot Archive.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Cost:</strong></p>
+                        <p class="text-xs text-gray-300">75% cheaper than standard snapshots</p>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <h3 class="text-lg font-semibold mb-3 aws-orange">Tag-Based Billing</h3>
+                    <p class="text-gray-300 text-sm mb-4">Track backup costs by environment or project.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Benefit:</strong></p>
+                        <p class="text-xs text-gray-300">Cost allocation and optimization</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

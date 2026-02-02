@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudWatch Dashboards - AWS Solution Architect</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="../styles.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Navigation -->
+        <nav class="mb-8">
+            <a href="index.html" class="text-aws-orange hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i>Back to CloudWatch
+            </a>
+        </nav>
+
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <div class="bg-purple-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-chart-pie text-white text-3xl"></i>
+            </div>
+            <h1 class="text-4xl font-montserrat font-bold mb-4">CloudWatch Dashboards</h1>
+            <p class="text-xl text-gray-300">Custom Visualization & Real-time Monitoring</p>
+        </header>
+
+        <!-- Content -->
+        <div class="max-w-4xl mx-auto">
+            
+            <!-- Overview -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Dashboards Overview</h2>
+                <div class="bg-gray-800 rounded-lg p-6 mb-6">
+                    <p class="text-gray-300 mb-4">
+                        CloudWatch dashboards are customizable home pages in the CloudWatch console that you can use to monitor your resources in a single view, even those resources that are spread across different AWS Regions.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
+                        <div class="bg-gray-700 p-4 rounded-lg text-center">
+                            <i class="fas fa-eye text-purple-400 text-2xl mb-2"></i>
+                            <h4 class="font-semibold text-purple-400">Visualize</h4>
+                            <p class="text-sm text-gray-300">Real-time data visualization</p>
+                        </div>
+                        <div class="bg-gray-700 p-4 rounded-lg text-center">
+                            <i class="fas fa-layer-group text-blue-400 text-2xl mb-2"></i>
+                            <h4 class="font-semibold text-blue-400">Organize</h4>
+                            <p class="text-sm text-gray-300">Group related metrics</p>
+                        </div>
+                        <div class="bg-gray-700 p-4 rounded-lg text-center">
+                            <i class="fas fa-share-alt text-green-400 text-2xl mb-2"></i>
+                            <h4 class="font-semibold text-green-400">Share</h4>
+                            <p class="text-sm text-gray-300">Collaborate with teams</p>
+                        </div>
+                        <div class="bg-gray-700 p-4 rounded-lg text-center">
+                            <i class="fas fa-mobile-alt text-yellow-400 text-2xl mb-2"></i>
+                            <h4 class="font-semibold text-yellow-400">Access</h4>
+                            <p class="text-sm text-gray-300">Multi-device support</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Widget Types -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Widget Types</h2>
+                
+                <div class="space-y-6">
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-blue-400">
+                            <i class="fas fa-chart-line mr-2"></i>Line Charts
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-gray-700 p-4 rounded-lg">
+                                <h4 class="font-semibold text-blue-300 mb-2">Best For</h4>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• Time-series data visualization</li>
+                                    <li>• Trend analysis over time</li>
+                                    <li>• Comparing multiple metrics</li>
+                                    <li>• Performance monitoring</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded-lg">
+                                <h4 class="font-semibold text-blue-300 mb-2">Features</h4>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• Multiple Y-axes support</li>
+                                    <li>• Customizable time ranges</li>
+                                    <li>• Statistical functions</li>
+                                    <li>• Annotations and markers</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-green-400">
+                            <i class="fas fa-tachometer-alt mr-2"></i>Number Widgets
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-gray-700 p-4 rounded-lg">
+                                <h4 class="font-semibold text-green-300 mb-2">Use Cases</h4>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• Key performance indicators (KPIs)</li>
+                                    <li>• Current metric values</li>
+                                    <li>• Threshold monitoring</li>
+                                    <li>• Status indicators</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded-lg">
+                                <h4 class="font-semibold text-green-300 mb-2">Customization</h4>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• Color coding based on thresholds</li>
+                                    <li>• Sparkline trends</li>
+                                    <li>• Custom units and formatting</li>
+                                    <li>• Comparison with previous periods</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-purple-400">
+                            <i class="fas fa-file-alt mr-2"></i>Log Widgets
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-gray-700 p-4 rounded-lg">
+                                <h4 class="font-semibold text-purple-300 mb-2">Capabilities</h4>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• Display log query results</li>
+                                    <li>• Real-time log streaming</li>
+                                    <li>• Log insights integration</li>
+                                    <li>• Error pattern detection</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded-lg">
+                                <h4 class="font-semibold text-purple-300 mb-2">Query Examples</h4>
+                                <div class="text-xs text-gray-300 space-y-1">
+                                    <div>• fields @timestamp, @message</div>
+                                    <div>• filter @message like /ERROR/</div>
+                                    <div>• stats count() by bin(5m)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dashboard Features -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Advanced Features</h2>
+                
+                <div class="space-y-6">
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-yellow-400">
+                            <i class="fas fa-globe mr-2"></i>Cross-Region Monitoring
+                        </h3>
+                        <p class="text-gray-300 mb-4">
+                            CloudWatch dashboards can display metrics from multiple AWS regions in a single view, providing a global perspective of your infrastructure.
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-gray-700 p-4 rounded-lg">
+                                <h4 class="font-semibold text-yellow-300 mb-2">Benefits</h4>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• Global infrastructure overview</li>
+                                    <li>• Disaster recovery monitoring</li>
+                                    <li>• Multi-region application tracking</li>
+                                    <li>• Centralized operations view</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded-lg">
+                                <h4 class="font-semibold text-yellow-300 mb-2">Configuration</h4>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• Select region per widget</li>
+                                    <li>• Mix metrics from different regions</li>
+                                    <li>• Regional performance comparison</li>
+                                    <li>• Automatic region detection</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-red-400">
+                            <i class="fas fa-bell mr-2"></i>Alarm Integration
+                        </h3>
+                        <p class="text-gray-300 mb-4">
+                            Dashboards can display alarm states and provide quick access to alarm configuration and history.
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="bg-gray-700 p-4 rounded-lg text-center">
+                                <div class="bg-green-600 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2">
+                                    <i class="fas fa-check text-white"></i>
+                                </div>
+                                <h4 class="font-semibold text-green-400">OK State</h4>
+                                <p class="text-xs text-gray-300">Normal operation</p>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded-lg text-center">
+                                <div class="bg-red-600 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2">
+                                    <i class="fas fa-exclamation text-white"></i>
+                                </div>
+                                <h4 class="font-semibold text-red-400">ALARM State</h4>
+                                <p class="text-xs text-gray-300">Threshold breached</p>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded-lg text-center">
+                                <div class="bg-gray-600 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2">
+                                    <i class="fas fa-question text-white"></i>
+                                </div>
+                                <h4 class="font-semibold text-gray-400">INSUFFICIENT_DATA</h4>
+                                <p class="text-xs text-gray-300">Not enough data</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dashboard Management -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Dashboard Management</h2>
+                
+                <div class="space-y-6">
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-indigo-400">
+                            <i class="fas fa-users mr-2"></i>Sharing & Permissions
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-gray-700 p-4 rounded-lg">
+                                <h4 class="font-semibold text-indigo-300 mb-2">Sharing Options</h4>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• Public dashboards (read-only)</li>
+                                    <li>• Account-level sharing</li>
+                                    <li>• Cross-account sharing</li>
+                                    <li>• Email sharing with snapshots</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded-lg">
+                                <h4 class="font-semibold text-indigo-300 mb-2">Access Control</h4>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• IAM-based permissions</li>
+                                    <li>• Resource-based policies</li>
+                                    <li>• Read-only vs. edit access</li>
+                                    <li>• Time-limited access</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-cyan-400">
+                            <i class="fas fa-code mr-2"></i>Programmatic Management
+                        </h3>
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-semibold text-cyan-300 mb-2">API Operations</h4>
+                            <div class="grid grid-cols-2 gap-4 text-sm text-gray-300">
+                                <div>
+                                    <div>• PutDashboard</div>
+                                    <div>• GetDashboard</div>
+                                    <div>• ListDashboards</div>
+                                </div>
+                                <div>
+                                    <div>• DeleteDashboards</div>
+                                    <div>• PutDashboardPermissions</div>
+                                    <div>• GetDashboardPermissions</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4 bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-semibold text-cyan-300 mb-2">CloudFormation Example</h4>
+                            <pre class="text-green-400 text-sm overflow-x-auto"><code>Resources:
+  MyDashboard:
+    Type: AWS::CloudWatch::Dashboard
+    Properties:
+      DashboardName: "MyApplicationDashboard"
+      DashboardBody: !Sub |
+        {
+          "widgets": [
+            {
+              "type": "metric",
+              "properties": {
+                "metrics": [
+                  ["AWS/EC2", "CPUUtilization", "InstanceId", "i-1234567890abcdef0"]
+                ],
+                "period": 300,
+                "stat": "Average",
+                "region": "us-east-1",
+                "title": "EC2 CPU Utilization"
+              }
+            }
+          ]
+        }</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Best Practices -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Dashboard Best Practices</h2>
+                <div class="space-y-4">
+                    <div class="bg-green-900 bg-opacity-50 border-l-4 border-green-500 p-4 rounded-lg">
+                        <h4 class="font-semibold text-green-400 mb-2">Design Principles</h4>
+                        <p class="text-gray-300 text-sm">Follow the "5-second rule" - viewers should understand the dashboard's purpose within 5 seconds. Use consistent colors, clear titles, and logical grouping.</p>
+                    </div>
+                    
+                    <div class="bg-blue-900 bg-opacity-50 border-l-4 border-blue-500 p-4 rounded-lg">
+                        <h4 class="font-semibold text-blue-400 mb-2">Widget Organization</h4>
+                        <p class="text-gray-300 text-sm">Group related metrics together. Place the most important metrics at the top-left. Use consistent time ranges across related widgets.</p>
+                    </div>
+                    
+                    <div class="bg-purple-900 bg-opacity-50 border-l-4 border-purple-500 p-4 rounded-lg">
+                        <h4 class="font-semibold text-purple-400 mb-2">Performance Optimization</h4>
+                        <p class="text-gray-300 text-sm">Limit the number of widgets per dashboard. Use appropriate time ranges and periods. Consider using number widgets for current values instead of line charts.</p>
+                    </div>
+                    
+                    <div class="bg-yellow-900 bg-opacity-50 border-l-4 border-yellow-500 p-4 rounded-lg">
+                        <h4 class="font-semibold text-yellow-400 mb-2">Maintenance</h4>
+                        <p class="text-gray-300 text-sm">Regularly review and update dashboards. Remove obsolete widgets. Use version control for dashboard definitions. Document dashboard purposes and usage.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Use Cases -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Common Use Cases</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold mb-4 text-orange-400">
+                            <i class="fas fa-server mr-2"></i>Infrastructure Monitoring
+                        </h3>
+                        <ul class="text-sm text-gray-300 space-y-2">
+                            <li>• EC2 instance health and performance</li>
+                            <li>• RDS database metrics</li>
+                            <li>• Load balancer performance</li>
+                            <li>• Auto Scaling group status</li>
+                            <li>• Network and storage utilization</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold mb-4 text-orange-400">
+                            <i class="fas fa-mobile-alt mr-2"></i>Application Performance
+                        </h3>
+                        <ul class="text-sm text-gray-300 space-y-2">
+                            <li>• API Gateway request metrics</li>
+                            <li>• Lambda function performance</li>
+                            <li>• Application error rates</li>
+                            <li>• Response time trends</li>
+                            <li>• User experience metrics</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold mb-4 text-orange-400">
+                            <i class="fas fa-chart-bar mr-2"></i>Business Metrics
+                        </h3>
+                        <ul class="text-sm text-gray-300 space-y-2">
+                            <li>• Revenue and transaction volumes</li>
+                            <li>• User engagement metrics</li>
+                            <li>• Conversion rates</li>
+                            <li>• Service level objectives (SLOs)</li>
+                            <li>• Cost optimization tracking</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold mb-4 text-orange-400">
+                            <i class="fas fa-shield-alt mr-2"></i>Security Monitoring
+                        </h3>
+                        <ul class="text-sm text-gray-300 space-y-2">
+                            <li>• Failed login attempts</li>
+                            <li>• Unusual API activity</li>
+                            <li>• Security group changes</li>
+                            <li>• CloudTrail event monitoring</li>
+                            <li>• Compliance metrics</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Key Takeaways -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Key Takeaways</h2>
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <ul class="space-y-3 text-gray-300">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>Dashboards provide customizable, real-time visualization of CloudWatch metrics and logs</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>Multiple widget types support different visualization needs and use cases</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>Cross-region monitoring enables global infrastructure oversight</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>Sharing and permissions enable team collaboration and stakeholder access</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>Programmatic management supports infrastructure as code and automation</span>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+        </div>
+    </div>
+</body>
+</html>

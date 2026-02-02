@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELB Fundamentals</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Open Sans', sans-serif; background: linear-gradient(135deg, #232F3E 0%, #1a252f 50%, #0f1419 100%); min-height: 100vh; color: white; }
+        .feature-card { background: rgba(55, 65, 81, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.3s ease; backdrop-filter: blur(10px); }
+        .feature-card:hover { background: rgba(75, 85, 99, 0.8); border-color: rgba(20, 184, 166, 0.3); transform: translateY(-2px); }
+        .aws-orange { color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-8">
+        <div class="mb-8">
+            <a href="index.html" class="inline-flex items-center text-teal-400 hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Back to HA & Scalability Topics
+            </a>
+        </div>
+        <div class="text-center mb-12">
+            <div class="bg-gradient-to-r from-teal-600 to-teal-800 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-balance-scale text-white text-3xl"></i>
+            </div>
+            <h1 class="text-5xl font-montserrat font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">ELB Fundamentals</h1>
+            <p class="text-xl text-gray-300">Master Elastic Load Balancer types, configurations, and routing strategies</p>
+        </div>
+
+        <!-- Load Balancer Overview -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Load Balancer Overview</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">What is Load Balancing?</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-balance-scale text-teal-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Distribution:</strong> Spreads incoming requests across multiple targets</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-shield-alt text-teal-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>High Availability:</strong> Eliminates single points of failure</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-tachometer-alt text-teal-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Performance:</strong> Improves response times and throughput</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">AWS ELB Benefits</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-cloud text-teal-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Managed Service:</strong> AWS handles infrastructure and scaling</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-heart text-teal-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Health Checks:</strong> Automatic unhealthy target detection</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-lock text-teal-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Security:</strong> SSL/TLS termination and WAF integration</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Application Load Balancer -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Application Load Balancer (ALB)</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-blue-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-layer-group text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Layer 7 Load Balancing</h3>
+                    <p class="text-gray-300 text-sm mb-4">Operates at the application layer with HTTP/HTTPS protocol awareness.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Features:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Content-based routing</li>
+                            <li>• Host-based routing</li>
+                            <li>• Path-based routing</li>
+                            <li>• HTTP header routing</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-blue-300">
+                        <strong>Best For:</strong> Web applications, microservices
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-blue-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-route text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Advanced Routing</h3>
+                    <p class="text-gray-300 text-sm mb-4">Sophisticated routing rules based on request attributes.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Routing Types:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Path patterns (/api/*, /images/*)</li>
+                            <li>• Host headers (api.example.com)</li>
+                            <li>• HTTP methods (GET, POST)</li>
+                            <li>• Query strings (?version=v2)</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-blue-300">
+                        <strong>Use Case:</strong> Microservices architecture
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-blue-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-bullseye text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Target Groups</h3>
+                    <p class="text-gray-300 text-sm mb-4">Logical grouping of targets for health checks and routing.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Target Types:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• EC2 instances</li>
+                            <li>• IP addresses</li>
+                            <li>• Lambda functions</li>
+                            <li>• Application Load Balancers</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-blue-300">
+                        <strong>Health Check:</strong> HTTP/HTTPS endpoint monitoring
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-blue-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-certificate text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">SSL/TLS Termination</h3>
+                    <p class="text-gray-300 text-sm mb-4">Handles SSL/TLS encryption and decryption at the load balancer.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Features:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• ACM certificate integration</li>
+                            <li>• SNI support</li>
+                            <li>• Security policy configuration</li>
+                            <li>• HTTP to HTTPS redirect</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-blue-300">
+                        <strong>Benefit:</strong> Offloads SSL processing from targets
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-blue-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-sticky-note text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Sticky Sessions</h3>
+                    <p class="text-gray-300 text-sm mb-4">Route requests from same client to same target consistently.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Methods:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Duration-based cookies</li>
+                            <li>• Application-controlled cookies</li>
+                            <li>• Configurable duration</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-blue-300">
+                        <strong>Use Case:</strong> Session-dependent applications
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-blue-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-shield-alt text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">WAF Integration</h3>
+                    <p class="text-gray-300 text-sm mb-4">Web Application Firewall protection against common attacks.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Protection:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• SQL injection</li>
+                            <li>• Cross-site scripting (XSS)</li>
+                            <li>• DDoS mitigation</li>
+                            <li>• Rate limiting</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-blue-300">
+                        <strong>Integration:</strong> Seamless WAF rule application
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Network Load Balancer -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Network Load Balancer (NLB)</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-green-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-network-wired text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Layer 4 Load Balancing</h3>
+                    <p class="text-gray-300 text-sm mb-4">Operates at the transport layer with TCP/UDP protocol support.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Protocols:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• TCP (Transmission Control Protocol)</li>
+                            <li>• UDP (User Datagram Protocol)</li>
+                            <li>• TLS (Transport Layer Security)</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-green-300">
+                        <strong>Best For:</strong> High-performance applications
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-green-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-rocket text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Ultra-High Performance</h3>
+                    <p class="text-gray-300 text-sm mb-4">Handles millions of requests per second with ultra-low latency.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Performance:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Millions of RPS capability</li>
+                            <li>• Sub-millisecond latency</li>
+                            <li>• Static IP addresses</li>
+                            <li>• Elastic IP support</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-green-300">
+                        <strong>Use Case:</strong> Gaming, IoT, real-time applications
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-green-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-eye text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Connection Preservation</h3>
+                    <p class="text-gray-300 text-sm mb-4">Preserves client IP addresses and connection details.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Features:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Source IP preservation</li>
+                            <li>• Flow hash algorithm</li>
+                            <li>• Connection multiplexing</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-green-300">
+                        <strong>Benefit:</strong> Maintains client context
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-green-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-heartbeat text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Health Checks</h3>
+                    <p class="text-gray-300 text-sm mb-4">TCP and HTTP/HTTPS health check options for target monitoring.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Types:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• TCP connection checks</li>
+                            <li>• HTTP/HTTPS endpoint checks</li>
+                            <li>• Configurable intervals</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-green-300">
+                        <strong>Monitoring:</strong> CloudWatch integration
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-green-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-map-marker-alt text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Static IP & Elastic IP</h3>
+                    <p class="text-gray-300 text-sm mb-4">Provides static IP addresses and supports Elastic IP assignment.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>IP Features:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• One static IP per AZ</li>
+                            <li>• Elastic IP assignment</li>
+                            <li>• Whitelisting support</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-green-300">
+                        <strong>Use Case:</strong> Firewall rules, DNS records
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-green-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-lock text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">TLS Termination</h3>
+                    <p class="text-gray-300 text-sm mb-4">Supports TLS termination for encrypted traffic handling.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>TLS Features:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• TLS 1.0, 1.1, 1.2, 1.3 support</li>
+                            <li>• Certificate management</li>
+                            <li>• SNI support</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-green-300">
+                        <strong>Benefit:</strong> Offloads TLS processing
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gateway Load Balancer -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Gateway Load Balancer (GWLB)</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-purple-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-shield-alt text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Layer 3 Load Balancing</h3>
+                    <p class="text-gray-300 text-sm mb-4">Operates at the network layer for transparent traffic inspection.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Purpose:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Network appliance load balancing</li>
+                            <li>• Traffic inspection and filtering</li>
+                            <li>• Security appliance scaling</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-purple-300">
+                        <strong>Best For:</strong> Security appliances, firewalls
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-purple-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-eye-slash text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Transparent Proxy</h3>
+                    <p class="text-gray-300 text-sm mb-4">Provides transparent traffic forwarding without modifying packets.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Features:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• GENEVE protocol support</li>
+                            <li>• Packet preservation</li>
+                            <li>• Bidirectional traffic flow</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-purple-300">
+                        <strong>Benefit:</strong> Invisible to applications
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-purple-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-cogs text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Third-Party Integration</h3>
+                    <p class="text-gray-300 text-sm mb-4">Integrates with third-party network and security appliances.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Appliances:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Firewalls (Palo Alto, Fortinet)</li>
+                            <li>• IDS/IPS systems</li>
+                            <li>• Deep packet inspection</li>
+                        </ul>
+                    </div>
+                    <div class="text-xs text-purple-300">
+                        <strong>Use Case:</strong> Security service chaining
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Load Balancing Algorithms -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Load Balancing Algorithms</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">ALB Algorithms</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-circle text-blue-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Round Robin:</strong> Requests distributed evenly across targets</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-circle text-blue-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Least Outstanding Requests:</strong> Routes to target with fewest active requests</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">NLB Algorithms</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Flow Hash:</strong> Uses 5-tuple hash for consistent routing</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Connection Affinity:</strong> Maintains connection to same target</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monitoring and Logging -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Monitoring & Logging</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="feature-card rounded-xl p-6">
+                    <h3 class="text-lg font-semibold mb-3 aws-orange">CloudWatch Metrics</h3>
+                    <p class="text-gray-300 text-sm mb-4">Comprehensive metrics for load balancer performance monitoring.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Key Metrics:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• RequestCount</li>
+                            <li>• TargetResponseTime</li>
+                            <li>• HTTPCode_Target_2XX_Count</li>
+                            <li>• UnHealthyHostCount</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <h3 class="text-lg font-semibold mb-3 aws-orange">Access Logs</h3>
+                    <p class="text-gray-300 text-sm mb-4">Detailed request logs stored in S3 for analysis and troubleshooting.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Log Information:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Request/response details</li>
+                            <li>• Client IP addresses</li>
+                            <li>• Response times</li>
+                            <li>• Error codes</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <h3 class="text-lg font-semibold mb-3 aws-orange">Connection Logs</h3>
+                    <p class="text-gray-300 text-sm mb-4">NLB connection flow logs for network-level troubleshooting.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Flow Data:</strong></p>
+                        <ul class="text-xs text-gray-300 space-y-1">
+                            <li>• Connection start/end times</li>
+                            <li>• Bytes transferred</li>
+                            <li>• Connection state</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Best Practices -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">ELB Best Practices</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">Performance Optimization</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Pre-warming:</strong> Contact AWS for expected high traffic</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Health checks:</strong> Configure appropriate intervals and thresholds</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Connection draining:</strong> Enable for graceful instance replacement</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">Security Best Practices</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-shield-alt text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Security groups:</strong> Restrict access to necessary ports only</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-certificate text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>SSL/TLS:</strong> Use latest security policies and certificates</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-eye text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300"><strong>Monitoring:</strong> Enable access logs and CloudWatch alarms</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="flex justify-between mt-8 pt-6 border-t border-gray-600">
+            <div></div>
+            <a href="Auto-Scaling-Groups.html" class="inline-flex items-center bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                Next: Auto Scaling Groups <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+        
+        <!-- Back to Topics -->
+        <div class="text-center mt-6">
+            <a href="index.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors mr-4">
+                <i class="fas fa-list mr-2"></i> Back to Topics
+            </a>
+            <a href="../index.html" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <i class="fas fa-home mr-2"></i> Back to Home
+            </a>
+        </div>
+
+    </div>
+</body>
+</html>

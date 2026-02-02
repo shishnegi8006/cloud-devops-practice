@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudWatch Logs - AWS Solution Architect</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="../styles.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Navigation -->
+        <nav class="mb-8">
+            <a href="index.html" class="text-aws-orange hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i>Back to CloudWatch
+            </a>
+        </nav>
+
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <div class="bg-green-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-file-alt text-white text-3xl"></i>
+            </div>
+            <h1 class="text-4xl font-montserrat font-bold mb-4">CloudWatch Logs</h1>
+            <p class="text-xl text-gray-300">Centralized Log Management & Analysis</p>
+        </header>
+
+        <!-- Content -->
+        <div class="max-w-4xl mx-auto">
+            
+            <!-- Overview -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">CloudWatch Logs Overview</h2>
+                <div class="bg-gray-800 rounded-lg p-6 mb-6">
+                    <p class="text-gray-300 mb-4">
+                        CloudWatch Logs enables you to centralize logs from all your systems, applications, and AWS services. You can monitor, store, and access log files from EC2 instances, CloudTrail, Route 53, and other sources.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
+                        <div class="bg-gray-700 p-4 rounded-lg text-center">
+                            <i class="fas fa-upload text-green-400 text-2xl mb-2"></i>
+                            <h4 class="font-semibold text-green-400">Collect</h4>
+                            <p class="text-sm text-gray-300">Gather logs from multiple sources</p>
+                        </div>
+                        <div class="bg-gray-700 p-4 rounded-lg text-center">
+                            <i class="fas fa-database text-blue-400 text-2xl mb-2"></i>
+                            <h4 class="font-semibold text-blue-400">Store</h4>
+                            <p class="text-sm text-gray-300">Centralized log storage</p>
+                        </div>
+                        <div class="bg-gray-700 p-4 rounded-lg text-center">
+                            <i class="fas fa-search text-purple-400 text-2xl mb-2"></i>
+                            <h4 class="font-semibold text-purple-400">Search</h4>
+                            <p class="text-sm text-gray-300">Query and analyze logs</p>
+                        </div>
+                        <div class="bg-gray-700 p-4 rounded-lg text-center">
+                            <i class="fas fa-chart-line text-yellow-400 text-2xl mb-2"></i>
+                            <h4 class="font-semibold text-yellow-400">Monitor</h4>
+                            <p class="text-sm text-gray-300">Create metrics from logs</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Core Concepts -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Core Concepts</h2>
+                
+                <div class="space-y-6">
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-blue-400">
+                            <i class="fas fa-folder mr-2"></i>Log Groups
+                        </h3>
+                        <p class="text-gray-300 mb-4">
+                            Log groups are containers for log streams that share the same retention, monitoring, and access control settings.
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-gray-700 p-4 rounded-lg">
+                                <h4 class="font-semibold text-blue-300 mb-2">Characteristics</h4>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• Logical grouping of log streams</li>
+                                    <li>• Shared retention policy</li>
+                                    <li>• Common access control</li>
+                                    <li>• Metric filters and subscriptions</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded-lg">
+                                <h4 class="font-semibold text-blue-300 mb-2">Naming Examples</h4>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• /aws/lambda/function-name</li>
+                                    <li>• /aws/apigateway/api-name</li>
+                                    <li>• /var/log/messages</li>
+                                    <li>• /application/web-server</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-green-400">
+                            <i class="fas fa-stream mr-2"></i>Log Streams
+                        </h3>
+                        <p class="text-gray-300 mb-4">
+                            Log streams are sequences of log events that share the same source. Each log stream belongs to one log group.
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-gray-700 p-4 rounded-lg">
+                                <h4 class="font-semibold text-green-300 mb-2">Properties</h4>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• Sequence of log events</li>
+                                    <li>• Single source (instance, container)</li>
+                                    <li>• Chronologically ordered</li>
+                                    <li>• Unique within log group</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded-lg">
+                                <h4 class="font-semibold text-green-300 mb-2">Examples</h4>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• i-1234567890abcdef0</li>
+                                    <li>• container-id-12345</li>
+                                    <li>• 2024/01/15/[$LATEST]abc123</li>
+                                    <li>• web-server-01</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-purple-400">
+                            <i class="fas fa-list mr-2"></i>Log Events
+                        </h3>
+                        <p class="text-gray-300 mb-4">
+                            Log events are individual log entries with a timestamp and message. They are the basic unit of log data in CloudWatch Logs.
+                        </p>
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-semibold text-purple-300 mb-2">Event Structure</h4>
+                            <div class="bg-gray-900 p-3 rounded text-sm">
+                                <div class="text-green-400">timestamp: 1642248000000</div>
+                                <div class="text-blue-400">message: "2024-01-15 10:00:00 INFO User login successful"</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Log Sources -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Log Sources</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold mb-4 text-yellow-400">AWS Services</h3>
+                        <ul class="text-sm text-gray-300 space-y-2">
+                            <li>• <strong>Lambda:</strong> Function execution logs</li>
+                            <li>• <strong>API Gateway:</strong> Access and execution logs</li>
+                            <li>• <strong>CloudTrail:</strong> API call logs</li>
+                            <li>• <strong>VPC Flow Logs:</strong> Network traffic logs</li>
+                            <li>• <strong>ECS:</strong> Container logs</li>
+                            <li>• <strong>EKS:</strong> Kubernetes cluster logs</li>
+                            <li>• <strong>RDS:</strong> Database logs</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-lg font-semibold mb-4 text-yellow-400">Custom Applications</h3>
+                        <ul class="text-sm text-gray-300 space-y-2">
+                            <li>• <strong>EC2 Instances:</strong> Application and system logs</li>
+                            <li>• <strong>On-premises:</strong> Hybrid cloud logging</li>
+                            <li>• <strong>Containers:</strong> Docker and Kubernetes logs</li>
+                            <li>• <strong>Mobile Apps:</strong> Client-side logging</li>
+                            <li>• <strong>IoT Devices:</strong> Device telemetry</li>
+                            <li>• <strong>Web Applications:</strong> Access and error logs</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Log Retention -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Log Retention Policies</h2>
+                
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <p class="text-gray-300 mb-4">
+                        Log retention policies determine how long log events are stored in CloudWatch Logs. You can set different retention periods for different log groups.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-semibold text-orange-400 mb-3">Retention Options</h4>
+                            <div class="text-sm text-gray-300 space-y-1">
+                                <div>• 1 day to 10 years</div>
+                                <div>• Never expire (indefinite)</div>
+                                <div>• Common periods: 7, 30, 90, 365 days</div>
+                                <div>• Configurable per log group</div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-semibold text-orange-400 mb-3">Cost Considerations</h4>
+                            <div class="text-sm text-gray-300 space-y-1">
+                                <div>• Longer retention = higher costs</div>
+                                <div>• Archive to S3 for long-term storage</div>
+                                <div>• Use lifecycle policies</div>
+                                <div>• Monitor storage usage</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Log Insights -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">CloudWatch Logs Insights</h2>
+                
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <p class="text-gray-300 mb-4">
+                        CloudWatch Logs Insights enables you to interactively search and analyze log data using a purpose-built query language.
+                    </p>
+                    
+                    <div class="space-y-4">
+                        <div class="bg-gray-700 p-4 rounded-lg">
+                            <h4 class="font-semibold text-indigo-400 mb-2">Query Capabilities</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Filter and search log events</li>
+                                <li>• Extract and analyze fields</li>
+                                <li>• Aggregate and visualize data</li>
+                                <li>• Time-based analysis</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-semibold text-indigo-300 mb-2">Example Query</h4>
+                            <pre class="text-green-400 text-sm overflow-x-auto"><code>fields @timestamp, @message
+| filter @message like /ERROR/
+| stats count() by bin(5m)
+| sort @timestamp desc</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Log Subscriptions -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Log Subscriptions</h2>
+                
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <p class="text-gray-300 mb-4">
+                        Subscription filters enable real-time processing of log events by streaming them to other AWS services.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-gray-700 p-4 rounded-lg text-center">
+                            <i class="fas fa-bolt text-yellow-400 text-2xl mb-2"></i>
+                            <h4 class="font-semibold text-yellow-400">Lambda</h4>
+                            <p class="text-sm text-gray-300">Real-time processing</p>
+                        </div>
+                        <div class="bg-gray-700 p-4 rounded-lg text-center">
+                            <i class="fas fa-fire text-red-400 text-2xl mb-2"></i>
+                            <h4 class="font-semibold text-red-400">Kinesis</h4>
+                            <p class="text-sm text-gray-300">Stream processing</p>
+                        </div>
+                        <div class="bg-gray-700 p-4 rounded-lg text-center">
+                            <i class="fas fa-search text-purple-400 text-2xl mb-2"></i>
+                            <h4 class="font-semibold text-purple-400">Elasticsearch</h4>
+                            <p class="text-sm text-gray-300">Search and analytics</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Best Practices -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Best Practices</h2>
+                <div class="space-y-4">
+                    <div class="bg-green-900 bg-opacity-50 border-l-4 border-green-500 p-4 rounded-lg">
+                        <h4 class="font-semibold text-green-400 mb-2">Log Structure</h4>
+                        <p class="text-gray-300 text-sm">Use structured logging (JSON) for better searchability and analysis. Include consistent fields like timestamp, level, and correlation IDs.</p>
+                    </div>
+                    
+                    <div class="bg-blue-900 bg-opacity-50 border-l-4 border-blue-500 p-4 rounded-lg">
+                        <h4 class="font-semibold text-blue-400 mb-2">Retention Strategy</h4>
+                        <p class="text-gray-300 text-sm">Set appropriate retention periods based on compliance requirements and cost considerations. Archive old logs to S3 for long-term storage.</p>
+                    </div>
+                    
+                    <div class="bg-purple-900 bg-opacity-50 border-l-4 border-purple-500 p-4 rounded-lg">
+                        <h4 class="font-semibold text-purple-400 mb-2">Security</h4>
+                        <p class="text-gray-300 text-sm">Encrypt logs at rest and in transit. Use IAM policies to control access. Avoid logging sensitive information like passwords or PII.</p>
+                    </div>
+                    
+                    <div class="bg-yellow-900 bg-opacity-50 border-l-4 border-yellow-500 p-4 rounded-lg">
+                        <h4 class="font-semibold text-yellow-400 mb-2">Cost Optimization</h4>
+                        <p class="text-gray-300 text-sm">Monitor log ingestion and storage costs. Use log sampling for high-volume applications. Implement log level filtering.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Key Takeaways -->
+            <section class="mb-12">
+                <h2 class="text-2xl font-montserrat font-bold mb-6 text-aws-orange">Key Takeaways</h2>
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <ul class="space-y-3 text-gray-300">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>CloudWatch Logs provides centralized log management for AWS and custom applications</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>Log groups contain log streams, which contain individual log events</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>Logs Insights enables powerful querying and analysis of log data</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>Subscription filters enable real-time log processing and streaming</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                            <span>Proper retention policies and structured logging are essential for cost-effective log management</span>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+        </div>
+    </div>
+</body>
+</html>

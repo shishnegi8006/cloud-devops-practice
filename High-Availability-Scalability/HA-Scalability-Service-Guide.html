@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HA & Scalability Service Guide - Features & Use Cases</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, #232F3E 0%, #1a252f 50%, #0f1419 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .feature-card {
+            background: rgba(55, 65, 81, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        .feature-card:hover {
+            background: rgba(75, 85, 99, 0.8);
+            border-color: rgba(20, 184, 166, 0.3);
+            transform: translateY(-2px);
+        }
+        .aws-orange { color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-8">
+        <!-- Navigation -->
+        <div class="mb-8">
+            <a href="index.html" class="inline-flex items-center text-teal-400 hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Back to HA & Scalability Topics
+            </a>
+        </div>
+
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <div class="bg-gradient-to-r from-teal-600 to-teal-800 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-expand-arrows-alt text-white text-3xl"></i>
+            </div>
+            <h1 class="text-5xl font-montserrat font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">HA & Scalability Service Guide</h1>
+            <p class="text-xl text-gray-300">Complete reference with features, options, and real-world use cases</p>
+        </div>
+
+        <!-- Elastic Load Balancer Types -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Elastic Load Balancer Types</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-teal-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-layer-group text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Application Load Balancer (ALB)</h3>
+                    <p class="text-gray-300 text-sm mb-4">Layer 7 load balancer for HTTP/HTTPS traffic with advanced routing.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Use Case:</strong></p>
+                        <p class="text-xs text-gray-300">Web applications, microservices, container-based apps</p>
+                    </div>
+                    <div class="text-xs text-teal-300">
+                        <strong>Features:</strong> Path-based routing, host-based routing, WebSocket support
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-teal-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-network-wired text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Network Load Balancer (NLB)</h3>
+                    <p class="text-gray-300 text-sm mb-4">Layer 4 load balancer for TCP/UDP traffic with ultra-high performance.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Use Case:</strong></p>
+                        <p class="text-xs text-gray-300">Gaming applications, IoT, real-time communications</p>
+                    </div>
+                    <div class="text-xs text-teal-300">
+                        <strong>Features:</strong> Static IP, extreme performance, preserve source IP
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-teal-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-shield-alt text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Gateway Load Balancer (GWLB)</h3>
+                    <p class="text-gray-300 text-sm mb-4">Layer 3 load balancer for deploying third-party network appliances.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Use Case:</strong></p>
+                        <p class="text-xs text-gray-300">Firewalls, intrusion detection, deep packet inspection</p>
+                    </div>
+                    <div class="text-xs text-teal-300">
+                        <strong>Features:</strong> GENEVE protocol, transparent network gateway
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Auto Scaling Group Features -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Auto Scaling Group Features</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-green-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-chart-line text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Dynamic Scaling</h3>
+                    <p class="text-gray-300 text-sm mb-4">Automatically adjust capacity based on demand using CloudWatch metrics.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Use Case:</strong></p>
+                        <p class="text-xs text-gray-300">Handle traffic spikes during peak hours or events</p>
+                    </div>
+                    <div class="text-xs text-green-300">
+                        <strong>Types:</strong> Target Tracking, Step Scaling, Simple Scaling
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-green-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-calendar-alt text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Scheduled Scaling</h3>
+                    <p class="text-gray-300 text-sm mb-4">Scale based on predictable patterns using scheduled actions.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Use Case:</strong></p>
+                        <p class="text-xs text-gray-300">Scale up before business hours, scale down at night</p>
+                    </div>
+                    <div class="text-xs text-green-300">
+                        <strong>Benefit:</strong> Proactive scaling for known patterns
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-green-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-heartbeat text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Health Checks</h3>
+                    <p class="text-gray-300 text-sm mb-4">Monitor instance health and replace unhealthy instances automatically.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Use Case:</strong></p>
+                        <p class="text-xs text-gray-300">Maintain application availability by replacing failed instances</p>
+                    </div>
+                    <div class="text-xs text-green-300">
+                        <strong>Types:</strong> EC2 health checks, ELB health checks
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-green-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-rocket text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Launch Templates</h3>
+                    <p class="text-gray-300 text-sm mb-4">Define instance configuration including AMI, instance type, and security groups.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Use Case:</strong></p>
+                        <p class="text-xs text-gray-300">Standardize instance configuration across environments</p>
+                    </div>
+                    <div class="text-xs text-green-300">
+                        <strong>Features:</strong> Versioning, mixed instance types, Spot instances
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-green-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-balance-scale text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Load Balancer Integration</h3>
+                    <p class="text-gray-300 text-sm mb-4">Seamlessly integrate with ELB for automatic traffic distribution.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Use Case:</strong></p>
+                        <p class="text-xs text-gray-300">Distribute traffic across scaled instances automatically</p>
+                    </div>
+                    <div class="text-xs text-green-300">
+                        <strong>Benefit:</strong> Automatic registration/deregistration of instances
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <div class="bg-green-600 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-shield-alt text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 aws-orange">Instance Protection</h3>
+                    <p class="text-gray-300 text-sm mb-4">Protect specific instances from scale-in activities.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Use Case:</strong></p>
+                        <p class="text-xs text-gray-300">Protect instances running critical batch jobs</p>
+                    </div>
+                    <div class="text-xs text-green-300">
+                        <strong>Types:</strong> Scale-in protection, instance termination protection
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- High Availability Strategies -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">High Availability Strategies</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <div class="feature-card rounded-xl p-6">
+                    <h3 class="text-lg font-semibold mb-3 aws-orange">Multi-AZ Deployment</h3>
+                    <p class="text-gray-300 text-sm mb-4">Deploy across multiple Availability Zones for fault tolerance.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Use Case:</strong></p>
+                        <p class="text-xs text-gray-300">Survive AZ failures automatically</p>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <h3 class="text-lg font-semibold mb-3 aws-orange">Cross-Region Failover</h3>
+                    <p class="text-gray-300 text-sm mb-4">Failover to another region for disaster recovery.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Use Case:</strong></p>
+                        <p class="text-xs text-gray-300">Survive regional disasters</p>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <h3 class="text-lg font-semibold mb-3 aws-orange">Health Monitoring</h3>
+                    <p class="text-gray-300 text-sm mb-4">Continuous monitoring with CloudWatch and custom metrics.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Use Case:</strong></p>
+                        <p class="text-xs text-gray-300">Proactive issue detection</p>
+                    </div>
+                </div>
+
+                <div class="feature-card rounded-xl p-6">
+                    <h3 class="text-lg font-semibold mb-3 aws-orange">Graceful Degradation</h3>
+                    <p class="text-gray-300 text-sm mb-4">Maintain core functionality during partial failures.</p>
+                    <div class="bg-gray-800 rounded p-3 mb-3">
+                        <p class="text-xs text-gray-400 mb-2"><strong>Use Case:</strong></p>
+                        <p class="text-xs text-gray-300">Maintain user experience during issues</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Common Architecture Patterns -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Common Architecture Patterns</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">Web Application Pattern</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300">ALB distributes traffic across multiple AZs</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300">ASG maintains desired capacity with health checks</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300">RDS Multi-AZ for database high availability</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300">CloudFront for global content delivery</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 aws-orange">Microservices Pattern</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300">ALB with path-based routing to different services</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300">Separate ASGs for each microservice</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300">Container-based deployment with ECS/EKS</p>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-green-400 mt-1 mr-3"></i>
+                            <p class="text-sm text-gray-300">Service discovery and API Gateway integration</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Best Practices -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-montserrat font-bold mb-8 text-center">Best Practices</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 text-blue-400">Load Balancer Best Practices</h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li class="flex items-start"><i class="fas fa-check text-blue-400 mt-1 mr-3"></i>Use ALB for HTTP/HTTPS applications</li>
+                        <li class="flex items-start"><i class="fas fa-check text-blue-400 mt-1 mr-3"></i>Enable access logs for troubleshooting</li>
+                        <li class="flex items-start"><i class="fas fa-check text-blue-400 mt-1 mr-3"></i>Configure appropriate health check settings</li>
+                        <li class="flex items-start"><i class="fas fa-check text-blue-400 mt-1 mr-3"></i>Use SSL/TLS termination at load balancer</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6 border border-gray-600">
+                    <h3 class="text-xl font-semibold mb-4 text-green-400">Auto Scaling Best Practices</h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-3"></i>Use target tracking scaling policies</li>
+                        <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-3"></i>Set appropriate cooldown periods</li>
+                        <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-3"></i>Monitor scaling activities and metrics</li>
+                        <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-3"></i>Use mixed instance types for cost optimization</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EC2 Storage Deep Dive</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            font-family: 'Open Sans', sans-serif;
+            width: 100vw;
+            overflow-x: hidden;
+        }
+        .slide-container {
+            width: 100vw;
+            min-height: 100vh;
+            background-color: #232F3E;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            color: #ffffff;
+        }
+        .aws-orange { color: #FF9900; }
+        .bg-aws-orange { background-color: #FF9900; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+        .font-mono { font-family: 'Roboto Mono', monospace; }
+        
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            z-index: 10;
+            min-height: 100vh;
+        }
+        @media (min-width: 640px) {
+            .content-wrapper { padding: 2rem; }
+        }
+        @media (min-width: 1024px) {
+            .content-wrapper { padding: 3rem; }
+        }
+
+        .section-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 24px;
+            border-left: 4px solid #FF9900;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 153, 0, 0.15);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            flex-shrink: 0;
+        }
+
+        .storage-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .storage-type {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 12px;
+            border-radius: 6px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .storage-type.ebs {
+            border-color: rgba(34, 197, 94, 0.5);
+            background: rgba(34, 197, 94, 0.1);
+        }
+
+        .storage-type.instance-store {
+            border-color: rgba(239, 68, 68, 0.5);
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .storage-type.efs {
+            border-color: rgba(59, 130, 246, 0.5);
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .feature-list li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            font-size: 0.9rem;
+        }
+        .feature-list li::before {
+            content: "•";
+            color: #FF9900;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            font-size: 1.2em;
+        }
+
+        .performance-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+        .performance-table th,
+        .performance-table td {
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.85rem;
+        }
+        .performance-table th {
+            background: rgba(255, 153, 0, 0.1);
+            color: #FF9900;
+            font-weight: bold;
+        }
+        .performance-table td {
+            color: #e5e7eb;
+        }
+
+        .code-block {
+            background-color: #161b22;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: #e6edf3;
+            border: 1px solid #30363d;
+            margin-top: 10px;
+        }
+
+        .metric-card {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            padding: 12px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #93C5FD;
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            color: #9CA3AF;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container">
+    <div class="absolute top-0 left-0 w-full h-2 bg-aws-orange z-20"></div>
+    <div class="content-wrapper">
+        <!-- Navigation -->
+        <div class="mb-3 sm:mb-4">
+            <a href="index.html" class="inline-flex items-center text-aws-orange hover:text-white transition-colors text-sm sm:text-base">
+                <i class="fas fa-arrow-left mr-2"></i> Back to EC2 Topics
+            </a>
+        </div>
+
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center mb-4 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4">
+            <div class="bg-aws-orange p-2 rounded mr-4">
+                <i class="fas fa-database text-white text-xl"></i>
+            </div>
+            <div>
+                <h2 class="text-4xl font-montserrat font-bold text-white">EC2 Storage Deep Dive</h2>
+                <p class="text-gray-400 font-montserrat text-lg">EBS, Instance Store, and File Systems</p>
+            </div>
+        </div>
+
+        <!-- Storage Overview -->
+        <div class="section-card mb-6">
+            <div class="flex items-center mb-4">
+                <div class="icon-box">
+                    <i class="fas fa-layer-group aws-orange text-xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold font-montserrat">Storage Options Overview</h3>
+            </div>
+            
+            <div class="storage-comparison">
+                <div class="storage-type ebs">
+                    <i class="fas fa-hdd text-green-400 text-2xl mb-2"></i>
+                    <h4 class="font-bold text-green-200 mb-2">EBS</h4>
+                    <p class="text-xs text-gray-300">Network-attached persistent storage</p>
+                </div>
+                <div class="storage-type instance-store">
+                    <i class="fas fa-microchip text-red-400 text-2xl mb-2"></i>
+                    <h4 class="font-bold text-red-200 mb-2">Instance Store</h4>
+                    <p class="text-xs text-gray-300">Physically attached ephemeral storage</p>
+                </div>
+                <div class="storage-type efs">
+                    <i class="fas fa-folder-open text-blue-400 text-2xl mb-2"></i>
+                    <h4 class="font-bold text-blue-200 mb-2">EFS</h4>
+                    <p class="text-xs text-gray-300">Managed NFS file system</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 lg:gap-8 flex-1">
+            
+            <!-- EBS Volume Types -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-hdd aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">EBS Volume Types</h3>
+                </div>
+                
+                <table class="performance-table">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Use Case</th>
+                            <th>IOPS</th>
+                            <th>Throughput</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong class="text-blue-300">gp3</strong></td>
+                            <td>General Purpose</td>
+                            <td>3,000-16,000</td>
+                            <td>125-1,000 MB/s</td>
+                        </tr>
+                        <tr>
+                            <td><strong class="text-blue-300">gp2</strong></td>
+                            <td>General Purpose</td>
+                            <td>3-10,000</td>
+                            <td>128-250 MB/s</td>
+                        </tr>
+                        <tr>
+                            <td><strong class="text-purple-300">io2</strong></td>
+                            <td>High IOPS</td>
+                            <td>100-64,000</td>
+                            <td>1,000 MB/s</td>
+                        </tr>
+                        <tr>
+                            <td><strong class="text-purple-300">io1</strong></td>
+                            <td>High IOPS</td>
+                            <td>100-32,000</td>
+                            <td>500-1,000 MB/s</td>
+                        </tr>
+                        <tr>
+                            <td><strong class="text-green-300">st1</strong></td>
+                            <td>Throughput Optimized</td>
+                            <td>-</td>
+                            <td>40-500 MB/s</td>
+                        </tr>
+                        <tr>
+                            <td><strong class="text-yellow-300">sc1</strong></td>
+                            <td>Cold HDD</td>
+                            <td>-</td>
+                            <td>12-250 MB/s</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="mt-4 space-y-2">
+                    <div class="p-2 bg-blue-900 bg-opacity-30 rounded text-xs">
+                        <strong class="text-blue-200">gp3:</strong> Latest generation, independent IOPS and throughput provisioning
+                    </div>
+                    <div class="p-2 bg-purple-900 bg-opacity-30 rounded text-xs">
+                        <strong class="text-purple-200">io2:</strong> Higher durability (99.999%), sub-millisecond latency
+                    </div>
+                    <div class="p-2 bg-green-900 bg-opacity-30 rounded text-xs">
+                        <strong class="text-green-200">st1:</strong> Big data, data warehouses, log processing
+                    </div>
+                </div>
+            </div>
+
+            <!-- EBS Features -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-cogs aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">EBS Features</h3>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="bg-green-900 bg-opacity-30 p-3 rounded border-l-4 border-green-400">
+                        <h4 class="text-green-200 font-bold text-sm mb-2"><i class="fas fa-camera mr-2"></i>Snapshots</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Point-in-time backups stored in S3</li>
+                            <li>• Incremental - only changed blocks</li>
+                            <li>• Can copy across regions</li>
+                            <li>• Create AMIs from snapshots</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-blue-900 bg-opacity-30 p-3 rounded border-l-4 border-blue-400">
+                        <h4 class="text-blue-200 font-bold text-sm mb-2"><i class="fas fa-lock mr-2"></i>Encryption</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Data at rest and in transit encryption</li>
+                            <li>• AWS KMS key management</li>
+                            <li>• Minimal impact on latency</li>
+                            <li>• Encrypted snapshots and AMIs</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-purple-900 bg-opacity-30 p-3 rounded border-l-4 border-purple-400">
+                        <h4 class="text-purple-200 font-bold text-sm mb-2"><i class="fas fa-expand-arrows-alt mr-2"></i>Multi-Attach</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• io1/io2 volumes only</li>
+                            <li>• Up to 16 instances (same AZ)</li>
+                            <li>• Cluster-aware file systems required</li>
+                            <li>• Higher availability applications</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-block font-mono mt-4">
+                    <span class="text-gray-500"># Create encrypted EBS volume</span><br/>
+                    aws ec2 create-volume \<br/>
+                    &nbsp;&nbsp;--size 100 \<br/>
+                    &nbsp;&nbsp;--volume-type gp3 \<br/>
+                    &nbsp;&nbsp;--availability-zone us-east-1a \<br/>
+                    &nbsp;&nbsp;--encrypted \<br/>
+                    &nbsp;&nbsp;--iops 4000 \<br/>
+                    &nbsp;&nbsp;--throughput 250
+                </div>
+            </div>
+
+            <!-- Instance Store -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-microchip aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Instance Store</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">Temporary block-level storage physically attached to the host computer.</p>
+                
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div class="metric-card">
+                        <div class="metric-value">7.5 GB/s</div>
+                        <div class="metric-label">Sequential Read</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">6.4 GB/s</div>
+                        <div class="metric-label">Sequential Write</div>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="bg-red-900 bg-opacity-30 p-3 rounded border-l-4 border-red-400">
+                        <h4 class="text-red-200 font-bold text-sm mb-2"><i class="fas fa-exclamation-triangle mr-2"></i>Ephemeral Storage</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Data lost on instance stop/termination</li>
+                            <li>• Data persists during reboot</li>
+                            <li>• Cannot be detached/reattached</li>
+                            <li>• No additional cost</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-green-900 bg-opacity-30 p-3 rounded border-l-4 border-green-400">
+                        <h4 class="text-green-200 font-bold text-sm mb-2"><i class="fas fa-rocket mr-2"></i>Use Cases</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Temporary storage, caches, buffers</li>
+                            <li>• High-performance databases</li>
+                            <li>• Distributed file systems</li>
+                            <li>• Content that's replicated across fleet</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-4 p-3 bg-yellow-900 bg-opacity-30 rounded border-l-4 border-yellow-400">
+                    <h4 class="text-yellow-200 font-bold text-sm mb-2">Instance Types with Instance Store</h4>
+                    <p class="text-gray-300 text-xs">C5d, M5d, R5d, I3, I3en, D2, D3, H1, and more</p>
+                </div>
+            </div>
+
+            <!-- EFS Integration -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-folder-open aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">EFS Integration</h3>
+                </div>
+                
+                <p class="text-gray-300 text-sm mb-4">Elastic File System provides scalable NFS for EC2 instances.</p>
+                
+                <ul class="feature-list text-gray-200 mb-4">
+                    <li><strong class="text-white">Multi-AZ:</strong> Mount from multiple AZs simultaneously</li>
+                    <li><strong class="text-white">POSIX-compliant:</strong> Standard file system interface</li>
+                    <li><strong class="text-white">Scalable:</strong> Petabyte-scale, pay for what you use</li>
+                    <li><strong class="text-white">Performance modes:</strong> General Purpose vs Max I/O</li>
+                </ul>
+
+                <div class="space-y-3">
+                    <div class="bg-blue-900 bg-opacity-30 p-3 rounded border-l-4 border-blue-400">
+                        <h4 class="text-blue-200 font-bold text-sm mb-2"><i class="fas fa-tachometer-alt mr-2"></i>Performance Classes</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• <strong>General Purpose:</strong> Lowest latency per operation</li>
+                            <li>• <strong>Max I/O:</strong> Higher aggregate throughput and IOPS</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-green-900 bg-opacity-30 p-3 rounded border-l-4 border-green-400">
+                        <h4 class="text-green-200 font-bold text-sm mb-2"><i class="fas fa-dollar-sign mr-2"></i>Throughput Modes</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• <strong>Bursting:</strong> Throughput scales with file system size</li>
+                            <li>• <strong>Provisioned:</strong> Fixed throughput independent of size</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-block font-mono mt-4">
+                    <span class="text-gray-500"># Mount EFS on EC2</span><br/>
+                    sudo mount -t efs \<br/>
+                    &nbsp;&nbsp;fs-12345678:/ /mnt/efs<br/><br/>
+                    <span class="text-gray-500"># Using EFS utils</span><br/>
+                    sudo mount -t efs \<br/>
+                    &nbsp;&nbsp;-o tls fs-12345678:/ /mnt/efs
+                </div>
+            </div>
+
+            <!-- Storage Performance -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-chart-line aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Performance Optimization</h3>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="bg-purple-900 bg-opacity-30 p-3 rounded border-l-4 border-purple-400">
+                        <h4 class="text-purple-200 font-bold text-sm mb-2"><i class="fas fa-layer-group mr-2"></i>RAID Configurations</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• <strong>RAID 0:</strong> Striping for increased performance</li>
+                            <li>• <strong>RAID 1:</strong> Mirroring for increased fault tolerance</li>
+                            <li>• <strong>RAID 5/6:</strong> Not recommended on EBS</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-orange-900 bg-opacity-30 p-3 rounded border-l-4 border-orange-400">
+                        <h4 class="text-orange-200 font-bold text-sm mb-2"><i class="fas fa-thermometer-half mr-2"></i>EBS Optimization</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Enable EBS-optimized instances</li>
+                            <li>• Use appropriate volume types</li>
+                            <li>• Pre-warm volumes from snapshots</li>
+                            <li>• Monitor CloudWatch metrics</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-cyan-900 bg-opacity-30 p-3 rounded border-l-4 border-cyan-400">
+                        <h4 class="text-cyan-200 font-bold text-sm mb-2"><i class="fas fa-eye mr-2"></i>Key Metrics</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• <strong>VolumeReadOps/VolumeWriteOps:</strong> IOPS</li>
+                            <li>• <strong>VolumeReadBytes/VolumeWriteBytes:</strong> Throughput</li>
+                            <li>• <strong>VolumeTotalReadTime/VolumeTotalWriteTime:</strong> Latency</li>
+                            <li>• <strong>VolumeQueueLength:</strong> Queue depth</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-2 mt-4">
+                    <div class="metric-card">
+                        <div class="metric-value">16,000</div>
+                        <div class="metric-label">Max IOPS (gp3)</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">1,000</div>
+                        <div class="metric-label">MB/s (gp3)</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">64,000</div>
+                        <div class="metric-label">Max IOPS (io2)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Backup and Recovery -->
+            <div class="section-card">
+                <div class="flex items-center mb-4">
+                    <div class="icon-box">
+                        <i class="fas fa-shield-alt aws-orange text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold font-montserrat">Backup & Recovery</h3>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="bg-green-900 bg-opacity-30 p-3 rounded border-l-4 border-green-400">
+                        <h4 class="text-green-200 font-bold text-sm mb-2"><i class="fas fa-camera mr-2"></i>EBS Snapshots</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Incremental backups to S3</li>
+                            <li>• Can be automated with Data Lifecycle Manager</li>
+                            <li>• Cross-region copy for disaster recovery</li>
+                            <li>• Fast Snapshot Restore for quick recovery</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-blue-900 bg-opacity-30 p-3 rounded border-l-4 border-blue-400">
+                        <h4 class="text-blue-200 font-bold text-sm mb-2"><i class="fas fa-sync mr-2"></i>AWS Backup</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Centralized backup across AWS services</li>
+                            <li>• Policy-based backup plans</li>
+                            <li>• Cross-region and cross-account backup</li>
+                            <li>• Compliance and audit reporting</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-yellow-900 bg-opacity-30 p-3 rounded border-l-4 border-yellow-400">
+                        <h4 class="text-yellow-200 font-bold text-sm mb-2"><i class="fas fa-history mr-2"></i>Best Practices</h4>
+                        <ul class="text-gray-300 text-xs space-y-1">
+                            <li>• Regular automated snapshots</li>
+                            <li>• Test restore procedures</li>
+                            <li>• Tag snapshots for lifecycle management</li>
+                            <li>• Monitor backup completion</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="code-block font-mono mt-4">
+                    <span class="text-gray-500"># Create snapshot</span><br/>
+                    aws ec2 create-snapshot \<br/>
+                    &nbsp;&nbsp;--volume-id vol-12345678 \<br/>
+                    &nbsp;&nbsp;--description "Daily backup"<br/><br/>
+                    <span class="text-gray-500"># Copy to another region</span><br/>
+                    aws ec2 copy-snapshot \<br/>
+                    &nbsp;&nbsp;--source-region us-east-1 \<br/>
+                    &nbsp;&nbsp;--source-snapshot-id snap-12345678 \<br/>
+                    &nbsp;&nbsp;--destination-region us-west-2
+                </div>
+            </div>
+        </div>
+
+        <!-- Page Number -->
+        <div class="text-right mt-4 text-gray-500 text-xs">
+            EC2 Storage Deep Dive
+        </div>
+        
+        <!-- Navigation -->
+        <div class="flex justify-between mt-8 pt-6 border-t border-gray-700">
+            <a href="EC2-Instance-Types-Deep-Dive.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Previous: Instance Types
+            </a>
+            <a href="EC2-Networking-VPC.html" class="inline-flex items-center bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                Next: Networking & VPC <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+        
+        <!-- Back to Topics -->
+        <div class="text-center mt-6">
+            <a href="index.html" class="inline-flex items-center bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors mr-4">
+                <i class="fas fa-list mr-2"></i> Back to Topics
+            </a>
+            <a href="../index.html" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                <i class="fas fa-home mr-2"></i> Back to Home
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

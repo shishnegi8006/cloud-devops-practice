@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Migration & DMS - AWS Study Guide</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="../styles.css" rel="stylesheet">
+</head>
+<body class="text-white">
+    <div class="w-full min-h-screen p-4 sm:p-6 lg:p-8">
+        <div class="mb-6">
+            <a href="index.html" class="inline-flex items-center text-aws-orange hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Back to RDS
+            </a>
+        </div>
+        
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-8">
+                <div class="bg-indigo-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-exchange-alt text-white text-2xl"></i>
+                </div>
+                <h1 class="text-4xl font-montserrat font-bold mb-4">Database Migration & DMS</h1>
+                <p class="text-xl text-gray-300">Comprehensive Migration Strategies & Tools</p>
+            </div>
+
+            <!-- Overview -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h2 class="text-2xl font-bold mb-4 aws-orange">AWS Database Migration Service (DMS)</h2>
+                <p class="text-gray-300 mb-4">AWS DMS helps migrate databases to AWS quickly and securely. It supports homogeneous migrations (same database engine) and heterogeneous migrations (different database engines) with minimal downtime.</p>
+                <div class="bg-indigo-900 bg-opacity-30 border border-indigo-500 rounded p-4">
+                    <p class="text-indigo-200"><strong>Key Benefits:</strong> Minimal downtime, continuous data replication, broad database support, cost-effective, and secure migration process.</p>
+                </div>
+            </div>
+
+            <!-- Migration Types -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 border border-gray-700">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-green-600 w-10 h-10 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-equals text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Homogeneous Migrations</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-green-400 mb-2">Same Database Engine</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Oracle to Amazon RDS for Oracle</li>
+                                <li>• MySQL to Amazon RDS for MySQL</li>
+                                <li>• PostgreSQL to Amazon RDS for PostgreSQL</li>
+                                <li>• SQL Server to Amazon RDS for SQL Server</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-green-400 mb-2">Migration Process</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Schema and data migration</li>
+                                <li>• Native database tools can be used</li>
+                                <li>• Simpler migration process</li>
+                                <li>• Faster migration timeline</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-green-400 mb-2">Tools & Methods</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• AWS DMS for continuous replication</li>
+                                <li>• Native backup/restore</li>
+                                <li>• Import/export utilities</li>
+                                <li>• Snapshot-based migration</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 border border-gray-700">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-orange-600 w-10 h-10 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-not-equal text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Heterogeneous Migrations</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-orange-400 mb-2">Different Database Engines</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Oracle to Amazon Aurora PostgreSQL</li>
+                                <li>• SQL Server to Amazon Aurora MySQL</li>
+                                <li>• MySQL to Amazon Aurora PostgreSQL</li>
+                                <li>• Oracle to Amazon Redshift</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-orange-400 mb-2">Migration Process</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• Schema conversion required</li>
+                                <li>• Data type mapping</li>
+                                <li>• Code conversion (stored procedures)</li>
+                                <li>• Application testing required</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-orange-400 mb-2">Required Tools</h4>
+                            <ul class="text-sm text-gray-300 space-y-1">
+                                <li>• AWS Schema Conversion Tool (SCT)</li>
+                                <li>• AWS DMS for data migration</li>
+                                <li>• Application code modification</li>
+                                <li>• Extensive testing and validation</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DMS Components -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 aws-orange">DMS Architecture & Components</h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold mb-3 text-blue-400">Replication Instance</h4>
+                        <ul class="text-sm text-gray-300 space-y-2">
+                            <li>• <strong>Compute resource:</strong> EC2 instance that runs replication tasks</li>
+                            <li>• <strong>Instance classes:</strong> T3, C5, R5, M5 instance types</li>
+                            <li>• <strong>Multi-AZ:</strong> High availability deployment option</li>
+                            <li>• <strong>VPC deployment:</strong> Network isolation and security</li>
+                            <li>• <strong>Storage:</strong> Allocated storage for logs and cached data</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold mb-3 text-purple-400">Source Endpoint</h4>
+                        <ul class="text-sm text-gray-300 space-y-2">
+                            <li>• <strong>Database location:</strong> On-premises, EC2, or RDS</li>
+                            <li>• <strong>Connection details:</strong> Hostname, port, credentials</li>
+                            <li>• <strong>SSL configuration:</strong> Encrypted connections</li>
+                            <li>• <strong>Extra connection attributes:</strong> Engine-specific settings</li>
+                            <li>• <strong>Test connection:</strong> Validate connectivity</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold mb-3 text-green-400">Target Endpoint</h4>
+                        <ul class="text-sm text-gray-300 space-y-2">
+                            <li>• <strong>AWS services:</strong> RDS, Aurora, Redshift, S3</li>
+                            <li>• <strong>Configuration:</strong> Connection parameters and settings</li>
+                            <li>• <strong>Load settings:</strong> Batch size, commit rate</li>
+                            <li>• <strong>Error handling:</strong> Retry logic and error tables</li>
+                            <li>• <strong>Validation:</strong> Data integrity checks</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Migration Tasks -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 aws-orange">Migration Task Types</h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold mb-3 text-yellow-400">Full Load</h4>
+                        <ul class="text-sm text-gray-300 space-y-2">
+                            <li>• <strong>One-time migration:</strong> Complete data transfer</li>
+                            <li>• <strong>Bulk transfer:</strong> All existing data</li>
+                            <li>• <strong>Downtime required:</strong> Source database read-only</li>
+                            <li>• <strong>Use case:</strong> Initial data migration</li>
+                            <li>• <strong>Performance:</strong> Parallel loading for speed</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold mb-3 text-cyan-400">Change Data Capture (CDC)</h4>
+                        <ul class="text-sm text-gray-300 space-y-2">
+                            <li>• <strong>Ongoing replication:</strong> Real-time data sync</li>
+                            <li>• <strong>Transaction logs:</strong> Captures changes from logs</li>
+                            <li>• <strong>Minimal impact:</strong> Low overhead on source</li>
+                            <li>• <strong>Use case:</strong> Continuous synchronization</li>
+                            <li>• <strong>Latency:</strong> Near real-time replication</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold mb-3 text-red-400">Full Load + CDC</h4>
+                        <ul class="text-sm text-gray-300 space-y-2">
+                            <li>• <strong>Complete migration:</strong> Initial load + ongoing sync</li>
+                            <li>• <strong>Minimal downtime:</strong> Continuous operation</li>
+                            <li>• <strong>Cutover process:</strong> Switch when synchronized</li>
+                            <li>• <strong>Use case:</strong> Production migrations</li>
+                            <li>• <strong>Validation:</strong> Data consistency checks</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Schema Conversion Tool -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 aws-orange">AWS Schema Conversion Tool (SCT)</h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-purple-400">Core Capabilities</h4>
+                        <div class="space-y-4">
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2">Schema Conversion</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Database objects:</strong> Tables, views, indexes, constraints</li>
+                                    <li>• <strong>Data types:</strong> Automatic type mapping and conversion</li>
+                                    <li>• <strong>Stored procedures:</strong> Code conversion and optimization</li>
+                                    <li>• <strong>Functions:</strong> User-defined functions and triggers</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2">Assessment Reports</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• <strong>Complexity analysis:</strong> Migration effort estimation</li>
+                                    <li>• <strong>Compatibility issues:</strong> Identify conversion challenges</li>
+                                    <li>• <strong>Manual actions:</strong> Items requiring manual intervention</li>
+                                    <li>• <strong>Cost estimation:</strong> Target infrastructure sizing</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-semibold mb-4 text-teal-400">Supported Conversions</h4>
+                        <div class="space-y-4">
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2">Source Databases</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• Oracle Database</li>
+                                    <li>• Microsoft SQL Server</li>
+                                    <li>• MySQL</li>
+                                    <li>• PostgreSQL</li>
+                                    <li>• IBM Db2</li>
+                                    <li>• SAP ASE</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-700 p-4 rounded">
+                                <h5 class="font-semibold mb-2">Target Databases</h5>
+                                <ul class="text-sm text-gray-300 space-y-1">
+                                    <li>• Amazon Aurora (MySQL/PostgreSQL)</li>
+                                    <li>• Amazon RDS (MySQL/PostgreSQL/Oracle/SQL Server)</li>
+                                    <li>• Amazon Redshift</li>
+                                    <li>• Amazon DocumentDB</li>
+                                    <li>• Amazon DynamoDB</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Best Practices -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 aws-orange">Migration Best Practices</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold mb-3 text-yellow-400">Planning Phase</h4>
+                        <ul class="text-sm text-gray-300 space-y-1">
+                            <li>• Assess source database complexity</li>
+                            <li>• Choose appropriate target engine</li>
+                            <li>• Plan network connectivity</li>
+                            <li>• Estimate migration timeline</li>
+                            <li>• Prepare rollback strategy</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold mb-3 text-blue-400">Execution Phase</h4>
+                        <ul class="text-sm text-gray-300 space-y-1">
+                            <li>• Start with non-production environments</li>
+                            <li>• Monitor replication lag and performance</li>
+                            <li>• Validate data integrity continuously</li>
+                            <li>• Test application functionality</li>
+                            <li>• Plan cutover window carefully</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold mb-3 text-green-400">Post-Migration</h4>
+                        <ul class="text-sm text-gray-300 space-y-1">
+                            <li>• Performance tuning and optimization</li>
+                            <li>• Monitor application performance</li>
+                            <li>• Update connection strings</li>
+                            <li>• Implement backup strategies</li>
+                            <li>• Decommission source systems</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exam Tips -->
+            <div class="bg-gradient-to-r from-indigo-900 to-purple-900 bg-opacity-50 rounded-lg p-6 border border-indigo-500">
+                <h3 class="text-xl font-bold mb-4 text-indigo-300">SAA-C03 Exam Key Points</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <ul class="text-sm text-indigo-100 space-y-2">
+                            <li>• <strong>DMS Components:</strong> Replication instance, source/target endpoints, migration tasks</li>
+                            <li>• <strong>Migration Types:</strong> Full load, CDC, Full load + CDC for minimal downtime</li>
+                            <li>• <strong>SCT:</strong> Required for heterogeneous migrations, provides assessment reports</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul class="text-sm text-indigo-100 space-y-2">
+                            <li>• <strong>Homogeneous:</strong> Same engine migrations, simpler process</li>
+                            <li>• <strong>Heterogeneous:</strong> Different engines, requires SCT + DMS</li>
+                            <li>• <strong>Multi-AZ:</strong> DMS replication instances support high availability</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Exam Questions - AWS Study Guide</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="../styles.css" rel="stylesheet">
+</head>
+<body class="text-white">
+    <div class="w-full min-h-screen p-4 sm:p-6 lg:p-8">
+        <div class="mb-6">
+            <a href="index.html" class="inline-flex items-center text-aws-orange hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i> Back to RDS
+            </a>
+        </div>
+        
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-8">
+                <div class="bg-orange-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-question-circle text-white text-2xl"></i>
+                </div>
+                <h1 class="text-4xl font-montserrat font-bold mb-4">Database Exam Questions</h1>
+                <p class="text-xl text-gray-300">SAA-C03 Practice Questions & Explanations</p>
+            </div>
+
+            <!-- Overview -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mb-8 border border-gray-700">
+                <h2 class="text-2xl font-bold mb-4 aws-orange">Exam Preparation Guide</h2>
+                <p class="text-gray-300 mb-4">Practice questions covering RDS, Aurora, and ElastiCache with detailed explanations and answer rationales for AWS Solution Architect Associate (SAA-C03) exam preparation.</p>
+                <div class="bg-orange-900 bg-opacity-30 border border-orange-500 rounded p-4">
+                    <p class="text-orange-200"><strong>Focus Areas:</strong> Database selection, performance optimization, backup strategies, security, monitoring, and cost optimization.</p>
+                </div>
+            </div>
+
+            <!-- Question Categories -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 border border-gray-700">
+                    <h3 class="text-xl font-bold mb-4 text-blue-400">Question Categories</h3>
+                    <div class="space-y-3">
+                        <div class="bg-gray-700 p-3 rounded">
+                            <h4 class="font-semibold text-blue-300">RDS Fundamentals (25%)</h4>
+                            <p class="text-xs text-gray-300">Instance types, storage, Multi-AZ, read replicas</p>
+                        </div>
+                        <div class="bg-gray-700 p-3 rounded">
+                            <h4 class="font-semibold text-green-300">Aurora Features (20%)</h4>
+                            <p class="text-xs text-gray-300">Serverless, Global Database, performance</p>
+                        </div>
+                        <div class="bg-gray-700 p-3 rounded">
+                            <h4 class="font-semibold text-red-300">ElastiCache (15%)</h4>
+                            <p class="text-xs text-gray-300">Redis vs Memcached, clustering, use cases</p>
+                        </div>
+                        <div class="bg-gray-700 p-3 rounded">
+                            <h4 class="font-semibold text-purple-300">Security & Backup (25%)</h4>
+                            <p class="text-xs text-gray-300">Encryption, IAM, backup strategies, PITR</p>
+                        </div>
+                        <div class="bg-gray-700 p-3 rounded">
+                            <h4 class="font-semibold text-yellow-300">Migration & Monitoring (15%)</h4>
+                            <p class="text-xs text-gray-300">DMS, Performance Insights, CloudWatch</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 border border-gray-700">
+                    <h3 class="text-xl font-bold mb-4 text-green-400">Exam Tips</h3>
+                    <div class="space-y-3">
+                        <div class="bg-gray-700 p-3 rounded">
+                            <h4 class="font-semibold text-green-300">Read Carefully</h4>
+                            <p class="text-xs text-gray-300">Pay attention to requirements like RTO, RPO, cost optimization</p>
+                        </div>
+                        <div class="bg-gray-700 p-3 rounded">
+                            <h4 class="font-semibold text-green-300">Eliminate Options</h4>
+                            <p class="text-xs text-gray-300">Rule out clearly incorrect answers first</p>
+                        </div>
+                        <div class="bg-gray-700 p-3 rounded">
+                            <h4 class="font-semibold text-green-300">Consider Trade-offs</h4>
+                            <p class="text-xs text-gray-300">Balance performance, cost, and complexity</p>
+                        </div>
+                        <div class="bg-gray-700 p-3 rounded">
+                            <h4 class="font-semibold text-green-300">Know Limitations</h4>
+                            <p class="text-xs text-gray-300">Understand service limits and constraints</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sample Questions -->
+            <div class="space-y-8">
+                <!-- Question 1 -->
+                <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 border border-gray-700">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-600 w-8 h-8 rounded-full flex items-center justify-center mr-3">
+                            <span class="text-white font-bold text-sm">1</span>
+                        </div>
+                        <h3 class="text-lg font-bold">RDS Multi-AZ Deployment</h3>
+                    </div>
+                    
+                    <div class="bg-gray-700 p-4 rounded mb-4">
+                        <p class="text-gray-300 mb-4"><strong>Question:</strong> A company needs to deploy a MySQL database that can automatically failover to a standby instance in case of primary instance failure. The solution should provide zero data loss and minimal downtime. Which AWS service configuration meets these requirements?</p>
+                        
+                        <div class="space-y-2">
+                            <div class="bg-gray-600 p-2 rounded">
+                                <span class="text-red-400">A)</span> RDS MySQL with read replicas in multiple AZs
+                            </div>
+                            <div class="bg-gray-600 p-2 rounded">
+                                <span class="text-green-400">B)</span> RDS MySQL with Multi-AZ deployment
+                            </div>
+                            <div class="bg-gray-600 p-2 rounded">
+                                <span class="text-red-400">C)</span> Aurora MySQL with Aurora Serverless
+                            </div>
+                            <div class="bg-gray-600 p-2 rounded">
+                                <span class="text-red-400">D)</span> EC2 instances with MySQL and EBS snapshots
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-green-900 bg-opacity-30 border border-green-500 rounded p-4">
+                        <h4 class="font-semibold text-green-300 mb-2">Correct Answer: B) RDS MySQL with Multi-AZ deployment</h4>
+                        <p class="text-green-100 text-sm mb-2"><strong>Explanation:</strong></p>
+                        <ul class="text-green-100 text-sm space-y-1">
+                            <li>• <strong>Multi-AZ deployment</strong> provides synchronous replication to a standby instance in a different AZ</li>
+                            <li>• <strong>Automatic failover</strong> occurs within 1-2 minutes with zero data loss</li>
+                            <li>• <strong>Option A</strong> is incorrect: Read replicas use asynchronous replication and don't provide automatic failover</li>
+                            <li>• <strong>Option C</strong> is incorrect: Aurora Serverless doesn't specifically address failover requirements</li>
+                            <li>• <strong>Option D</strong> is incorrect: Requires manual intervention and doesn't meet zero data loss requirement</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 border border-gray-700">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-purple-600 w-8 h-8 rounded-full flex items-center justify-center mr-3">
+                            <span class="text-white font-bold text-sm">2</span>
+                        </div>
+                        <h3 class="text-lg font-bold">ElastiCache Engine Selection</h3>
+                    </div>
+                    
+                    <div class="bg-gray-700 p-4 rounded mb-4">
+                        <p class="text-gray-300 mb-4"><strong>Question:</strong> An application requires a caching solution that supports complex data structures, pub/sub messaging, and data persistence. The cache should also support clustering for horizontal scaling. Which ElastiCache engine should be used?</p>
+                        
+                        <div class="space-y-2">
+                            <div class="bg-gray-600 p-2 rounded">
+                                <span class="text-red-400">A)</span> Memcached with Auto Discovery
+                            </div>
+                            <div class="bg-gray-600 p-2 rounded">
+                                <span class="text-green-400">B)</span> Redis with Cluster Mode enabled
+                            </div>
+                            <div class="bg-gray-600 p-2 rounded">
+                                <span class="text-red-400">C)</span> Memcached with multiple nodes
+                            </div>
+                            <div class="bg-gray-600 p-2 rounded">
+                                <span class="text-red-400">D)</span> Redis with Cluster Mode disabled
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-green-900 bg-opacity-30 border border-green-500 rounded p-4">
+                        <h4 class="font-semibold text-green-300 mb-2">Correct Answer: B) Redis with Cluster Mode enabled</h4>
+                        <p class="text-green-100 text-sm mb-2"><strong>Explanation:</strong></p>
+                        <ul class="text-green-100 text-sm space-y-1">
+                            <li>• <strong>Redis</strong> supports complex data structures (lists, sets, hashes), pub/sub, and data persistence</li>
+                            <li>• <strong>Cluster Mode enabled</strong> provides horizontal scaling across multiple shards</li>
+                            <li>• <strong>Option A & C</strong> are incorrect: Memcached doesn't support complex data structures or persistence</li>
+                            <li>• <strong>Option D</strong> is incorrect: Cluster Mode disabled limits scaling to vertical scaling only</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 border border-gray-700">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-orange-600 w-8 h-8 rounded-full flex items-center justify-center mr-3">
+                            <span class="text-white font-bold text-sm">3</span>
+                        </div>
+                        <h3 class="text-lg font-bold">Aurora Global Database</h3>
+                    </div>
+                    
+                    <div class="bg-gray-700 p-4 rounded mb-4">
+                        <p class="text-gray-300 mb-4"><strong>Question:</strong> A global application needs a database solution that can serve read traffic from multiple regions with low latency while maintaining a single write region. The solution should provide disaster recovery with RTO < 1 minute. What is the best approach?</p>
+                        
+                        <div class="space-y-2">
+                            <div class="bg-gray-600 p-2 rounded">
+                                <span class="text-red-400">A)</span> RDS with cross-region read replicas
+                            </div>
+                            <div class="bg-gray-600 p-2 rounded">
+                                <span class="text-green-400">B)</span> Aurora Global Database
+                            </div>
+                            <div class="bg-gray-600 p-2 rounded">
+                                <span class="text-red-400">C)</span> DynamoDB Global Tables
+                            </div>
+                            <div class="bg-gray-600 p-2 rounded">
+                                <span class="text-red-400">D)</span> Multiple RDS instances with DMS replication
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-green-900 bg-opacity-30 border border-green-500 rounded p-4">
+                        <h4 class="font-semibold text-green-300 mb-2">Correct Answer: B) Aurora Global Database</h4>
+                        <p class="text-green-100 text-sm mb-2"><strong>Explanation:</strong></p>
+                        <ul class="text-green-100 text-sm space-y-1">
+                            <li>• <strong>Aurora Global Database</strong> provides cross-region replication with < 1 second lag</li>
+                            <li>• <strong>Fast failover</strong> with RTO < 1 minute meets the disaster recovery requirement</li>
+                            <li>• <strong>Single write region</strong> with multiple read regions matches the requirement</li>
+                            <li>• <strong>Option A</strong> is incorrect: RDS cross-region replicas have higher lag and slower failover</li>
+                            <li>• <strong>Option C</strong> is incorrect: DynamoDB Global Tables support multi-write, not single write</li>
+                            <li>• <strong>Option D</strong> is incorrect: Complex setup with higher operational overhead</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 border border-gray-700">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-cyan-600 w-8 h-8 rounded-full flex items-center justify-center mr-3">
+                            <span class="text-white font-bold text-sm">4</span>
+                        </div>
+                        <h3 class="text-lg font-bold">Database Migration Strategy</h3>
+                    </div>
+                    
+                    <div class="bg-gray-700 p-4 rounded mb-4">
+                        <p class="text-gray-300 mb-4"><strong>Question:</strong> A company wants to migrate an Oracle database to Aurora PostgreSQL with minimal downtime. The migration involves schema conversion and ongoing data synchronization. Which combination of AWS services should be used?</p>
+                        
+                        <div class="space-y-2">
+                            <div class="bg-gray-600 p-2 rounded">
+                                <span class="text-red-400">A)</span> AWS DataSync + AWS Glue
+                            </div>
+                            <div class="bg-gray-600 p-2 rounded">
+                                <span class="text-green-400">B)</span> AWS Schema Conversion Tool (SCT) + AWS Database Migration Service (DMS)
+                            </div>
+                            <div class="bg-gray-600 p-2 rounded">
+                                <span class="text-red-400">C)</span> AWS DMS only
+                            </div>
+                            <div class="bg-gray-600 p-2 rounded">
+                                <span class="text-red-400">D)</span> Native Oracle export/import tools
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-green-900 bg-opacity-30 border border-green-500 rounded p-4">
+                        <h4 class="font-semibold text-green-300 mb-2">Correct Answer: B) AWS Schema Conversion Tool (SCT) + AWS Database Migration Service (DMS)</h4>
+                        <p class="text-green-100 text-sm mb-2"><strong>Explanation:</strong></p>
+                        <ul class="text-green-100 text-sm space-y-1">
+                            <li>• <strong>Heterogeneous migration</strong> (Oracle to PostgreSQL) requires both SCT and DMS</li>
+                            <li>• <strong>SCT</strong> converts the database schema and identifies conversion issues</li>
+                            <li>• <strong>DMS</strong> performs the data migration with Full Load + CDC for minimal downtime</li>
+                            <li>• <strong>Option A</strong> is incorrect: DataSync is for file transfer, not database migration</li>
+                            <li>• <strong>Option C</strong> is incorrect: DMS alone cannot handle schema conversion</li>
+                            <li>• <strong>Option D</strong> is incorrect: Native tools don't support cross-engine migration</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 border border-gray-700">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-red-600 w-8 h-8 rounded-full flex items-center justify-center mr-3">
+                            <span class="text-white font-bold text-sm">5</span>
+                        </div>
+                        <h3 class="text-lg font-bold">Database Security & Encryption</h3>
+                    </div>
+                    
+                    <div class="bg-gray-700 p-4 rounded mb-4">
+                        <p class="text-gray-300 mb-4"><strong>Question:</strong> A financial services company requires encryption at rest for their RDS database and wants to use their own encryption keys. They also need to rotate keys automatically. What is the most appropriate solution?</p>
+                        
+                        <div class="space-y-2">
+                            <div class="bg-gray-600 p-2 rounded">
+                                <span class="text-red-400">A)</span> Use AWS managed keys with automatic rotation
+                            </div>
+                            <div class="bg-gray-600 p-2 rounded">
+                                <span class="text-green-400">B)</span> Use customer managed KMS keys with automatic rotation enabled
+                            </div>
+                            <div class="bg-gray-600 p-2 rounded">
+                                <span class="text-red-400">C)</span> Use CloudHSM for key management
+                            </div>
+                            <div class="bg-gray-600 p-2 rounded">
+                                <span class="text-red-400">D)</span> Implement application-level encryption
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-green-900 bg-opacity-30 border border-green-500 rounded p-4">
+                        <h4 class="font-semibold text-green-300 mb-2">Correct Answer: B) Use customer managed KMS keys with automatic rotation enabled</h4>
+                        <p class="text-green-100 text-sm mb-2"><strong>Explanation:</strong></p>
+                        <ul class="text-green-100 text-sm space-y-1">
+                            <li>• <strong>Customer managed KMS keys</strong> allow the company to control their own encryption keys</li>
+                            <li>• <strong>Automatic rotation</strong> can be enabled for customer managed keys (annual rotation)</li>
+                            <li>• <strong>RDS encryption at rest</strong> integrates seamlessly with KMS</li>
+                            <li>• <strong>Option A</strong> is incorrect: AWS managed keys don't provide customer control</li>
+                            <li>• <strong>Option C</strong> is incorrect: CloudHSM is more complex and not required for this use case</li>
+                            <li>• <strong>Option D</strong> is incorrect: Application-level encryption adds complexity and doesn't meet the requirement</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Study Resources -->
+            <div class="bg-gray-800 bg-opacity-50 rounded-lg p-6 mt-8 border border-gray-700">
+                <h3 class="text-2xl font-bold mb-6 aws-orange">Additional Study Resources</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold mb-3 text-blue-400">AWS Documentation</h4>
+                        <ul class="text-sm text-gray-300 space-y-1">
+                            <li>• RDS User Guide</li>
+                            <li>• Aurora User Guide</li>
+                            <li>• ElastiCache User Guide</li>
+                            <li>• DMS User Guide</li>
+                            <li>• Best Practices guides</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold mb-3 text-green-400">Hands-on Practice</h4>
+                        <ul class="text-sm text-gray-300 space-y-1">
+                            <li>• Create RDS instances</li>
+                            <li>• Configure Multi-AZ and read replicas</li>
+                            <li>• Set up ElastiCache clusters</li>
+                            <li>• Practice backup and restore</li>
+                            <li>• Test migration scenarios</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-700 p-4 rounded">
+                        <h4 class="font-semibold mb-3 text-purple-400">Key Focus Areas</h4>
+                        <ul class="text-sm text-gray-300 space-y-1">
+                            <li>• Service selection criteria</li>
+                            <li>• Performance optimization</li>
+                            <li>• Security best practices</li>
+                            <li>• Cost optimization strategies</li>
+                            <li>• Disaster recovery planning</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Final Tips -->
+            <div class="bg-gradient-to-r from-orange-900 to-red-900 bg-opacity-50 rounded-lg p-6 mt-8 border border-orange-500">
+                <h3 class="text-xl font-bold mb-4 text-orange-300">Final Exam Tips</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <ul class="text-sm text-orange-100 space-y-2">
+                            <li>• <strong>Understand trade-offs:</strong> Performance vs cost, availability vs complexity</li>
+                            <li>• <strong>Know service limits:</strong> Connection limits, storage limits, backup retention</li>
+                            <li>• <strong>Security first:</strong> Always consider encryption, IAM, and network security</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul class="text-sm text-orange-100 space-y-2">
+                            <li>• <strong>Cost optimization:</strong> Reserved instances, right-sizing, storage types</li>
+                            <li>• <strong>Operational excellence:</strong> Monitoring, automation, backup strategies</li>
+                            <li>• <strong>Practice scenarios:</strong> Work through real-world use cases and requirements</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
